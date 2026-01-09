@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroSlide1 from "@/assets/hero-slide-1.jpg";
 import heroSlide2 from "@/assets/hero-slide-2.jpg";
@@ -10,43 +10,55 @@ const slides = [
     image: heroSlide1,
     title: "Premium Residential Villas",
     subtitle: "Experience luxury living in Hyderabad",
+    tag: "Featured Project",
   },
   {
     image: heroSlide2,
     title: "Premium Plot Development",
-    subtitle: "Invest in your future with us",
+    subtitle: "Invest in your future with prime locations",
+    tag: "New Launch",
   },
   {
     image: heroSlide3,
     title: "Luxurious Villa Projects",
-    subtitle: "Your dream home awaits",
+    subtitle: "Your dream home awaits in serene surroundings",
+    tag: "Exclusive",
   },
 ];
 
 const HeroSlider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const nextSlide = useCallback(() => {
+    if (isAnimating) return;
+    setIsAnimating(true);
     setCurrentSlide((prev) => (prev + 1) % slides.length);
-  }, []);
+    setTimeout(() => setIsAnimating(false), 700);
+  }, [isAnimating]);
 
   const prevSlide = () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    setTimeout(() => setIsAnimating(false), 700);
   };
 
   useEffect(() => {
-    const timer = setInterval(nextSlide, 5000);
+    const timer = setInterval(nextSlide, 6000);
     return () => clearInterval(timer);
   }, [nextSlide]);
 
   return (
-    <div className="relative h-[60vh] md:h-[80vh] overflow-hidden">
+    <div className="relative h-[70vh] md:h-[90vh] overflow-hidden">
       {/* Slides */}
       {slides.map((slide, index) => (
         <div
           key={index}
-          className={`absolute inset-0 transition-opacity duration-700 ${
-            index === currentSlide ? "opacity-100" : "opacity-0"
+          className={`absolute inset-0 transition-all duration-700 ease-out ${
+            index === currentSlide 
+              ? "opacity-100 scale-100" 
+              : "opacity-0 scale-105"
           }`}
         >
           <img
@@ -54,19 +66,55 @@ const HeroSlider = () => {
             alt={slide.title}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
+          {/* Gradient Overlays */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
           
           {/* Slide Content */}
           {index === currentSlide && (
             <div className="absolute inset-0 flex items-center">
-              <div className="container mx-auto px-4">
-                <div className="max-w-2xl text-primary-foreground animate-fade-in">
-                  <h2 className="text-3xl md:text-5xl lg:text-6xl font-serif font-bold mb-4">
+              <div className="container mx-auto px-4 md:px-8">
+                <div className="max-w-3xl">
+                  {/* Tag */}
+                  <div 
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/90 text-primary-foreground text-sm font-medium mb-6 animate-fade-in"
+                    style={{ animationDelay: "0.2s" }}
+                  >
+                    <span className="w-2 h-2 rounded-full bg-primary-foreground animate-pulse" />
+                    {slide.tag}
+                  </div>
+                  
+                  {/* Title */}
+                  <h2 
+                    className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-primary-foreground mb-6 leading-tight animate-fade-in"
+                    style={{ animationDelay: "0.4s" }}
+                  >
                     {slide.title}
                   </h2>
-                  <p className="text-lg md:text-xl mb-6 opacity-90">
+                  
+                  {/* Subtitle */}
+                  <p 
+                    className="text-lg md:text-2xl text-primary-foreground/90 mb-8 animate-fade-in"
+                    style={{ animationDelay: "0.6s" }}
+                  >
                     {slide.subtitle}
                   </p>
+                  
+                  {/* Buttons */}
+                  <div 
+                    className="flex flex-wrap gap-4 animate-fade-in"
+                    style={{ animationDelay: "0.8s" }}
+                  >
+                    <Button className="cta-button rounded-none">
+                      Explore Projects <ArrowRight className="w-5 h-5 ml-2" />
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="px-8 py-4 border-2 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-foreground rounded-none text-sm font-semibold uppercase tracking-wider"
+                    >
+                      <Play className="w-4 h-4 mr-2" /> Watch Video
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -74,44 +122,58 @@ const HeroSlider = () => {
         </div>
       ))}
 
+      {/* Progress Bar */}
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary-foreground/20">
+        <div 
+          className="h-full bg-primary transition-all duration-300"
+          style={{ width: `${((currentSlide + 1) / slides.length) * 100}%` }}
+        />
+      </div>
+
       {/* Navigation Arrows */}
       <button
         onClick={prevSlide}
-        className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-primary-foreground/20 hover:bg-primary text-primary-foreground flex items-center justify-center transition-colors"
+        className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-14 h-14 border-2 border-primary-foreground/30 hover:border-primary hover:bg-primary text-primary-foreground flex items-center justify-center transition-all duration-300 group"
       >
-        <ChevronLeft className="w-6 h-6" />
+        <ChevronLeft className="w-6 h-6 group-hover:scale-110 transition-transform" />
       </button>
       <button
         onClick={nextSlide}
-        className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-primary-foreground/20 hover:bg-primary text-primary-foreground flex items-center justify-center transition-colors"
+        className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-14 h-14 border-2 border-primary-foreground/30 hover:border-primary hover:bg-primary text-primary-foreground flex items-center justify-center transition-all duration-300 group"
       >
-        <ChevronRight className="w-6 h-6" />
+        <ChevronRight className="w-6 h-6 group-hover:scale-110 transition-transform" />
       </button>
 
+      {/* Slide Counter */}
+      <div className="absolute right-8 bottom-24 text-primary-foreground font-medium hidden md:block">
+        <span className="text-4xl font-serif">{String(currentSlide + 1).padStart(2, '0')}</span>
+        <span className="text-lg opacity-50"> / {String(slides.length).padStart(2, '0')}</span>
+      </div>
+
       {/* Dots */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
+      <div className="absolute left-1/2 -translate-x-1/2 bottom-20 flex gap-3">
         {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
-            className={`w-3 h-3 rounded-full transition-all ${
+            className={`h-3 rounded-full transition-all duration-500 ${
               index === currentSlide
-                ? "bg-primary w-8"
-                : "bg-primary-foreground/50 hover:bg-primary-foreground"
+                ? "bg-primary w-12"
+                : "bg-primary-foreground/40 w-3 hover:bg-primary-foreground"
             }`}
           />
         ))}
       </div>
 
       {/* CTA Banner */}
-      <div className="absolute bottom-0 left-0 right-0 bg-primary/95 py-4">
+      <div className="absolute bottom-0 left-0 right-0 bg-primary py-5">
         <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-primary-foreground text-center md:text-left font-medium">
-            We are an experienced and affordable Real Estate & Infrastructure Service Provider
+          <p className="text-primary-foreground text-center md:text-left font-medium text-lg">
+            We are an experienced and affordable <span className="font-bold">Real Estate & Infrastructure</span> Service Provider
           </p>
           <Button 
             variant="outline" 
-            className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary rounded-none"
+            className="border-2 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary rounded-none px-8 py-3 font-semibold"
           >
             Contact Us <ArrowRight className="w-4 h-4 ml-2" />
           </Button>

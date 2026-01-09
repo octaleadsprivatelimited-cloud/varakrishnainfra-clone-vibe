@@ -1,26 +1,37 @@
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
+import useScrollAnimation from "@/hooks/useScrollAnimation";
 
 const testimonials = [
   {
-    text: "I am really happy with Vara Krishna Infra. What they committed was fulfilled on time. Thanks to the entire team for their professionalism.",
+    text: "I am really happy with Vara Krishna Infra. What they committed was fulfilled on time. The documentation process was smooth and transparent. Thanks to the entire team for their professionalism and dedication.",
     name: "Ravi Kumar",
-    role: "Happy Customer",
+    role: "Villa Owner, Green Valley",
+    rating: 5,
   },
   {
-    text: "Everything was perfectly arranged by Vara Krishna Infra. The quality of construction and attention to detail exceeded our expectations.",
+    text: "Everything was perfectly arranged by Vara Krishna Infra. The quality of construction and attention to detail exceeded our expectations. Highly recommended for anyone looking to invest in real estate.",
     name: "Priya Sharma",
-    role: "Happy Customer",
+    role: "Apartment Owner, Gachibowli",
+    rating: 5,
   },
   {
-    text: "We are very thankful to Vara Krishna Infra for delivering our dream home on time. The infrastructure quality is outstanding.",
+    text: "We are very thankful to Vara Krishna Infra for delivering our dream home on time. The infrastructure quality is outstanding. Their customer service is exceptional and they really care about their clients.",
     name: "Venkat Reddy",
-    role: "Happy Customer",
+    role: "Plot Owner, Shamshabad",
+    rating: 5,
+  },
+  {
+    text: "Investing with Vara Krishna Infra was the best decision we made. The property value has appreciated significantly and the location is perfect. Great infrastructure and amenities.",
+    name: "Lakshmi Devi",
+    role: "Plot Owner, Mokila",
+    rating: 5,
   },
 ];
 
 const TestimonialsSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { ref, isVisible } = useScrollAnimation(0.15);
 
   const nextTestimonial = () => {
     setCurrentIndex((prev) => (prev + 1) % testimonials.length);
@@ -31,33 +42,57 @@ const TestimonialsSection = () => {
   };
 
   useEffect(() => {
-    const timer = setInterval(nextTestimonial, 6000);
+    const timer = setInterval(nextTestimonial, 7000);
     return () => clearInterval(timer);
   }, []);
 
   return (
-    <section className="py-16 md:py-24 bg-secondary">
-      <div className="container mx-auto px-4">
-        <h2 className="section-title text-center mb-12">
-          What Our Clients Are Saying
-        </h2>
+    <section className="py-20 md:py-28 bg-secondary relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute top-0 left-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+      
+      <div className="container mx-auto px-4 relative" ref={ref}>
+        {/* Header */}
+        <div className={`text-center max-w-3xl mx-auto mb-16 fade-up ${isVisible ? 'in-view' : ''}`}>
+          <div className="inline-flex items-center gap-2 text-primary font-semibold text-sm uppercase tracking-wider mb-4">
+            <span className="w-8 h-0.5 bg-primary" />
+            Testimonials
+            <span className="w-8 h-0.5 bg-primary" />
+          </div>
+          <h2 className="section-title">
+            What Our <span className="text-gradient">Clients Say</span>
+          </h2>
+        </div>
 
-        <div className="relative max-w-4xl mx-auto">
+        <div className={`relative max-w-4xl mx-auto scale-up ${isVisible ? 'in-view' : ''}`}>
           {/* Testimonial Card */}
-          <div className="bg-background rounded-sm shadow-lg p-8 md:p-12">
-            <Quote className="w-12 h-12 text-primary mb-6" />
-            <blockquote className="text-lg md:text-xl text-foreground leading-relaxed mb-8 italic">
+          <div className="bg-background rounded-2xl shadow-2xl p-8 md:p-12 relative overflow-hidden">
+            {/* Quote Icon */}
+            <Quote className="absolute top-8 right-8 w-24 h-24 text-primary/10" />
+            
+            {/* Stars */}
+            <div className="flex gap-1 mb-6">
+              {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
+                <Star key={i} className="w-5 h-5 text-primary fill-primary" />
+              ))}
+            </div>
+
+            {/* Quote */}
+            <blockquote className="text-lg md:text-xl text-foreground leading-relaxed mb-8 relative z-10">
               "{testimonials[currentIndex].text}"
             </blockquote>
+
+            {/* Author */}
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-xl">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-amber-500 flex items-center justify-center text-primary-foreground font-bold text-2xl font-serif">
                 {testimonials[currentIndex].name.charAt(0)}
               </div>
               <div>
-                <h4 className="font-semibold text-foreground">
+                <h4 className="font-semibold text-lg text-foreground">
                   {testimonials[currentIndex].name}
                 </h4>
-                <p className="text-muted-foreground text-sm">
+                <p className="text-muted-foreground">
                   {testimonials[currentIndex].role}
                 </p>
               </div>
@@ -65,32 +100,35 @@ const TestimonialsSection = () => {
           </div>
 
           {/* Navigation */}
-          <button
-            onClick={prevTestimonial}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 w-10 h-10 bg-primary text-primary-foreground rounded-full flex items-center justify-center hover:bg-primary/80 transition-colors"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <button
-            onClick={nextTestimonial}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 w-10 h-10 bg-primary text-primary-foreground rounded-full flex items-center justify-center hover:bg-primary/80 transition-colors"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
+          <div className="flex items-center justify-center gap-4 mt-8">
+            <button
+              onClick={prevTestimonial}
+              className="w-12 h-12 rounded-full bg-background border-2 border-border text-foreground flex items-center justify-center hover:border-primary hover:text-primary transition-colors"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            
+            {/* Dots */}
+            <div className="flex gap-2">
+              {testimonials.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentIndex(index)}
+                  className={`h-2.5 rounded-full transition-all duration-300 ${
+                    index === currentIndex
+                      ? "bg-primary w-10"
+                      : "bg-border w-2.5 hover:bg-primary/50"
+                  }`}
+                />
+              ))}
+            </div>
 
-          {/* Dots */}
-          <div className="flex justify-center gap-2 mt-8">
-            {testimonials.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentIndex(index)}
-                className={`w-3 h-3 rounded-full transition-all ${
-                  index === currentIndex
-                    ? "bg-primary w-8"
-                    : "bg-muted-foreground/30 hover:bg-muted-foreground"
-                }`}
-              />
-            ))}
+            <button
+              onClick={nextTestimonial}
+              className="w-12 h-12 rounded-full bg-background border-2 border-border text-foreground flex items-center justify-center hover:border-primary hover:text-primary transition-colors"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
         </div>
       </div>
