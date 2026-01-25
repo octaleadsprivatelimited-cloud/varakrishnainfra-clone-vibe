@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
+import PageTransition from "@/components/PageTransition";
 import { MapPin, Phone, Mail, Clock, Send, MessageSquare, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -64,187 +65,189 @@ const Contact = () => {
   };
 
   return (
-    <Layout>
-      <PageHeader 
-        title="Contact Us"
-        subtitle="Get in touch with our team for inquiries, site visits, or any assistance you need."
-        breadcrumbs={[{ label: "Contact Us" }]}
-      />
+    <PageTransition>
+      <Layout>
+        <PageHeader 
+          title="Contact Us"
+          subtitle="Get in touch with our team for inquiries, site visits, or any assistance you need."
+          breadcrumbs={[{ label: "Contact Us" }]}
+        />
 
-      {/* Contact Section */}
-      <section className="py-20 md:py-28 bg-background" ref={ref}>
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-3 gap-12">
-            {/* Contact Form */}
-            <div className={`lg:col-span-2 fade-left ${isVisible ? 'in-view' : ''}`}>
-              <div className="bg-secondary rounded-2xl p-8 md:p-10">
-                <div className="flex items-center gap-3 mb-6">
-                  <MessageSquare className="w-6 h-6 text-primary" />
-                  <h2 className="text-2xl font-serif font-bold">Send Us a Message</h2>
+        {/* Contact Section */}
+        <section className="py-20 md:py-28 bg-background" ref={ref}>
+          <div className="container mx-auto px-4">
+            <div className="grid lg:grid-cols-3 gap-12">
+              {/* Contact Form */}
+              <div className={`lg:col-span-2 fade-left ${isVisible ? 'in-view' : ''}`}>
+                <div className="bg-secondary rounded-2xl p-8 md:p-10">
+                  <div className="flex items-center gap-3 mb-6">
+                    <MessageSquare className="w-6 h-6 text-primary" />
+                    <h2 className="text-2xl font-serif font-bold">Send Us a Message</h2>
+                  </div>
+                  
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Full Name *</label>
+                        <Input 
+                          name="name"
+                          value={formData.name}
+                          onChange={handleChange}
+                          placeholder="John Doe"
+                          required
+                          className="bg-background"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Email Address *</label>
+                        <Input 
+                          name="email"
+                          type="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          placeholder="john@example.com"
+                          required
+                          className="bg-background"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Phone Number *</label>
+                        <Input 
+                          name="phone"
+                          value={formData.phone}
+                          onChange={handleChange}
+                          placeholder="+91 98765 43210"
+                          required
+                          className="bg-background"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Subject</label>
+                        <Input 
+                          name="subject"
+                          value={formData.subject}
+                          onChange={handleChange}
+                          placeholder="How can we help?"
+                          className="bg-background"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Message *</label>
+                      <Textarea 
+                        name="message"
+                        value={formData.message}
+                        onChange={handleChange}
+                        placeholder="Tell us about your requirements..."
+                        rows={6}
+                        required
+                        className="bg-background resize-none"
+                      />
+                    </div>
+
+                    <Button 
+                      type="submit" 
+                      size="lg" 
+                      className="w-full md:w-auto cta-button"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? (
+                        <>Sending...</>
+                      ) : (
+                        <>
+                          <Send className="w-4 h-4 mr-2" />
+                          Send Message
+                        </>
+                      )}
+                    </Button>
+                  </form>
                 </div>
-                
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">Full Name *</label>
-                      <Input 
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        placeholder="John Doe"
-                        required
-                        className="bg-background"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">Email Address *</label>
-                      <Input 
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="john@example.com"
-                        required
-                        className="bg-background"
-                      />
-                    </div>
-                  </div>
+              </div>
 
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">Phone Number *</label>
-                      <Input 
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        placeholder="+91 98765 43210"
-                        required
-                        className="bg-background"
-                      />
+              {/* Contact Info */}
+              <div className={`fade-right ${isVisible ? 'in-view' : ''}`}>
+                <div className="space-y-6">
+                  {contactInfo.map((info, index) => (
+                    <div key={index} className="bg-secondary rounded-xl p-6 flex gap-4 hover:bg-primary/5 transition-colors group">
+                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary group-hover:scale-110 transition-all">
+                        <info.icon className="w-6 h-6 text-primary group-hover:text-primary-foreground" />
+                      </div>
+                      <div>
+                        <h3 className="font-bold mb-2">{info.title}</h3>
+                        {info.lines.map((line, idx) => (
+                          <p key={idx} className="text-muted-foreground text-sm">{line}</p>
+                        ))}
+                      </div>
                     </div>
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">Subject</label>
-                      <Input 
-                        name="subject"
-                        value={formData.subject}
-                        onChange={handleChange}
-                        placeholder="How can we help?"
-                        className="bg-background"
-                      />
-                    </div>
-                  </div>
+                  ))}
+                </div>
 
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Message *</label>
-                    <Textarea 
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      placeholder="Tell us about your requirements..."
-                      rows={6}
-                      required
-                      className="bg-background resize-none"
-                    />
-                  </div>
-
-                  <Button 
-                    type="submit" 
-                    size="lg" 
-                    className="w-full md:w-auto cta-button"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? (
-                      <>Sending...</>
-                    ) : (
-                      <>
-                        <Send className="w-4 h-4 mr-2" />
-                        Send Message
-                      </>
-                    )}
+                {/* Quick Contact CTA */}
+                <div className="mt-8 bg-primary rounded-xl p-6 text-primary-foreground">
+                  <h3 className="font-bold text-lg mb-2">Need Immediate Assistance?</h3>
+                  <p className="text-sm opacity-90 mb-4">Our team is ready to help you with any queries.</p>
+                  <Button variant="secondary" className="w-full">
+                    <Phone className="w-4 h-4 mr-2" />
+                    Call +91 95155 41663
                   </Button>
-                </form>
-              </div>
-            </div>
-
-            {/* Contact Info */}
-            <div className={`fade-right ${isVisible ? 'in-view' : ''}`}>
-              <div className="space-y-6">
-                {contactInfo.map((info, index) => (
-                  <div key={index} className="bg-secondary rounded-xl p-6 flex gap-4 hover:bg-primary/5 transition-colors group">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary group-hover:scale-110 transition-all">
-                      <info.icon className="w-6 h-6 text-primary group-hover:text-primary-foreground" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold mb-2">{info.title}</h3>
-                      {info.lines.map((line, idx) => (
-                        <p key={idx} className="text-muted-foreground text-sm">{line}</p>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Quick Contact CTA */}
-              <div className="mt-8 bg-primary rounded-xl p-6 text-primary-foreground">
-                <h3 className="font-bold text-lg mb-2">Need Immediate Assistance?</h3>
-                <p className="text-sm opacity-90 mb-4">Our team is ready to help you with any queries.</p>
-                <Button variant="secondary" className="w-full">
-                  <Phone className="w-4 h-4 mr-2" />
-                  Call +91 95155 41663
-                </Button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Map Section */}
-      <section className="py-12 bg-secondary">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-serif font-bold mb-2">Our Location</h2>
-            <p className="text-muted-foreground">Visit our office in Jubilee Hills, Hyderabad</p>
+        {/* Map Section */}
+        <section className="py-12 bg-secondary">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-serif font-bold mb-2">Our Location</h2>
+              <p className="text-muted-foreground">Visit our office in Jubilee Hills, Hyderabad</p>
+            </div>
+            <div className="rounded-2xl overflow-hidden h-[400px] shadow-lg">
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3807.0!2d78.4!3d17.4!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTfCsDI0JzAwLjAiTiA3OMKwMjQnMDAuMCJF!5e0!3m2!1sen!2sin!4v1234567890"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Vara Krishna Infra Location"
+              />
+            </div>
           </div>
-          <div className="rounded-2xl overflow-hidden h-[400px] shadow-lg">
-            <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3807.0!2d78.4!3d17.4!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTfCsDI0JzAwLjAiTiA3OMKwMjQnMDAuMCJF!5e0!3m2!1sen!2sin!4v1234567890"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Vara Krishna Infra Location"
-            />
-          </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Why Contact Us */}
-      <section className="py-16 md:py-20 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <h2 className="section-title">
-              Why <span className="text-gradient">Contact Us</span>
-            </h2>
-          </div>
+        {/* Why Contact Us */}
+        <section className="py-16 md:py-20 bg-background pb-24 lg:pb-20">
+          <div className="container mx-auto px-4">
+            <div className="text-center max-w-3xl mx-auto mb-12">
+              <h2 className="section-title">
+                Why <span className="text-gradient">Contact Us</span>
+              </h2>
+            </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { title: "Free Consultation", description: "Get expert advice on your property requirements at no cost" },
-              { title: "Site Visits", description: "Schedule complimentary site visits to our ongoing projects" },
-              { title: "24/7 Support", description: "Our dedicated team is available to assist you anytime" },
-            ].map((item, index) => (
-              <div key={index} className="text-center p-6 rounded-xl bg-secondary hover:bg-primary/5 transition-colors">
-                <CheckCircle className="w-12 h-12 text-primary mx-auto mb-4" />
-                <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                <p className="text-muted-foreground">{item.description}</p>
-              </div>
-            ))}
+            <div className="grid md:grid-cols-3 gap-8">
+              {[
+                { title: "Free Consultation", description: "Get expert advice on your property requirements at no cost" },
+                { title: "Site Visits", description: "Schedule complimentary site visits to our ongoing projects" },
+                { title: "24/7 Support", description: "Our dedicated team is available to assist you anytime" },
+              ].map((item, index) => (
+                <div key={index} className="text-center p-6 rounded-xl bg-secondary hover:bg-primary/5 transition-colors">
+                  <CheckCircle className="w-12 h-12 text-primary mx-auto mb-4" />
+                  <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+                  <p className="text-muted-foreground">{item.description}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
-    </Layout>
+        </section>
+      </Layout>
+    </PageTransition>
   );
 };
 

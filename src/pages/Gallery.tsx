@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
+import PageTransition from "@/components/PageTransition";
 import { X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
@@ -55,102 +56,104 @@ const Gallery = () => {
   };
 
   return (
-    <Layout>
-      <PageHeader 
-        title="Project Gallery"
-        subtitle="Explore our portfolio of completed and ongoing projects through stunning visuals."
-        breadcrumbs={[{ label: "Gallery" }]}
-      />
+    <PageTransition>
+      <Layout>
+        <PageHeader 
+          title="Project Gallery"
+          subtitle="Explore our portfolio of completed and ongoing projects through stunning visuals."
+          breadcrumbs={[{ label: "Gallery" }]}
+        />
 
-      {/* Category Filter */}
-      <section className="py-8 bg-secondary border-b border-border sticky top-[60px] z-40">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            {categories.map((cat) => (
-              <Button
-                key={cat}
-                variant={activeCategory === cat ? "default" : "outline"}
-                size="sm"
-                onClick={() => setActiveCategory(cat)}
-                className={activeCategory === cat ? "" : "border-border"}
-              >
-                {cat}
-              </Button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Gallery Grid */}
-      <section className="py-16 md:py-24 bg-background" ref={ref}>
-        <div className="container mx-auto px-4">
-          <div className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 stagger-children ${isVisible ? 'in-view' : ''}`}>
-            {filteredImages.map((image, index) => (
-              <div 
-                key={image.id} 
-                className={`relative group cursor-pointer overflow-hidden rounded-xl ${
-                  index % 7 === 0 ? 'md:col-span-2 md:row-span-2' : ''
-                }`}
-                onClick={() => openLightbox(index)}
-              >
-                <img 
-                  src={image.src} 
-                  alt={image.title}
-                  className={`w-full ${index % 7 === 0 ? 'h-[400px] md:h-full' : 'h-48 md:h-64'} object-cover transition-transform duration-700 group-hover:scale-110`}
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors duration-300 flex items-center justify-center">
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center p-4">
-                    <ZoomIn className="w-10 h-10 text-white mx-auto mb-2" />
-                    <h3 className="text-white font-medium">{image.title}</h3>
-                    <span className="text-white/70 text-sm">{image.category}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Lightbox */}
-      {lightboxOpen && (
-        <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center">
-          {/* Close Button */}
-          <button 
-            onClick={closeLightbox}
-            className="absolute top-4 right-4 p-2 text-white/70 hover:text-white transition-colors z-10"
-          >
-            <X className="w-8 h-8" />
-          </button>
-
-          {/* Navigation */}
-          <button 
-            onClick={prevImage}
-            className="absolute left-4 p-2 text-white/70 hover:text-white transition-colors z-10"
-          >
-            <ChevronLeft className="w-10 h-10" />
-          </button>
-          <button 
-            onClick={nextImage}
-            className="absolute right-4 p-2 text-white/70 hover:text-white transition-colors z-10"
-          >
-            <ChevronRight className="w-10 h-10" />
-          </button>
-
-          {/* Image */}
-          <div className="max-w-5xl max-h-[80vh] px-16">
-            <img 
-              src={filteredImages[currentImageIndex].src} 
-              alt={filteredImages[currentImageIndex].title}
-              className="max-w-full max-h-[80vh] object-contain"
-            />
-            <div className="text-center mt-4">
-              <h3 className="text-white text-xl font-medium">{filteredImages[currentImageIndex].title}</h3>
-              <span className="text-white/60">{currentImageIndex + 1} / {filteredImages.length}</span>
+        {/* Category Filter */}
+        <section className="py-8 bg-secondary border-b border-border sticky top-[52px] z-40">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              {categories.map((cat) => (
+                <Button
+                  key={cat}
+                  variant={activeCategory === cat ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setActiveCategory(cat)}
+                  className={activeCategory === cat ? "" : "border-border"}
+                >
+                  {cat}
+                </Button>
+              ))}
             </div>
           </div>
-        </div>
-      )}
-    </Layout>
+        </section>
+
+        {/* Gallery Grid */}
+        <section className="py-16 md:py-24 bg-background pb-24 lg:pb-24" ref={ref}>
+          <div className="container mx-auto px-4">
+            <div className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 stagger-children ${isVisible ? 'in-view' : ''}`}>
+              {filteredImages.map((image, index) => (
+                <div 
+                  key={image.id} 
+                  className={`relative group cursor-pointer overflow-hidden rounded-xl ${
+                    index % 7 === 0 ? 'md:col-span-2 md:row-span-2' : ''
+                  }`}
+                  onClick={() => openLightbox(index)}
+                >
+                  <img 
+                    src={image.src} 
+                    alt={image.title}
+                    className={`w-full ${index % 7 === 0 ? 'h-[400px] md:h-full' : 'h-48 md:h-64'} object-cover transition-transform duration-700 group-hover:scale-110`}
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors duration-300 flex items-center justify-center">
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center p-4">
+                      <ZoomIn className="w-10 h-10 text-white mx-auto mb-2" />
+                      <h3 className="text-white font-medium">{image.title}</h3>
+                      <span className="text-white/70 text-sm">{image.category}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Lightbox */}
+        {lightboxOpen && (
+          <div className="fixed inset-0 z-[60] bg-black/95 flex items-center justify-center">
+            {/* Close Button */}
+            <button 
+              onClick={closeLightbox}
+              className="absolute top-4 right-4 p-2 text-white/70 hover:text-white transition-colors z-10"
+            >
+              <X className="w-8 h-8" />
+            </button>
+
+            {/* Navigation */}
+            <button 
+              onClick={prevImage}
+              className="absolute left-4 p-2 text-white/70 hover:text-white transition-colors z-10"
+            >
+              <ChevronLeft className="w-10 h-10" />
+            </button>
+            <button 
+              onClick={nextImage}
+              className="absolute right-4 p-2 text-white/70 hover:text-white transition-colors z-10"
+            >
+              <ChevronRight className="w-10 h-10" />
+            </button>
+
+            {/* Image */}
+            <div className="max-w-5xl max-h-[80vh] px-16">
+              <img 
+                src={filteredImages[currentImageIndex].src} 
+                alt={filteredImages[currentImageIndex].title}
+                className="max-w-full max-h-[80vh] object-contain"
+              />
+              <div className="text-center mt-4">
+                <h3 className="text-white text-xl font-medium">{filteredImages[currentImageIndex].title}</h3>
+                <span className="text-white/60">{currentImageIndex + 1} / {filteredImages.length}</span>
+              </div>
+            </div>
+          </div>
+        )}
+      </Layout>
+    </PageTransition>
   );
 };
 
