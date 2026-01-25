@@ -1,31 +1,32 @@
 import { Link } from "react-router-dom";
-import { Mail, Phone, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Phone } from "lucide-react";
 
 const Header = () => {
   return (
-    <header className="bg-background border-b border-border py-4">
-      <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center justify-between gap-4">
+    <header className="bg-background border-b border-border py-3 md:py-4">
+      <div className="container mx-auto px-4 flex items-center justify-between gap-4">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-3 group">
-          <div className="w-14 h-14 bg-primary rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform shadow-lg">
-            <span className="text-primary-foreground font-serif font-bold text-xl">VK</span>
+        <Link to="/" className="flex items-center gap-2 md:gap-3 group">
+          <div className="w-10 h-10 md:w-14 md:h-14 bg-primary rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform shadow-lg">
+            <span className="text-primary-foreground font-serif font-bold text-base md:text-xl">VK</span>
           </div>
           <div>
-            <h1 className="text-xl md:text-2xl font-serif font-bold text-primary uppercase tracking-wide group-hover:text-primary/80 transition-colors">
+            <h1 className="text-base md:text-2xl font-serif font-bold text-primary uppercase tracking-wide group-hover:text-primary/80 transition-colors">
               Vara Krishna
             </h1>
-            <p className="text-xs md:text-sm text-muted-foreground font-semibold tracking-[0.3em] uppercase">
+            <p className="text-[10px] md:text-sm text-muted-foreground font-semibold tracking-[0.2em] md:tracking-[0.3em] uppercase">
               Infra
             </p>
           </div>
         </Link>
 
-        {/* Contact Info */}
-        <div className="flex flex-col sm:flex-row items-center gap-4 lg:gap-8">
-          <div className="flex items-center gap-3 text-sm group cursor-pointer">
-            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-colors">
-              <Mail className="w-5 h-5 text-primary group-hover:text-primary-foreground transition-colors" />
+        {/* Desktop Contact Info */}
+        <div className="hidden lg:flex items-center gap-8">
+          <div className="flex items-center gap-3 text-sm">
+            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+              <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
             </div>
             <div>
               <span className="text-xs text-muted-foreground block uppercase tracking-wider">Email Support</span>
@@ -34,10 +35,10 @@ const Header = () => {
               </a>
             </div>
           </div>
-          <div className="hidden sm:block w-px h-10 bg-border" />
-          <div className="flex items-center gap-3 text-sm group cursor-pointer">
-            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-colors">
-              <Phone className="w-5 h-5 text-primary group-hover:text-primary-foreground transition-colors" />
+          <div className="w-px h-10 bg-border" />
+          <div className="flex items-center gap-3 text-sm">
+            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+              <Phone className="w-5 h-5 text-primary" />
             </div>
             <div>
               <span className="text-xs text-muted-foreground block uppercase tracking-wider">Call Support</span>
@@ -46,13 +47,16 @@ const Header = () => {
               </a>
             </div>
           </div>
-          <Link to="/projects">
-            <Button className="cta-button rounded-lg group">
-              Our Projects
-              <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </Link>
         </div>
+
+        {/* Mobile Call Button */}
+        <a 
+          href="tel:+919515541663" 
+          className="lg:hidden flex items-center gap-2 bg-primary text-primary-foreground px-3 py-2 rounded-lg text-sm font-medium"
+        >
+          <Phone className="w-4 h-4" />
+          <span className="hidden sm:inline">Call Now</span>
+        </a>
       </div>
     </header>
   );
