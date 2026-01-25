@@ -69,6 +69,14 @@ const Navbar = () => {
         </div>
       </div>
 
+      {/* Mobile Backdrop Overlay */}
+      <div 
+        className={`lg:hidden fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ${
+          mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={() => setMobileMenuOpen(false)}
+      />
+
       {/* Mobile Dropdown Menu */}
       <div 
         className={`lg:hidden absolute left-0 right-0 top-full bg-background border-b border-border shadow-xl z-50 overflow-hidden transition-all duration-300 ease-out ${
