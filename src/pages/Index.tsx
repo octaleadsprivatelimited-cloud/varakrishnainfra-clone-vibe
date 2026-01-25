@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import TopBar from "@/components/TopBar";
 import Header from "@/components/Header";
 import Navbar from "@/components/Navbar";
@@ -11,6 +12,8 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 const Index = () => {
   return (
@@ -22,7 +25,18 @@ const Index = () => {
       <StatsSection />
       <AboutSection />
       <ServicesSection />
+      
+      {/* Featured Projects Preview with CTA */}
       <ProjectsSection />
+      <div className="bg-secondary py-8 text-center">
+        <Link to="/projects">
+          <Button size="lg" className="cta-button group">
+            View All Projects
+            <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+          </Button>
+        </Link>
+      </div>
+      
       <WhyChooseUs />
       <TestimonialsSection />
       <CTASection />
