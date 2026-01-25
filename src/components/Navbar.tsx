@@ -44,7 +44,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'bg-background/95 backdrop-blur-md shadow-lg' : 'bg-secondary shadow-md'}`}>
+      <nav className={`transition-all duration-300 ${scrolled ? 'bg-background/95 backdrop-blur-md shadow-lg' : 'bg-secondary shadow-md'}`}>
         <div className="container mx-auto px-4">
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center justify-center">
