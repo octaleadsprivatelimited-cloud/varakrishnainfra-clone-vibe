@@ -5,7 +5,7 @@ const TopBar = () => {
     <div className="bg-primary text-primary-foreground">
       <div className="container mx-auto flex items-center justify-between py-2 px-4">
         <div className="text-xs font-medium tracking-wide uppercase">
-          Real Estate | Infrastructure | Construction
+          Real Estate | Infrastructure | Tourism
         </div>
         <div className="flex items-center gap-1">
           <a 
