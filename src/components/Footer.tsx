@@ -1,15 +1,10 @@
 import { Link } from "react-router-dom";
+import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from "react-icons/fa";
 import { 
-  Facebook, 
-  Twitter, 
-  Instagram, 
-  Linkedin, 
-  Youtube,
   MapPin, 
   Phone, 
   Mail, 
   Clock,
-  ArrowRight,
   Send,
   ChevronRight
 } from "lucide-react";
@@ -35,11 +30,11 @@ const services = [
 ];
 
 const socialLinks = [
-  { icon: Facebook, href: "#", label: "Facebook" },
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Instagram, href: "#", label: "Instagram" },
-  { icon: Linkedin, href: "#", label: "LinkedIn" },
-  { icon: Youtube, href: "#", label: "YouTube" },
+  { icon: FaFacebookF, href: "#", label: "Facebook" },
+  { icon: FaTwitter, href: "#", label: "Twitter" },
+  { icon: FaInstagram, href: "#", label: "Instagram" },
+  { icon: FaLinkedinIn, href: "#", label: "LinkedIn" },
+  { icon: FaYoutube, href: "#", label: "YouTube" },
 ];
 
 const Footer = () => {
@@ -71,7 +66,7 @@ const Footer = () => {
                   aria-label={social.label}
                   className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center hover:bg-primary hover:text-white transition-all hover:scale-110"
                 >
-                  <social.icon className="w-5 h-5" />
+                  <social.icon className="w-4 h-4" />
                 </a>
               ))}
             </div>

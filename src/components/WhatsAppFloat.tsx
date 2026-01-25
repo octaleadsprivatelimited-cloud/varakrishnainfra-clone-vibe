@@ -1,4 +1,4 @@
-import { MessageCircle } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
 
 const WhatsAppFloat = () => {
   return (
@@ -9,7 +9,7 @@ const WhatsAppFloat = () => {
       className="whatsapp-float"
       aria-label="Chat on WhatsApp"
     >
-      <MessageCircle className="w-7 h-7" />
+      <FaWhatsapp className="w-8 h-8" />
     </a>
   );
 };
