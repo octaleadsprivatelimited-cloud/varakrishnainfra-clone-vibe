@@ -1,4 +1,4 @@
-import { Facebook, Twitter, Youtube, MessageCircle } from "lucide-react";
+import { FaFacebookF, FaTwitter, FaYoutube, FaWhatsapp } from "react-icons/fa";
 
 const TopBar = () => {
   return (
@@ -12,33 +12,37 @@ const TopBar = () => {
             href="https://facebook.com" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="p-2 hover:bg-primary-foreground/10 transition-colors"
+            className="p-2 hover:bg-primary-foreground/10 transition-colors rounded"
+            aria-label="Facebook"
           >
-            <Facebook className="w-4 h-4" />
+            <FaFacebookF className="w-4 h-4" />
           </a>
           <a 
             href="https://twitter.com" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="p-2 hover:bg-primary-foreground/10 transition-colors"
+            className="p-2 hover:bg-primary-foreground/10 transition-colors rounded"
+            aria-label="Twitter"
           >
-            <Twitter className="w-4 h-4" />
+            <FaTwitter className="w-4 h-4" />
           </a>
           <a 
             href="https://youtube.com" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="p-2 hover:bg-primary-foreground/10 transition-colors"
+            className="p-2 hover:bg-primary-foreground/10 transition-colors rounded"
+            aria-label="YouTube"
           >
-            <Youtube className="w-4 h-4" />
+            <FaYoutube className="w-4 h-4" />
           </a>
           <a 
             href="https://wa.me/919515541663" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="p-2 hover:bg-primary-foreground/10 transition-colors"
+            className="p-2 hover:bg-primary-foreground/10 transition-colors rounded"
+            aria-label="WhatsApp"
           >
-            <MessageCircle className="w-4 h-4" />
+            <FaWhatsapp className="w-4 h-4" />
           </a>
         </div>
       </div>
