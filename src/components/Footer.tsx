@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from "react-icons/fa";
 import { 
@@ -6,7 +7,8 @@ import {
   Mail, 
   Clock,
   Send,
-  ChevronRight
+  ChevronRight,
+  ChevronDown
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,14 +39,57 @@ const socialLinks = [
   { icon: FaYoutube, href: "#", label: "YouTube" },
 ];
 
+interface CollapsibleSectionProps {
+  title: string;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+}
+
+const CollapsibleSection = ({ title, children, defaultOpen = false }: CollapsibleSectionProps) => {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+
+  return (
+    <div className="md:block">
+      {/* Mobile Collapsible Header */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="md:hidden w-full flex items-center justify-between py-4 border-b border-white/10"
+      >
+        <h4 className="text-lg font-serif font-bold text-white flex items-center gap-2">
+          <span className="w-8 h-0.5 bg-primary" />
+          {title}
+        </h4>
+        <ChevronDown 
+          className={`w-5 h-5 text-primary transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} 
+        />
+      </button>
+
+      {/* Desktop Header */}
+      <h4 className="hidden md:flex text-lg font-serif font-bold text-white mb-6 items-center gap-2">
+        <span className="w-8 h-0.5 bg-primary" />
+        {title}
+      </h4>
+
+      {/* Content */}
+      <div 
+        className={`overflow-hidden transition-all duration-300 ease-in-out md:!max-h-none md:!opacity-100 md:!py-0 ${
+          isOpen ? 'max-h-96 opacity-100 py-4' : 'max-h-0 opacity-0 py-0'
+        }`}
+      >
+        {children}
+      </div>
+    </div>
+  );
+};
+
 const Footer = () => {
   return (
     <footer className="bg-footer text-footer-text">
       {/* Main Footer */}
-      <div className="container mx-auto px-4 py-16 md:py-20">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+      <div className="container mx-auto px-4 py-12 md:py-16 lg:py-20">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
           {/* Company Info */}
-          <div>
+          <div className="pb-6 md:pb-0 border-b border-white/10 md:border-0">
             <Link to="/" className="flex items-center gap-3 mb-6 group">
               <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
                 <span className="text-primary-foreground font-serif font-bold text-lg">VK</span>
@@ -72,12 +117,8 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h4 className="text-lg font-serif font-bold text-white mb-6 flex items-center gap-2">
-              <span className="w-8 h-0.5 bg-primary" />
-              Quick Links
-            </h4>
+          {/* Quick Links - Collapsible on Mobile */}
+          <CollapsibleSection title="Quick Links">
             <ul className="space-y-3">
               {quickLinks.map((link, index) => (
                 <li key={index}>
@@ -91,14 +132,10 @@ const Footer = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </CollapsibleSection>
 
-          {/* Services */}
-          <div>
-            <h4 className="text-lg font-serif font-bold text-white mb-6 flex items-center gap-2">
-              <span className="w-8 h-0.5 bg-primary" />
-              Our Services
-            </h4>
+          {/* Services - Collapsible on Mobile */}
+          <CollapsibleSection title="Our Services">
             <ul className="space-y-3">
               {services.map((service, index) => (
                 <li key={index}>
@@ -112,7 +149,7 @@ const Footer = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </CollapsibleSection>
 
           {/* Contact Info */}
           <div>
