@@ -14,7 +14,9 @@ export const demoProjects: Omit<Project, 'createdAt' | 'updatedAt'>[] = [
     specifications: { area: "150-500 sq.yds" },
     floorPlanImages: [],
     images: ["https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1628624747186-a941c476b7ef?w=800&h=600&fit=crop"],
-    featured: true
+    featured: true,
+    youtubeVideoId: "dQw4w9WgXcQ",
+    mapCoordinates: { lat: 17.2563, lng: 78.4858 }
   },
   {
     id: "demo-2",
@@ -29,7 +31,9 @@ export const demoProjects: Omit<Project, 'createdAt' | 'updatedAt'>[] = [
     specifications: { area: "1200-1800 sq.ft", bedrooms: "2-3", bathrooms: "2-3", parking: "1-2" },
     floorPlanImages: [],
     images: ["https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=600&fit=crop"],
-    featured: true
+    featured: true,
+    youtubeVideoId: "dQw4w9WgXcQ",
+    mapCoordinates: { lat: 17.2545, lng: 78.4892 }
   },
   {
     id: "demo-3",
@@ -44,7 +48,9 @@ export const demoProjects: Omit<Project, 'createdAt' | 'updatedAt'>[] = [
     specifications: { area: "2400-3600 sq.ft", bedrooms: "3-4", bathrooms: "4-5", parking: "2" },
     floorPlanImages: [],
     images: ["https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop"],
-    featured: true
+    featured: true,
+    youtubeVideoId: "dQw4w9WgXcQ",
+    mapCoordinates: { lat: 17.2510, lng: 78.4820 }
   },
   {
     id: "demo-4",
@@ -59,7 +65,8 @@ export const demoProjects: Omit<Project, 'createdAt' | 'updatedAt'>[] = [
     specifications: { area: "500-5000 sq.ft", floors: "G+5" },
     floorPlanImages: [],
     images: ["https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop"],
-    featured: false
+    featured: false,
+    mapCoordinates: { lat: 17.2580, lng: 78.4910 }
   },
   {
     id: "demo-5",
