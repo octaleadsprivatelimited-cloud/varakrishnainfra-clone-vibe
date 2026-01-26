@@ -47,7 +47,9 @@ const AdminProjects = () => {
     bathrooms: '',
     parking: '',
     floors: '',
-    featured: false
+    featured: false,
+    youtubeVideoId: '',
+    brochureUrl: ''
   });
   const [projectImages, setProjectImages] = useState<string[]>([]);
   const [floorPlanImages, setFloorPlanImages] = useState<string[]>([]);
@@ -67,7 +69,9 @@ const AdminProjects = () => {
       bathrooms: '',
       parking: '',
       floors: '',
-      featured: false
+      featured: false,
+      youtubeVideoId: '',
+      brochureUrl: ''
     });
     setProjectImages([]);
     setFloorPlanImages([]);
@@ -90,7 +94,9 @@ const AdminProjects = () => {
       bathrooms: project.specifications.bathrooms || '',
       parking: project.specifications.parking || '',
       floors: project.specifications.floors || '',
-      featured: project.featured
+      featured: project.featured,
+      youtubeVideoId: project.youtubeVideoId || '',
+      brochureUrl: project.brochureUrl || ''
     });
     setProjectImages(project.images || []);
     setFloorPlanImages(project.floorPlanImages || []);
@@ -118,7 +124,9 @@ const AdminProjects = () => {
       },
       images: projectImages,
       floorPlanImages: floorPlanImages,
-      featured: formData.featured
+      featured: formData.featured,
+      youtubeVideoId: formData.youtubeVideoId || undefined,
+      brochureUrl: formData.brochureUrl || undefined
     };
 
     try {
@@ -314,6 +322,30 @@ const AdminProjects = () => {
                     label="Floor Plan Images"
                     maxImages={5}
                   />
+                </div>
+
+                {/* YouTube Video ID */}
+                <div className="col-span-2">
+                  <Label htmlFor="youtubeVideoId">YouTube Video ID</Label>
+                  <Input
+                    id="youtubeVideoId"
+                    value={formData.youtubeVideoId}
+                    onChange={(e) => setFormData({ ...formData, youtubeVideoId: e.target.value })}
+                    placeholder="e.g., dQw4w9WgXcQ (from youtube.com/watch?v=dQw4w9WgXcQ)"
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">Enter only the video ID, not the full URL</p>
+                </div>
+
+                {/* Brochure URL */}
+                <div className="col-span-2">
+                  <Label htmlFor="brochureUrl">Brochure Link (Google Drive)</Label>
+                  <Input
+                    id="brochureUrl"
+                    value={formData.brochureUrl}
+                    onChange={(e) => setFormData({ ...formData, brochureUrl: e.target.value })}
+                    placeholder="https://drive.google.com/file/d/..."
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">Paste the Google Drive sharing link for the project brochure</p>
                 </div>
                 
                 <div className="col-span-2 flex items-center gap-2">

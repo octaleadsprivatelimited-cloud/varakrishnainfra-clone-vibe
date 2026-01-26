@@ -23,6 +23,7 @@ export interface Project {
     lat: number;
     lng: number;
   };
+  brochureUrl?: string;
   createdAt: Date;
   updatedAt: Date;
 }
