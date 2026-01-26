@@ -31,7 +31,12 @@ const slides = [
 const HeroSlider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const { allLoaded } = useMultipleImageLoader(slides.map(s => s.image));
+
+  // Minimum swipe distance threshold (in px)
+  const minSwipeDistance = 50;
 
   const nextSlide = useCallback(() => {
     if (isAnimating) return;
@@ -40,11 +45,33 @@ const HeroSlider = () => {
     setTimeout(() => setIsAnimating(false), 700);
   }, [isAnimating]);
 
-  const prevSlide = () => {
+  const prevSlide = useCallback(() => {
     if (isAnimating) return;
     setIsAnimating(true);
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
     setTimeout(() => setIsAnimating(false), 700);
+  }, [isAnimating]);
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    
+    if (isLeftSwipe) {
+      nextSlide();
+    } else if (isRightSwipe) {
+      prevSlide();
+    }
   };
 
   useEffect(() => {
@@ -59,7 +86,12 @@ const HeroSlider = () => {
   }
 
   return (
-    <div className="relative h-[85vh] md:h-[90vh] overflow-hidden">
+    <div 
+      className="relative h-[85vh] md:h-[90vh] overflow-hidden"
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
       {/* Slides */}
       {slides.map((slide, index) => (
         <div
