@@ -34,7 +34,7 @@ const CTASection = () => {
             <Button 
               size="lg"
               variant="outline"
-              className="border-2 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary rounded-none px-5 md:px-8 py-3 md:py-6 text-xs md:text-lg font-semibold"
+              className="border-2 border-white text-white bg-white/10 hover:bg-white hover:text-primary rounded-none px-5 md:px-8 py-3 md:py-6 text-xs md:text-lg font-semibold"
             >
               View Our Projects
             </Button>
