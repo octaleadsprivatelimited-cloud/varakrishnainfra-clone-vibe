@@ -1,0 +1,280 @@
+import { useState } from 'react';
+import { useGallery } from '@/hooks/useFirestore';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useToast } from '@/hooks/use-toast';
+import { Plus, Trash2, Image, Video, Play } from 'lucide-react';
+
+const galleryCategories = ['Residential', 'Commercial', 'Plots', 'Construction', 'Interiors', 'Infrastructure'];
+
+const AdminGallery = () => {
+  const { galleryItems, loading, addGalleryItem, deleteGalleryItem } = useGallery();
+  const { toast } = useToast();
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('image');
+  const [formData, setFormData] = useState({
+    title: '',
+    category: 'Residential',
+    imageUrl: '',
+    youtubeUrl: ''
+  });
+
+  const extractYoutubeId = (url: string): string | null => {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return match && match[2].length === 11 ? match[2] : null;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      if (activeTab === 'image') {
+        await addGalleryItem({
+          type: 'image',
+          url: formData.imageUrl,
+          title: formData.title,
+          category: formData.category
+        });
+      } else {
+        const youtubeId = extractYoutubeId(formData.youtubeUrl);
+        if (!youtubeId) {
+          toast({ title: "Error", description: "Invalid YouTube URL", variant: "destructive" });
+          return;
+        }
+        await addGalleryItem({
+          type: 'video',
+          url: formData.youtubeUrl,
+          youtubeId,
+          title: formData.title,
+          category: formData.category
+        });
+      }
+      
+      toast({ title: "Success", description: `${activeTab === 'image' ? 'Image' : 'Video'} added successfully` });
+      setIsOpen(false);
+      setFormData({ title: '', category: 'Residential', imageUrl: '', youtubeUrl: '' });
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to add item", variant: "destructive" });
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (confirm('Are you sure you want to delete this item?')) {
+      try {
+        await deleteGalleryItem(id);
+        toast({ title: "Success", description: "Item deleted successfully" });
+      } catch (error) {
+        toast({ title: "Error", description: "Failed to delete item", variant: "destructive" });
+      }
+    }
+  };
+
+  const images = galleryItems.filter(item => item.type === 'image');
+  const videos = galleryItems.filter(item => item.type === 'video');
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Gallery</h1>
+          <p className="text-muted-foreground">Manage images and videos</p>
+        </div>
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+          <DialogTrigger asChild>
+            <Button>
+              <Plus className="w-4 h-4 mr-2" />
+              Add Item
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Add Gallery Item</DialogTitle>
+            </DialogHeader>
+            <Tabs value={activeTab} onValueChange={setActiveTab}>
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="image">
+                  <Image className="w-4 h-4 mr-2" />
+                  Image
+                </TabsTrigger>
+                <TabsTrigger value="video">
+                  <Video className="w-4 h-4 mr-2" />
+                  YouTube Video
+                </TabsTrigger>
+              </TabsList>
+              
+              <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+                <div>
+                  <Label htmlFor="title">Title</Label>
+                  <Input
+                    id="title"
+                    value={formData.title}
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="category">Category</Label>
+                  <Select value={formData.category} onValueChange={(v) => setFormData({ ...formData, category: v })}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {galleryCategories.map(cat => (
+                        <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <TabsContent value="image" className="mt-0">
+                  <div>
+                    <Label htmlFor="imageUrl">Image URL</Label>
+                    <Input
+                      id="imageUrl"
+                      value={formData.imageUrl}
+                      onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                      placeholder="https://example.com/image.jpg"
+                      required={activeTab === 'image'}
+                    />
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="video" className="mt-0">
+                  <div>
+                    <Label htmlFor="youtubeUrl">YouTube URL</Label>
+                    <Input
+                      id="youtubeUrl"
+                      value={formData.youtubeUrl}
+                      onChange={(e) => setFormData({ ...formData, youtubeUrl: e.target.value })}
+                      placeholder="https://www.youtube.com/watch?v=..."
+                      required={activeTab === 'video'}
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Paste any YouTube video URL
+                    </p>
+                  </div>
+                </TabsContent>
+                
+                <div className="flex justify-end gap-2">
+                  <Button type="button" variant="outline" onClick={() => setIsOpen(false)}>
+                    Cancel
+                  </Button>
+                  <Button type="submit">Add {activeTab === 'image' ? 'Image' : 'Video'}</Button>
+                </div>
+              </form>
+            </Tabs>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      <Tabs defaultValue="images">
+        <TabsList>
+          <TabsTrigger value="images">
+            <Image className="w-4 h-4 mr-2" />
+            Images ({images.length})
+          </TabsTrigger>
+          <TabsTrigger value="videos">
+            <Video className="w-4 h-4 mr-2" />
+            Videos ({videos.length})
+          </TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="images" className="mt-6">
+          {loading ? (
+            <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {[1, 2, 3, 4].map(i => (
+                <div key={i} className="aspect-square bg-muted rounded-lg animate-pulse" />
+              ))}
+            </div>
+          ) : images.length === 0 ? (
+            <Card className="p-12 text-center">
+              <Image className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
+              <h3 className="text-lg font-medium mb-2">No images yet</h3>
+              <p className="text-muted-foreground mb-4">Add images to your gallery</p>
+              <Button onClick={() => { setActiveTab('image'); setIsOpen(true); }}>
+                <Plus className="w-4 h-4 mr-2" />
+                Add Image
+              </Button>
+            </Card>
+          ) : (
+            <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {images.map((item) => (
+                <Card key={item.id} className="overflow-hidden group relative">
+                  <div className="aspect-square">
+                    <img src={item.url} alt={item.title} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4">
+                    <h4 className="text-white font-medium text-center mb-1">{item.title}</h4>
+                    <span className="text-white/70 text-sm mb-4">{item.category}</span>
+                    <Button variant="destructive" size="sm" onClick={() => handleDelete(item.id)}>
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          )}
+        </TabsContent>
+        
+        <TabsContent value="videos" className="mt-6">
+          {loading ? (
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+              {[1, 2, 3].map(i => (
+                <div key={i} className="aspect-video bg-muted rounded-lg animate-pulse" />
+              ))}
+            </div>
+          ) : videos.length === 0 ? (
+            <Card className="p-12 text-center">
+              <Video className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
+              <h3 className="text-lg font-medium mb-2">No videos yet</h3>
+              <p className="text-muted-foreground mb-4">Add YouTube videos to your gallery</p>
+              <Button onClick={() => { setActiveTab('video'); setIsOpen(true); }}>
+                <Plus className="w-4 h-4 mr-2" />
+                Add Video
+              </Button>
+            </Card>
+          ) : (
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+              {videos.map((item) => (
+                <Card key={item.id} className="overflow-hidden">
+                  <div className="aspect-video relative">
+                    <img 
+                      src={`https://img.youtube.com/vi/${item.youtubeId}/maxresdefault.jpg`} 
+                      alt={item.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                      <div className="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center">
+                        <Play className="w-8 h-8 text-white fill-white" />
+                      </div>
+                    </div>
+                  </div>
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="font-medium">{item.title}</h4>
+                        <span className="text-sm text-muted-foreground">{item.category}</span>
+                      </div>
+                      <Button variant="destructive" size="sm" onClick={() => handleDelete(item.id)}>
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+};
+
+export default AdminGallery;
