@@ -16,7 +16,8 @@ export const demoProjects: Omit<Project, 'createdAt' | 'updatedAt'>[] = [
     images: ["https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1628624747186-a941c476b7ef?w=800&h=600&fit=crop"],
     featured: true,
     youtubeVideoId: "dQw4w9WgXcQ",
-    mapCoordinates: { lat: 17.2563, lng: 78.4858 }
+    mapCoordinates: { lat: 17.2563, lng: 78.4858 },
+    brochureUrl: "https://drive.google.com/file/d/example-brochure-1/view"
   },
   {
     id: "demo-2",
@@ -33,7 +34,8 @@ export const demoProjects: Omit<Project, 'createdAt' | 'updatedAt'>[] = [
     images: ["https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=600&fit=crop"],
     featured: true,
     youtubeVideoId: "dQw4w9WgXcQ",
-    mapCoordinates: { lat: 17.2545, lng: 78.4892 }
+    mapCoordinates: { lat: 17.2545, lng: 78.4892 },
+    brochureUrl: "https://drive.google.com/file/d/example-brochure-2/view"
   },
   {
     id: "demo-3",
@@ -50,7 +52,8 @@ export const demoProjects: Omit<Project, 'createdAt' | 'updatedAt'>[] = [
     images: ["https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&h=600&fit=crop", "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop"],
     featured: true,
     youtubeVideoId: "dQw4w9WgXcQ",
-    mapCoordinates: { lat: 17.2510, lng: 78.4820 }
+    mapCoordinates: { lat: 17.2510, lng: 78.4820 },
+    brochureUrl: "https://drive.google.com/file/d/example-brochure-3/view"
   },
   {
     id: "demo-4",

@@ -23,7 +23,8 @@ import {
   ArrowLeft,
   Check,
   Play,
-  Map
+  Map,
+  FileDown
 } from "lucide-react";
 import { Project } from "@/types/admin";
 import { Link } from "react-router-dom";
@@ -384,6 +385,18 @@ const ProjectDetail = () => {
                     </Link>
                   </Button>
                 </div>
+
+                {/* Download Brochure Button */}
+                {project.brochureUrl && (
+                  <div className="pt-2">
+                    <Button size="lg" variant="secondary" className="w-full bg-red-600 hover:bg-red-700 text-white" asChild>
+                      <a href={project.brochureUrl} target="_blank" rel="noopener noreferrer">
+                        <FileDown className="w-4 h-4 mr-2" />
+                        Download Brochure
+                      </a>
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
 
