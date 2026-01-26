@@ -4,6 +4,12 @@ import { Button } from "@/components/ui/button";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 import { ServiceCardSkeleton } from "@/components/ui/shimmer-skeleton";
 import servicesBg from "@/assets/services-bg.jpg";
+import serviceResidential from "@/assets/service-residential.jpg";
+import servicePlots from "@/assets/service-plots.jpg";
+import serviceCommercial from "@/assets/service-commercial.jpg";
+import serviceConstruction from "@/assets/service-construction-new.jpg";
+import serviceInfrastructure from "@/assets/service-infrastructure.jpg";
+import serviceFarmhouse from "@/assets/service-farmhouse.jpg";
 
 const services = [
   {
@@ -11,36 +17,42 @@ const services = [
     title: "Residential Projects",
     description: "Premium villas and apartments designed for modern living with world-class amenities and contemporary architecture.",
     color: "from-amber-500 to-orange-600",
+    image: serviceResidential,
   },
   {
     icon: Landmark,
     title: "Plot Development",
     description: "DTCP/HMDA approved plots in prime locations with clear titles, proper documentation, and excellent infrastructure.",
     color: "from-emerald-500 to-teal-600",
+    image: servicePlots,
   },
   {
     icon: Building,
     title: "Commercial Spaces",
     description: "State-of-the-art commercial complexes and office spaces in strategic locations for business growth.",
     color: "from-blue-500 to-indigo-600",
+    image: serviceCommercial,
   },
   {
     icon: HardHat,
     title: "Construction",
     description: "End-to-end construction services with quality materials, skilled workforce, and timely project delivery.",
     color: "from-rose-500 to-pink-600",
+    image: serviceConstruction,
   },
   {
     icon: Factory,
     title: "Infrastructure",
     description: "Large-scale infrastructure development including roads, utilities, and public facilities.",
     color: "from-purple-500 to-violet-600",
+    image: serviceInfrastructure,
   },
   {
     icon: TreePine,
     title: "Farm Houses",
     description: "Serene farmhouse projects away from city chaos, perfect for weekend getaways and investment.",
     color: "from-green-500 to-lime-600",
+    image: serviceFarmhouse,
   },
 ];
 
@@ -92,30 +104,40 @@ const ServicesSection = () => {
             {services.map((service, index) => (
               <div 
                 key={index} 
-                className="bg-background rounded-lg md:rounded-xl p-3 md:p-8 transition-all duration-500 hover:-translate-y-2 group cursor-pointer border border-transparent hover:border-primary/20"
+                className="relative rounded-lg md:rounded-xl overflow-hidden transition-all duration-500 hover:-translate-y-2 group cursor-pointer border border-transparent hover:border-primary/20"
                 style={{ boxShadow: 'var(--shadow-card)' }}
               >
-                {/* Icon */}
-                <div className={`w-8 h-8 md:w-16 md:h-16 rounded-md md:rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-2 md:mb-6 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}>
-                  <service.icon className="w-4 h-4 md:w-8 md:h-8 text-white" />
-                </div>
-
+                {/* Background Image */}
+                <div 
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                  style={{ backgroundImage: `url(${service.image})` }}
+                />
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/30 group-hover:from-black/95 group-hover:via-black/70 transition-all duration-300" />
+                
                 {/* Content */}
-                <h3 className="text-xs md:text-xl font-serif font-bold text-foreground mb-1 md:mb-4 group-hover:text-primary transition-colors leading-tight">
-                  {service.title}
-                </h3>
-                <p className="text-muted-foreground text-[10px] md:text-base leading-snug md:leading-relaxed mb-0 md:mb-6">
-                  {service.description}
-                </p>
+                <div className="relative z-10 p-3 md:p-8 min-h-[140px] md:min-h-[280px] flex flex-col justify-end">
+                  {/* Icon */}
+                  <div className={`w-8 h-8 md:w-14 md:h-14 rounded-md md:rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-2 md:mb-4 transition-transform duration-500 group-hover:scale-110`}>
+                    <service.icon className="w-4 h-4 md:w-7 md:h-7 text-white" />
+                  </div>
 
-                {/* Link - Hidden on mobile */}
-                <Button 
-                  variant="link" 
-                  className="p-0 text-primary font-semibold uppercase tracking-wide text-xs md:text-sm group-hover:gap-4 transition-all hidden md:inline-flex"
-                >
-                  Learn More 
-                  <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-2" />
-                </Button>
+                  <h3 className="text-xs md:text-xl font-serif font-bold text-white mb-1 md:mb-3 leading-tight">
+                    {service.title}
+                  </h3>
+                  <p className="text-white/80 text-[10px] md:text-sm leading-snug md:leading-relaxed mb-0 md:mb-4">
+                    {service.description}
+                  </p>
+
+                  {/* Link - Hidden on mobile */}
+                  <Button 
+                    variant="link" 
+                    className="p-0 text-primary-foreground font-semibold uppercase tracking-wide text-xs md:text-sm group-hover:gap-4 transition-all hidden md:inline-flex"
+                  >
+                    Learn More 
+                    <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-2" />
+                  </Button>
+                </div>
               </div>
             ))}
           </div>
