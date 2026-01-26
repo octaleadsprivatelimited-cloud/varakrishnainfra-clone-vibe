@@ -1,5 +1,6 @@
 import { Shield, Clock, BadgeCheck, Headphones, Wallet, Scale } from "lucide-react";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
+import whyChooseBg from "@/assets/why-choose-bg.jpg";
 
 const features = [
   {
@@ -39,6 +40,11 @@ const WhyChooseUs = () => {
 
   return (
     <section className="py-12 md:py-28 bg-foreground text-background relative overflow-hidden">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
+        style={{ backgroundImage: `url(${whyChooseBg})` }}
+      />
       {/* Background Pattern */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl" />
