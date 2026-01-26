@@ -82,23 +82,23 @@ const ServicesSection = () => {
             ))}
           </div>
         ) : (
-          <div className={`grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8 stagger-children ${isVisible ? 'in-view' : ''}`}>
+          <div className={`grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-8 stagger-children ${isVisible ? 'in-view' : ''}`}>
             {services.map((service, index) => (
               <div 
                 key={index} 
-                className="bg-background rounded-lg md:rounded-xl p-4 md:p-8 transition-all duration-500 hover:-translate-y-2 group cursor-pointer border border-transparent hover:border-primary/20"
+                className="bg-background rounded-lg md:rounded-xl p-3 md:p-8 transition-all duration-500 hover:-translate-y-2 group cursor-pointer border border-transparent hover:border-primary/20"
                 style={{ boxShadow: 'var(--shadow-card)' }}
               >
                 {/* Icon */}
-                <div className={`w-10 h-10 md:w-16 md:h-16 rounded-lg md:rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-3 md:mb-6 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}>
-                  <service.icon className="w-5 h-5 md:w-8 md:h-8 text-white" />
+                <div className={`w-8 h-8 md:w-16 md:h-16 rounded-md md:rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-2 md:mb-6 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}>
+                  <service.icon className="w-4 h-4 md:w-8 md:h-8 text-white" />
                 </div>
 
                 {/* Content */}
-                <h3 className="text-sm md:text-xl font-serif font-bold text-foreground mb-1 md:mb-4 group-hover:text-primary transition-colors leading-tight">
+                <h3 className="text-xs md:text-xl font-serif font-bold text-foreground mb-1 md:mb-4 group-hover:text-primary transition-colors leading-tight">
                   {service.title}
                 </h3>
-                <p className="text-muted-foreground text-xs md:text-base leading-relaxed mb-2 md:mb-6 line-clamp-2 md:line-clamp-none">
+                <p className="text-muted-foreground text-[10px] md:text-base leading-snug md:leading-relaxed mb-0 md:mb-6">
                   {service.description}
                 </p>
 
