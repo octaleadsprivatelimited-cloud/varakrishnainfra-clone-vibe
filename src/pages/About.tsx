@@ -20,17 +20,10 @@ const values = [
   { icon: Award, title: "Quality", description: "Uncompromising commitment to quality in every project we undertake" },
 ];
 
-const team = [
-  { name: "Rajesh Kumar", role: "Founder & CEO", image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop" },
-  { name: "Priya Sharma", role: "Chief Operations Officer", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop" },
-  { name: "Vikram Reddy", role: "Head of Projects", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop" },
-  { name: "Anitha Rao", role: "Chief Financial Officer", image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop" },
-];
 
 const About = () => {
   const { ref: storyRef, isVisible: storyVisible } = useScrollAnimation(0.1);
   const { ref: valuesRef, isVisible: valuesVisible } = useScrollAnimation(0.1);
-  const { ref: teamRef, isVisible: teamVisible } = useScrollAnimation(0.1);
   const { ref: timelineRef, isVisible: timelineVisible } = useScrollAnimation(0.1);
 
   return (
@@ -211,41 +204,6 @@ const About = () => {
           </div>
         </section>
 
-        {/* Leadership Team */}
-        <section className="py-20 md:py-28 bg-background pb-24 lg:pb-28" ref={teamRef}>
-          <div className="container mx-auto px-4">
-            <div className={`text-center max-w-3xl mx-auto mb-16 fade-up ${teamVisible ? 'in-view' : ''}`}>
-              <div className="inline-flex items-center gap-2 text-primary font-semibold text-sm uppercase tracking-wider mb-4">
-                <span className="w-8 h-0.5 bg-primary" />
-                Our Team
-                <span className="w-8 h-0.5 bg-primary" />
-              </div>
-              <h2 className="section-title">
-                Meet Our <span className="text-gradient">Leadership</span>
-              </h2>
-              <p className="section-subtitle mt-4">
-                Experienced professionals committed to delivering excellence
-              </p>
-            </div>
-
-            <div className={`grid md:grid-cols-2 lg:grid-cols-4 gap-8 stagger-children ${teamVisible ? 'in-view' : ''}`}>
-              {team.map((member, index) => (
-                <div key={index} className="group text-center">
-                  <div className="relative mb-6 overflow-hidden rounded-2xl">
-                    <img 
-                      src={member.image} 
-                      alt={member.name}
-                      className="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </div>
-                  <h3 className="text-xl font-serif font-bold mb-1">{member.name}</h3>
-                  <p className="text-primary font-medium">{member.role}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
       </Layout>
     </PageTransition>
   );
