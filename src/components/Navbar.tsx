@@ -38,8 +38,10 @@ const Navbar = () => {
   };
 
   return (
-    <nav className={`relative transition-all duration-300 ${scrolled ? 'bg-background/95 backdrop-blur-md shadow-lg' : 'bg-secondary shadow-md'}`}>
-      <div className="container mx-auto px-4">
+    <nav className={`relative transition-all duration-300 ${scrolled ? 'bg-background/95 backdrop-blur-md shadow-lg' : 'bg-secondary shadow-md'} lg:bg-secondary lg:shadow-md`}>
+      <div className="container mx-auto px-4 lg:px-4">
+        {/* Mobile Header Background */}
+        <div className="lg:hidden absolute inset-0 bg-[hsl(220,30%,15%)]" />
         {/* Desktop Navigation */}
         <div className="hidden lg:flex items-center justify-center">
           {navItems.map((item) => (
@@ -57,15 +59,15 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Navigation - Logo + Brochure + Hamburger */}
-        <div className="lg:hidden flex items-center justify-between py-2">
+        <div className="lg:hidden relative z-10 flex items-center justify-between py-3">
           <Link to="/" className="flex items-center">
             <img 
               src={logo} 
               alt="Vara Krishna Infra" 
-              className="h-10 w-auto object-contain"
+              className="h-12 w-auto object-contain brightness-0 invert"
             />
           </Link>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <a
               href="/brochure.pdf"
               target="_blank"
@@ -76,7 +78,7 @@ const Navbar = () => {
             </a>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-foreground hover:text-primary transition-colors rounded-lg hover:bg-primary/10"
+              className="p-2 text-white hover:text-primary transition-colors rounded-lg hover:bg-white/10"
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
