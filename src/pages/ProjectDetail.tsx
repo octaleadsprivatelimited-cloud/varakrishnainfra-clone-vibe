@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import Layout from "@/components/Layout";
@@ -7,7 +7,8 @@ import PageTransition from "@/components/PageTransition";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ShimmerSkeleton } from "@/components/ui/shimmer-skeleton";
-import { 
+import { FaWhatsapp, FaFacebookF, FaXTwitter } from "react-icons/fa6";
+import {
   MapPin, 
   IndianRupee, 
   Maximize, 
@@ -397,6 +398,58 @@ const ProjectDetail = () => {
                     </Button>
                   </div>
                 )}
+
+                {/* Share Buttons */}
+                <div className="pt-4 border-t border-border mt-4">
+                  <p className="text-sm text-muted-foreground mb-3">Share this property:</p>
+                  <div className="flex gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="flex-1 bg-[#25D366] hover:bg-[#128C7E] text-white border-0"
+                      asChild
+                    >
+                      <a
+                        href={`https://wa.me/?text=${encodeURIComponent(`Check out ${project.title} at ${project.location} - ${window.location.href}`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <FaWhatsapp className="w-4 h-4 mr-2" />
+                        WhatsApp
+                      </a>
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="flex-1 bg-[#1877F2] hover:bg-[#166FE5] text-white border-0"
+                      asChild
+                    >
+                      <a
+                        href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <FaFacebookF className="w-4 h-4 mr-2" />
+                        Facebook
+                      </a>
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="flex-1 bg-black hover:bg-gray-800 text-white border-0"
+                      asChild
+                    >
+                      <a
+                        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out ${project.title} at ${project.location}`)}&url=${encodeURIComponent(window.location.href)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <FaXTwitter className="w-4 h-4 mr-2" />
+                        X
+                      </a>
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
 
