@@ -140,18 +140,18 @@ const HeroSlider = () => {
         />
       </div>
 
-      {/* Navigation Arrows */}
+      {/* Navigation Arrows - Hidden on mobile */}
       <button
         onClick={prevSlide}
-        className="absolute left-2 md:left-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 border-2 border-primary-foreground/30 hover:border-primary hover:bg-primary text-primary-foreground flex items-center justify-center transition-all duration-300 group"
+        className="hidden md:flex absolute left-8 top-1/2 -translate-y-1/2 w-14 h-14 border-2 border-primary-foreground/30 hover:border-primary hover:bg-primary text-primary-foreground items-center justify-center transition-all duration-300 group"
       >
-        <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 group-hover:scale-110 transition-transform" />
+        <ChevronLeft className="w-6 h-6 group-hover:scale-110 transition-transform" />
       </button>
       <button
         onClick={nextSlide}
-        className="absolute right-2 md:right-8 top-1/2 -translate-y-1/2 w-10 h-10 md:w-14 md:h-14 border-2 border-primary-foreground/30 hover:border-primary hover:bg-primary text-primary-foreground flex items-center justify-center transition-all duration-300 group"
+        className="hidden md:flex absolute right-8 top-1/2 -translate-y-1/2 w-14 h-14 border-2 border-primary-foreground/30 hover:border-primary hover:bg-primary text-primary-foreground items-center justify-center transition-all duration-300 group"
       >
-        <ChevronRight className="w-5 h-5 md:w-6 md:h-6 group-hover:scale-110 transition-transform" />
+        <ChevronRight className="w-6 h-6 group-hover:scale-110 transition-transform" />
       </button>
 
       {/* Slide Counter */}
