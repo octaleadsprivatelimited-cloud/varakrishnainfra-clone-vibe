@@ -36,11 +36,11 @@ const About = () => {
         />
 
         {/* Our Story Section */}
-        <section className="py-20 md:py-28 bg-background" ref={storyRef}>
+        <section className="py-12 md:py-20 lg:py-28 bg-background" ref={storyRef}>
           <div className="container mx-auto px-4">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-              {/* Image Grid */}
-              <div className={`relative fade-left ${storyVisible ? 'in-view' : ''}`}>
+            <div className="grid lg:grid-cols-2 gap-6 lg:gap-20 items-center">
+              {/* Image Grid - Hidden on mobile */}
+              <div className={`relative fade-left hidden md:block ${storyVisible ? 'in-view' : ''}`}>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-4">
                     <img 
@@ -76,21 +76,37 @@ const About = () => {
 
               {/* Content */}
               <div className={`fade-right ${storyVisible ? 'in-view' : ''}`}>
-                <div className="inline-flex items-center gap-2 text-primary font-semibold text-sm uppercase tracking-wider mb-4">
-                  <span className="w-8 h-0.5 bg-primary" />
+                {/* Mobile: Compact single image with badge overlay */}
+                <div className="relative md:hidden mb-4">
+                  <div className="relative overflow-hidden rounded-xl">
+                    <img 
+                      src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop" 
+                      alt="Modern building" 
+                      className="w-full h-40 object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent" />
+                    <div className="absolute bottom-3 left-3 text-white">
+                      <span className="text-3xl font-serif font-bold text-primary">16+</span>
+                      <p className="text-xs font-medium opacity-90">Years Experience</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="inline-flex items-center gap-2 text-primary font-semibold text-xs md:text-sm uppercase tracking-wider mb-2 md:mb-4">
+                  <span className="w-6 md:w-8 h-0.5 bg-primary" />
                   Our Story
                 </div>
-                <h2 className="section-title mb-6">
+                <h2 className="text-xl md:text-2xl lg:text-3xl font-serif font-bold mb-3 md:mb-6">
                   Building <span className="text-gradient">Excellence</span> Since 2008
                 </h2>
-                <p className="text-muted-foreground leading-relaxed mb-6">
+                <p className="text-muted-foreground text-sm md:text-base leading-relaxed mb-3 md:mb-6">
                   Vara Krishna Infra was founded with a singular vision - to transform the landscape of real estate development in Hyderabad. What started as a small venture has grown into one of the most trusted names in infrastructure development.
                 </p>
-                <p className="text-muted-foreground leading-relaxed mb-8">
+                <p className="text-muted-foreground text-sm md:text-base leading-relaxed mb-4 md:mb-8 hidden md:block">
                   Over the years, we have delivered more than 200 successful projects, including residential townships, commercial complexes, and infrastructure developments. Our commitment to quality, transparency, and customer satisfaction has earned us the trust of thousands of happy families.
                 </p>
 
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-2 gap-2 md:gap-6">
                   {[
                     "DTCP/HMDA Approved",
                     "Transparent Dealings",
@@ -99,11 +115,11 @@ const About = () => {
                     "Clear Documentation",
                     "After-sales Support"
                   ].map((item, index) => (
-                    <div key={index} className="flex items-center gap-3">
-                      <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center">
-                        <Check className="w-4 h-4 text-primary" />
+                    <div key={index} className="flex items-center gap-2 md:gap-3">
+                      <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <Check className="w-3 h-3 md:w-4 md:h-4 text-primary" />
                       </div>
-                      <span className="text-sm font-medium text-foreground">{item}</span>
+                      <span className="text-xs md:text-sm font-medium text-foreground">{item}</span>
                     </div>
                   ))}
                 </div>
