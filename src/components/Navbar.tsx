@@ -70,24 +70,16 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Backdrop Overlay */}
-      <div 
-        className={`lg:hidden fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ${
-          mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}
-        onClick={() => setMobileMenuOpen(false)}
-      />
-
       {/* Mobile Dropdown Menu */}
       <div 
-        className={`lg:hidden absolute left-0 right-0 top-full bg-background border-b border-border shadow-xl z-50 overflow-hidden transition-all duration-300 ease-out ${
-          mobileMenuOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+        className={`lg:hidden absolute left-0 right-0 top-full bg-background border-b border-border shadow-xl z-50 overflow-hidden transition-all duration-200 ease-out ${
+          mobileMenuOpen ? 'max-h-[500px]' : 'max-h-0'
         }`}
       >
         <div className="container mx-auto px-4 py-4">
           {/* Navigation Links */}
           <div className="space-y-1 mb-4">
-            {navItems.map((item, index) => (
+            {navItems.map((item) => (
               <Link
                 key={item.label}
                 to={item.href}
@@ -97,7 +89,6 @@ const Navbar = () => {
                     : "text-foreground hover:bg-secondary"
                   }`}
                 onClick={() => setMobileMenuOpen(false)}
-                style={{ animationDelay: `${index * 50}ms` }}
               >
                 <span className="uppercase tracking-wide text-sm">{item.label}</span>
                 <ChevronRight className="w-4 h-4 opacity-50" />
