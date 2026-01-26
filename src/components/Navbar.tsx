@@ -56,7 +56,7 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Mobile Navigation - Logo + Hamburger */}
+        {/* Mobile Navigation - Logo + Brochure + Hamburger */}
         <div className="lg:hidden flex items-center justify-between py-2">
           <Link to="/" className="flex items-center">
             <img 
@@ -65,13 +65,23 @@ const Navbar = () => {
               className="h-10 w-auto object-contain"
             />
           </Link>
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-foreground hover:text-primary transition-colors rounded-lg hover:bg-primary/10"
-            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          <div className="flex items-center gap-2">
+            <a
+              href="/brochure.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-md transition-colors"
+            >
+              Brochure
+            </a>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 text-foreground hover:text-primary transition-colors rounded-lg hover:bg-primary/10"
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
       </div>
 
