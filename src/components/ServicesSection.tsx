@@ -107,13 +107,13 @@ const ServicesSection = () => {
                 className="relative rounded-lg md:rounded-xl overflow-hidden transition-all duration-500 hover:-translate-y-2 group cursor-pointer border border-transparent hover:border-primary/20"
                 style={{ boxShadow: 'var(--shadow-card)' }}
               >
-                {/* Background Image */}
+                {/* Background Image with 30% fade */}
                 <div 
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110 opacity-70"
                   style={{ backgroundImage: `url(${service.image})` }}
                 />
                 {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/30 group-hover:from-black/95 group-hover:via-black/70 transition-all duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent group-hover:from-black/85 group-hover:via-black/50 transition-all duration-300" />
                 
                 {/* Content */}
                 <div className="relative z-10 p-3 md:p-8 min-h-[140px] md:min-h-[280px] flex flex-col justify-end">
