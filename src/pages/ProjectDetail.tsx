@@ -405,12 +405,12 @@ const ProjectDetail = () => {
               <div className="mt-12 grid md:grid-cols-2 gap-6">
                 {/* YouTube Video Section */}
                 {project.youtubeVideoId && (
-                  <div>
+                  <div className="flex flex-col">
                     <h3 className="text-lg font-serif font-bold mb-4 flex items-center gap-2">
                       <Play className="w-5 h-5 text-primary" />
                       Project Video
                     </h3>
-                    <div className="relative w-full rounded-xl overflow-hidden" style={{ paddingBottom: '56.25%' }}>
+                    <div className="relative w-full rounded-xl overflow-hidden flex-1 min-h-[200px] md:min-h-[250px]">
                       <iframe
                         className="absolute inset-0 w-full h-full"
                         src={`https://www.youtube.com/embed/${project.youtubeVideoId}`}
@@ -424,12 +424,12 @@ const ProjectDetail = () => {
 
                 {/* Google Maps Section */}
                 {project.mapCoordinates && (
-                  <div>
+                  <div className="flex flex-col">
                     <h3 className="text-lg font-serif font-bold mb-4 flex items-center gap-2">
                       <Map className="w-5 h-5 text-primary" />
                       Project Location
                     </h3>
-                    <div className="rounded-xl overflow-hidden h-[200px] md:h-[250px] border border-border">
+                    <div className="rounded-xl overflow-hidden flex-1 min-h-[200px] md:min-h-[250px] border border-border">
                       <iframe
                         src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3000!2d${project.mapCoordinates.lng}!3d${project.mapCoordinates.lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTfCsDE1JzIyLjciTiA3OMKwMjknMDguOSJF!5e0!3m2!1sen!2sin!4v1234567890`}
                         width="100%"
