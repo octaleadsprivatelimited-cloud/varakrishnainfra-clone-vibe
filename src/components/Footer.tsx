@@ -6,12 +6,9 @@ import {
   Phone, 
   Mail, 
   Clock,
-  Send,
   ChevronRight,
   ChevronDown
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 
 const quickLinks = [
   { label: "About Us", href: "/about" },
@@ -180,19 +177,6 @@ const Footer = () => {
               </li>
             </ul>
 
-            {/* Newsletter */}
-            <div className="mt-6">
-              <h5 className="text-sm font-semibold text-white mb-3">Subscribe to Newsletter</h5>
-              <div className="flex gap-2">
-                <Input 
-                  placeholder="Your email" 
-                  className="bg-white/5 border-white/10 text-white placeholder:text-white/40 h-10 rounded-lg"
-                />
-                <Button size="icon" className="h-10 w-10 flex-shrink-0 rounded-lg">
-                  <Send className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
           </div>
         </div>
       </div>
