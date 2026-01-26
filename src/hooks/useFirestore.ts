@@ -22,6 +22,13 @@ export const useProjects = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Always include demo projects
+    const demoData = demoProjects.map(p => ({
+      ...p,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    })) as Project[];
+
     const q = query(collection(db, 'projects'), orderBy('createdAt', 'desc'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const projectsData = snapshot.docs.map(doc => ({
@@ -31,26 +38,12 @@ export const useProjects = () => {
         updatedAt: doc.data().updatedAt?.toDate()
       })) as Project[];
       
-      // Use demo projects if Firebase is empty
-      if (projectsData.length === 0) {
-        const demoData = demoProjects.map(p => ({
-          ...p,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        })) as Project[];
-        setProjects(demoData);
-      } else {
-        setProjects(projectsData);
-      }
+      // Combine Firebase projects with demo projects
+      setProjects([...projectsData, ...demoData]);
       setLoading(false);
     }, (error) => {
       console.error("Error fetching projects:", error);
       // Fallback to demo projects on error
-      const demoData = demoProjects.map(p => ({
-        ...p,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      })) as Project[];
       setProjects(demoData);
       setLoading(false);
     });
