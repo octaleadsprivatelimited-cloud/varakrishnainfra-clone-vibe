@@ -9,6 +9,7 @@ import {
   ChevronRight,
   ChevronDown
 } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 const quickLinks = [
   { label: "About Us", href: "/about" },
@@ -87,14 +88,12 @@ const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
           {/* Company Info */}
           <div className="pb-6 md:pb-0 border-b border-white/10 md:border-0">
-            <Link to="/" className="flex items-center gap-3 mb-6 group">
-              <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
-                <span className="text-primary-foreground font-serif font-bold text-lg">VK</span>
-              </div>
-              <div>
-                <h3 className="text-lg font-serif font-bold text-white">Vara Krishna</h3>
-                <p className="text-xs text-primary tracking-[0.2em] uppercase">Infra</p>
-              </div>
+            <Link to="/" className="flex items-center mb-6 group">
+              <img 
+                src={logo} 
+                alt="Vara Krishna Infra" 
+                className="h-16 w-auto object-contain group-hover:scale-105 transition-transform"
+              />
             </Link>
             <p className="text-sm leading-relaxed mb-6 text-footer-text">
               Building dreams into reality since 2008. Your trusted partner for premium real estate and infrastructure development in Hyderabad.
