@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaYoutube } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaLinkedinIn, FaYoutube, FaXTwitter } from "react-icons/fa6";
 import { 
   MapPin, 
   Phone, 
@@ -31,7 +31,7 @@ const services = [
 
 const socialLinks = [
   { icon: FaFacebookF, href: "#", label: "Facebook" },
-  { icon: FaTwitter, href: "https://x.com/varakrishninfra", label: "Twitter" },
+  { icon: FaXTwitter, href: "https://x.com/varakrishninfra", label: "X" },
   { icon: FaInstagram, href: "https://www.instagram.com/varakrishnainfra/", label: "Instagram" },
   { icon: FaLinkedinIn, href: "https://www.linkedin.com/company/varakrishnainfra", label: "LinkedIn" },
   { icon: FaYoutube, href: "https://www.youtube.com/@varakrishnainfra", label: "YouTube" },

@@ -1,4 +1,4 @@
-import { FaFacebookF, FaTwitter, FaYoutube, FaWhatsapp } from "react-icons/fa";
+import { FaFacebookF, FaYoutube, FaWhatsapp, FaXTwitter } from "react-icons/fa6";
 
 const TopBar = () => {
   return (
@@ -22,9 +22,9 @@ const TopBar = () => {
             target="_blank" 
             rel="noopener noreferrer"
             className="p-1 lg:p-1.5 hover:bg-primary-foreground/10 transition-colors rounded"
-            aria-label="Twitter"
+            aria-label="X"
           >
-            <FaTwitter className="w-2.5 h-2.5 lg:w-3 lg:h-3" />
+            <FaXTwitter className="w-2.5 h-2.5 lg:w-3 lg:h-3" />
           </a>
           <a 
             href="https://www.youtube.com/@varakrishnainfra" 
