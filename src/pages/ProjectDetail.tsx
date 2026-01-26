@@ -400,48 +400,53 @@ const ProjectDetail = () => {
               </div>
             </div>
 
-            {/* YouTube Video Section */}
-            {project.youtubeVideoId && (
-              <div className="mt-12">
-                <h2 className="text-2xl font-serif font-bold mb-6 flex items-center gap-3">
-                  <Play className="w-6 h-6 text-primary" />
-                  Project Video
-                </h2>
-                <div className="relative w-full rounded-2xl overflow-hidden" style={{ paddingBottom: '56.25%' }}>
-                  <iframe
-                    className="absolute inset-0 w-full h-full"
-                    src={`https://www.youtube.com/embed/${project.youtubeVideoId}`}
-                    title={`${project.title} Video`}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
-                </div>
-              </div>
-            )}
+            {/* Video & Map Section - Side by Side on Desktop */}
+            {(project.youtubeVideoId || project.mapCoordinates) && (
+              <div className="mt-12 grid md:grid-cols-2 gap-6">
+                {/* YouTube Video Section */}
+                {project.youtubeVideoId && (
+                  <div>
+                    <h3 className="text-lg font-serif font-bold mb-4 flex items-center gap-2">
+                      <Play className="w-5 h-5 text-primary" />
+                      Project Video
+                    </h3>
+                    <div className="relative w-full rounded-xl overflow-hidden" style={{ paddingBottom: '56.25%' }}>
+                      <iframe
+                        className="absolute inset-0 w-full h-full"
+                        src={`https://www.youtube.com/embed/${project.youtubeVideoId}`}
+                        title={`${project.title} Video`}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
+                  </div>
+                )}
 
-            {/* Google Maps Section */}
-            {project.mapCoordinates && (
-              <div className="mt-12">
-                <h2 className="text-2xl font-serif font-bold mb-6 flex items-center gap-3">
-                  <Map className="w-6 h-6 text-primary" />
-                  Project Location
-                </h2>
-                <div className="rounded-2xl overflow-hidden h-[400px] border border-border">
-                  <iframe
-                    src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3000!2d${project.mapCoordinates.lng}!3d${project.mapCoordinates.lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTfCsDE1JzIyLjciTiA3OMKwMjknMDguOSJF!5e0!3m2!1sen!2sin!4v1234567890`}
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    title={`${project.title} Location`}
-                  />
-                </div>
-                <div className="mt-4 flex items-center gap-2 text-muted-foreground">
-                  <MapPin className="w-5 h-5 text-primary" />
-                  <span>{project.location}</span>
-                </div>
+                {/* Google Maps Section */}
+                {project.mapCoordinates && (
+                  <div>
+                    <h3 className="text-lg font-serif font-bold mb-4 flex items-center gap-2">
+                      <Map className="w-5 h-5 text-primary" />
+                      Project Location
+                    </h3>
+                    <div className="rounded-xl overflow-hidden h-[200px] md:h-[250px] border border-border">
+                      <iframe
+                        src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3000!2d${project.mapCoordinates.lng}!3d${project.mapCoordinates.lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTfCsDE1JzIyLjciTiA3OMKwMjknMDguOSJF!5e0!3m2!1sen!2sin!4v1234567890`}
+                        width="100%"
+                        height="100%"
+                        style={{ border: 0 }}
+                        allowFullScreen
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        title={`${project.title} Location`}
+                      />
+                    </div>
+                    <div className="mt-2 flex items-center gap-2 text-muted-foreground text-sm">
+                      <MapPin className="w-4 h-4 text-primary" />
+                      <span>{project.location}</span>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
