@@ -10,12 +10,19 @@ import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import PageTransition from "@/components/PageTransition";
+import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 const Index = () => {
   return (
     <PageTransition>
+      <SEO 
+        title="Vara Krishna Infra | Real Estate & Infrastructure in Hyderabad"
+        description="Vara Krishna Infra - Leading Real Estate & Infrastructure Company in Hyderabad. Premium plots, villas, apartments & construction services. Call +91 95155 41663"
+        keywords="real estate hyderabad, plots in hyderabad, infrastructure company, construction company, villas hyderabad, vara krishna infra, DTCP approved plots, HMDA approved plots, residential projects hyderabad"
+        url="https://varakrishnainfra.com"
+      />
       <div className="min-h-screen bg-background overflow-x-hidden pb-16 lg:pb-0">
         <HeroSlider />
         <StatsSection />

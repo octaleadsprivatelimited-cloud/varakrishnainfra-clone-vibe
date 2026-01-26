@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
+import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
 import { MapPin, Home, Maximize, ArrowRight, Filter, Grid, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -51,6 +52,12 @@ const Projects = () => {
 
   return (
     <PageTransition>
+      <SEO 
+        title="Our Projects | Vara Krishna Infra - Real Estate Projects in Hyderabad"
+        description="Explore our portfolio of premium residential projects, commercial spaces, DTCP/HMDA approved plots, villas, and infrastructure developments across Hyderabad. View ongoing and completed projects."
+        keywords="real estate projects hyderabad, residential projects hyderabad, commercial projects, DTCP approved plots, HMDA approved plots, villas hyderabad, infrastructure projects"
+        url="https://varakrishnainfra.com/projects"
+      />
       <Layout>
         <PageHeader 
           title="Our Projects"

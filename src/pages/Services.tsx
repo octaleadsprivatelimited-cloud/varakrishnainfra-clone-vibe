@@ -1,5 +1,6 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
+import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
 import { ArrowRight, Building, Home, Landmark, HardHat, TreePine, Factory, CheckCircle2, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -119,6 +120,12 @@ const Services = () => {
 
   return (
     <PageTransition>
+      <SEO 
+        title="Our Services | Real Estate & Infrastructure Services in Hyderabad"
+        description="Comprehensive real estate and infrastructure solutions: Residential Projects, Plot Development, Commercial Spaces, Construction Services, Farm Houses, and Infrastructure Development in Hyderabad."
+        keywords="real estate services hyderabad, plot development services, commercial spaces hyderabad, construction services, farm houses hyderabad, infrastructure development, residential projects"
+        url="https://varakrishnainfra.com/services"
+      />
       <Layout>
         <PageHeader 
           title="Our Services"

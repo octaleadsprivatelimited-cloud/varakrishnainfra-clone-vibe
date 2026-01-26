@@ -3,6 +3,7 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import Layout from "@/components/Layout";
+import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -163,6 +164,13 @@ const ProjectDetail = () => {
 
   return (
     <PageTransition>
+      <SEO 
+        title={project ? `${project.title} | Vara Krishna Infra` : "Project Details | Vara Krishna Infra"}
+        description={project ? `${project.description.substring(0, 155)}...` : "View detailed information about our real estate project including location, amenities, pricing, and specifications."}
+        keywords={project ? `${project.title}, ${project.location}, ${project.category}, real estate project hyderabad, vara krishna infra` : "project details, real estate project, hyderabad property"}
+        image={project && project.images && project.images.length > 0 ? project.images[0] : "https://varakrishnainfra.com/logo.png"}
+        url={`https://varakrishnainfra.com/projects/${id}`}
+      />
       <Layout>
         {/* Project Detail Content */}
         <section className="py-12 md:py-16 bg-background pt-6">

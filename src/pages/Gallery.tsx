@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
+import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
 import { X, ChevronLeft, ChevronRight, ZoomIn, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -45,6 +46,12 @@ const Gallery = () => {
 
   return (
     <PageTransition>
+      <SEO 
+        title="Project Gallery | Vara Krishna Infra - Portfolio & Project Images"
+        description="Explore our portfolio of completed and ongoing real estate projects in Hyderabad. View stunning visuals of residential projects, commercial spaces, plots, and infrastructure developments."
+        keywords="vara krishna infra gallery, project images hyderabad, real estate portfolio, construction photos, property gallery hyderabad"
+        url="https://varakrishnainfra.com/gallery"
+      />
       <Layout>
         <PageHeader 
           title="Project Gallery"

@@ -127,6 +127,15 @@ const Footer = () => {
                   </Link>
                 </li>
               ))}
+              <li>
+                <a 
+                  href="/sitemap.xml"
+                  className="group flex items-center gap-1.5 text-xs md:text-sm hover:text-primary transition-colors"
+                >
+                  <ChevronRight className="w-3 h-3 md:w-4 md:h-4 text-primary group-hover:translate-x-1 transition-transform" />
+                  Sitemap
+                </a>
+              </li>
             </ul>
           </CollapsibleSection>
 
@@ -204,7 +213,7 @@ const Footer = () => {
             <div className="flex items-center gap-6 text-sm">
               <Link to="/contact" className="hover:text-primary transition-colors">Privacy Policy</Link>
               <Link to="/contact" className="hover:text-primary transition-colors">Terms of Service</Link>
-              <Link to="/contact" className="hover:text-primary transition-colors">Sitemap</Link>
+              <a href="/sitemap.xml" className="hover:text-primary transition-colors">Sitemap</a>
             </div>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
+import SEO from "@/components/SEO";
 import { Check, Award, Users, Building, Target, Eye, Heart } from "lucide-react";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 import PageTransition from "@/components/PageTransition";
@@ -28,6 +29,12 @@ const About = () => {
 
   return (
     <PageTransition>
+      <SEO 
+        title="About Us | Vara Krishna Infra - Leading Real Estate Developer in Hyderabad"
+        description="Learn about Vara Krishna Infra - Building dreams into reality since 2008. One of Hyderabad's most trusted real estate developers with 200+ successful projects."
+        keywords="about vara krishna infra, real estate developer hyderabad, infrastructure company hyderabad, construction company telangana, real estate company since 2008"
+        url="https://varakrishnainfra.com/about"
+      />
       <Layout>
         <PageHeader 
           title="About Us"

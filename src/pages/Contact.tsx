@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
+import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
 import { MapPin, Phone, Mail, Clock, Send, MessageSquare, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -66,6 +67,12 @@ const Contact = () => {
 
   return (
     <PageTransition>
+      <SEO 
+        title="Contact Us | Vara Krishna Infra - Get in Touch"
+        description="Contact Vara Krishna Infra for inquiries, site visits, or assistance. Call +91 95155 41663 or visit our office in Jubilee Hills, Hyderabad. Mon-Sat: 9 AM - 7 PM."
+        keywords="contact vara krishna infra, real estate contact hyderabad, property inquiry hyderabad, site visit booking, real estate consultation"
+        url="https://varakrishnainfra.com/contact"
+      />
       <Layout>
         <PageHeader 
           title="Contact Us"
