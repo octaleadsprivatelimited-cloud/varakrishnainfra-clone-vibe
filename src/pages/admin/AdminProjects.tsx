@@ -302,7 +302,7 @@ const AdminProjects = () => {
                     onImagesChange={setProjectImages}
                     folder="projects"
                     label="Project Images"
-                    maxImages={10}
+                    maxImages={5}
                   />
                 </div>
                 

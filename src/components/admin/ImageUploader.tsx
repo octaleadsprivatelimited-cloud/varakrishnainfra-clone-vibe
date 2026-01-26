@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { useFirebaseStorage } from '@/hooks/useFirebaseStorage';
-import { Upload, X, Loader2, Image as ImageIcon } from 'lucide-react';
+import { useFirestoreStorage } from '@/hooks/useFirestoreStorage';
+import { Upload, X, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface ImageUploaderProps {
@@ -18,11 +18,11 @@ const ImageUploader = ({
   onImagesChange,
   folder,
   multiple = true,
-  maxImages = 10,
+  maxImages = 5, // Reduced due to Firestore size limits
   label = 'Upload Images'
 }: ImageUploaderProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { uploadMultipleFiles, uploading, progress } = useFirebaseStorage();
+  const { uploadMultipleFiles, uploading, progress } = useFirestoreStorage();
   const { toast } = useToast();
   const [dragActive, setDragActive] = useState(false);
 
@@ -46,7 +46,7 @@ const ImageUploader = ({
     if (imageFiles.length > remainingSlots) {
       toast({ 
         title: "Too many images", 
-        description: `You can only add ${remainingSlots} more image(s)`, 
+        description: `You can only add ${remainingSlots} more image(s). Max ${maxImages} images due to database limits.`, 
         variant: "destructive" 
       });
       return;
@@ -56,11 +56,11 @@ const ImageUploader = ({
       const results = await uploadMultipleFiles(imageFiles, folder);
       const newUrls = results.map(r => r.url);
       onImagesChange([...images, ...newUrls]);
-      toast({ title: "Success", description: `${results.length} image(s) uploaded` });
+      toast({ title: "Success", description: `${results.length} image(s) processed and ready` });
     } catch (error) {
       toast({ 
         title: "Upload failed", 
-        description: "Failed to upload images. Please try again.", 
+        description: "Failed to process images. Try smaller images.", 
         variant: "destructive" 
       });
     }
@@ -118,7 +118,7 @@ const ImageUploader = ({
         {uploading ? (
           <div className="space-y-2">
             <Loader2 className="w-8 h-8 mx-auto animate-spin text-primary" />
-            <p className="text-sm text-muted-foreground">Uploading... {progress}%</p>
+            <p className="text-sm text-muted-foreground">Processing... {progress}%</p>
           </div>
         ) : (
           <div className="space-y-2">
@@ -127,7 +127,7 @@ const ImageUploader = ({
               Drag & drop images here or click to browse
             </p>
             <p className="text-xs text-muted-foreground">
-              {images.length}/{maxImages} images
+              {images.length}/{maxImages} images (compressed for storage)
             </p>
           </div>
         )}
