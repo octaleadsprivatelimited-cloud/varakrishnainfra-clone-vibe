@@ -4,6 +4,12 @@ import PageTransition from "@/components/PageTransition";
 import { ArrowRight, Building, Home, Landmark, HardHat, TreePine, Factory, CheckCircle2, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
+import serviceResidential from "@/assets/service-residential.jpg";
+import servicePlots from "@/assets/service-plots.jpg";
+import serviceCommercial from "@/assets/service-commercial.jpg";
+import serviceConstruction from "@/assets/service-construction-new.jpg";
+import serviceInfrastructure from "@/assets/service-infrastructure.jpg";
+import serviceFarmhouse from "@/assets/service-farmhouse.jpg";
 
 const services = [
   {
@@ -19,7 +25,7 @@ const services = [
       "Prime Locations",
       "Quality Construction"
     ],
-    image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&h=400&fit=crop"
+    image: serviceResidential
   },
   {
     icon: Landmark,
@@ -34,7 +40,7 @@ const services = [
       "Electricity Connection",
       "Park & Open Spaces"
     ],
-    image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&h=400&fit=crop"
+    image: servicePlots
   },
   {
     icon: Building,
@@ -49,7 +55,7 @@ const services = [
       "Premium Locations",
       "Modern Infrastructure"
     ],
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop"
+    image: serviceCommercial
   },
   {
     icon: HardHat,
@@ -64,7 +70,7 @@ const services = [
       "Quality Materials",
       "Skilled Workforce"
     ],
-    image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&h=400&fit=crop"
+    image: serviceConstruction
   },
   {
     icon: Factory,
@@ -79,7 +85,7 @@ const services = [
       "Public Facilities",
       "Township Development"
     ],
-    image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&h=400&fit=crop"
+    image: serviceInfrastructure
   },
   {
     icon: TreePine,
@@ -94,7 +100,7 @@ const services = [
       "Privacy & Security",
       "Investment Value"
     ],
-    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=400&fit=crop"
+    image: serviceFarmhouse
   },
 ];
 
