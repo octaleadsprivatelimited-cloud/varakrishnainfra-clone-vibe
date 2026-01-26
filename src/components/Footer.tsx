@@ -51,14 +51,14 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }: Collapsibl
       {/* Mobile Collapsible Header */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="md:hidden w-full flex items-center justify-between py-4 border-b border-white/10"
+        className="md:hidden w-full flex items-center justify-between py-2"
       >
-        <h4 className="text-lg font-serif font-bold text-white flex items-center gap-2">
-          <span className="w-8 h-0.5 bg-primary" />
+        <h4 className="text-base font-serif font-bold text-white flex items-center gap-2">
+          <span className="w-6 h-0.5 bg-primary" />
           {title}
         </h4>
         <ChevronDown 
-          className={`w-5 h-5 text-primary transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} 
+          className={`w-4 h-4 text-primary transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} 
         />
       </button>
 
@@ -71,7 +71,7 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }: Collapsibl
       {/* Content */}
       <div 
         className={`overflow-hidden transition-all duration-300 ease-in-out md:!max-h-none md:!opacity-100 md:!py-0 ${
-          isOpen ? 'max-h-96 opacity-100 py-4' : 'max-h-0 opacity-0 py-0'
+          isOpen ? 'max-h-96 opacity-100 py-2' : 'max-h-0 opacity-0 py-0'
         }`}
       >
         {children}
@@ -115,14 +115,14 @@ const Footer = () => {
 
           {/* Quick Links - Collapsible on Mobile */}
           <CollapsibleSection title="Quick Links">
-            <ul className="space-y-3">
+            <ul className="space-y-1.5 md:space-y-3">
               {quickLinks.map((link, index) => (
                 <li key={index}>
                   <Link 
                     to={link.href}
-                    className="group flex items-center gap-2 text-sm hover:text-primary transition-colors"
+                    className="group flex items-center gap-1.5 text-xs md:text-sm hover:text-primary transition-colors"
                   >
-                    <ChevronRight className="w-4 h-4 text-primary group-hover:translate-x-1 transition-transform" />
+                    <ChevronRight className="w-3 h-3 md:w-4 md:h-4 text-primary group-hover:translate-x-1 transition-transform" />
                     {link.label}
                   </Link>
                 </li>
@@ -132,14 +132,14 @@ const Footer = () => {
 
           {/* Services - Collapsible on Mobile */}
           <CollapsibleSection title="Our Services">
-            <ul className="space-y-3">
+            <ul className="space-y-1.5 md:space-y-3">
               {services.map((service, index) => (
                 <li key={index}>
                   <Link 
                     to="/services"
-                    className="group flex items-center gap-2 text-sm hover:text-primary transition-colors"
+                    className="group flex items-center gap-1.5 text-xs md:text-sm hover:text-primary transition-colors"
                   >
-                    <ChevronRight className="w-4 h-4 text-primary group-hover:translate-x-1 transition-transform" />
+                    <ChevronRight className="w-3 h-3 md:w-4 md:h-4 text-primary group-hover:translate-x-1 transition-transform" />
                     {service}
                   </Link>
                 </li>
