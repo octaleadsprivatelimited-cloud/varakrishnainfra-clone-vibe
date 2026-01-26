@@ -4,14 +4,14 @@ import logo from "@/assets/logo.png";
 
 const Header = () => {
   return (
-    <header className="hidden lg:block bg-[hsl(220,30%,15%)] border-b border-border/20 py-4">
+    <header className="hidden lg:block bg-[hsl(220,30%,15%)] border-b border-border/20 py-2">
       <div className="container mx-auto px-4 flex items-center justify-between gap-4">
         {/* Logo */}
         <Link to="/" className="flex items-center group">
           <img 
             src={logo} 
             alt="Vara Krishna Infra" 
-            className="h-16 w-auto object-contain brightness-0 invert group-hover:scale-105 transition-transform"
+            className="h-10 w-auto object-contain brightness-0 invert group-hover:scale-105 transition-transform"
           />
         </Link>
 
