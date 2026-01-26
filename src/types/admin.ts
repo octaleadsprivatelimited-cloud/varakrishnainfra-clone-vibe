@@ -18,6 +18,11 @@ export interface Project {
   floorPlanImages: string[];
   images: string[];
   featured: boolean;
+  youtubeVideoId?: string;
+  mapCoordinates?: {
+    lat: number;
+    lng: number;
+  };
   createdAt: Date;
   updatedAt: Date;
 }
