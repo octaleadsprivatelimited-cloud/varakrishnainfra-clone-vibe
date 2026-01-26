@@ -1,4 +1,3 @@
-import StickyHeader from "@/components/StickyHeader";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -10,7 +9,6 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden pb-16 lg:pb-0">
-      <StickyHeader />
       <main>{children}</main>
       <Footer />
       <WhatsAppFloat />

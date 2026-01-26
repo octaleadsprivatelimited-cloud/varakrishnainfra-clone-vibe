@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import StickyHeader from "@/components/StickyHeader";
 import HeroSlider from "@/components/HeroSlider";
 import StatsSection from "@/components/StatsSection";
 import AboutSection from "@/components/AboutSection";
@@ -18,7 +17,6 @@ const Index = () => {
   return (
     <PageTransition>
       <div className="min-h-screen bg-background overflow-x-hidden pb-16 lg:pb-0">
-        <StickyHeader />
         <HeroSlider />
         <StatsSection />
         <AboutSection />
