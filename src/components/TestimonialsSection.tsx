@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
+import { ShimmerSkeleton } from "@/components/ui/shimmer-skeleton";
 
 const testimonials = [
   {
@@ -29,8 +30,34 @@ const testimonials = [
   },
 ];
 
+const TestimonialSkeleton = () => (
+  <div className="bg-background rounded-2xl shadow-2xl p-8 md:p-12 relative overflow-hidden">
+    {/* Stars */}
+    <div className="flex gap-1 mb-6">
+      {[...Array(5)].map((_, i) => (
+        <ShimmerSkeleton key={i} variant="circular" className="w-5 h-5" />
+      ))}
+    </div>
+    {/* Quote */}
+    <div className="space-y-3 mb-8">
+      <ShimmerSkeleton variant="text" className="h-5 w-full" />
+      <ShimmerSkeleton variant="text" className="h-5 w-5/6" />
+      <ShimmerSkeleton variant="text" className="h-5 w-4/6" />
+    </div>
+    {/* Author */}
+    <div className="flex items-center gap-4">
+      <ShimmerSkeleton variant="circular" className="w-16 h-16" />
+      <div className="space-y-2">
+        <ShimmerSkeleton variant="text" className="h-5 w-28" />
+        <ShimmerSkeleton variant="text" className="h-4 w-36" />
+      </div>
+    </div>
+  </div>
+);
+
 const TestimonialsSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const { ref, isVisible } = useScrollAnimation(0.15);
 
   const nextTestimonial = () => {
@@ -42,9 +69,16 @@ const TestimonialsSection = () => {
   };
 
   useEffect(() => {
+    // Simulate initial load
+    const loadTimer = setTimeout(() => setIsLoading(false), 600);
+    return () => clearTimeout(loadTimer);
+  }, []);
+
+  useEffect(() => {
+    if (isLoading) return;
     const timer = setInterval(nextTestimonial, 7000);
     return () => clearInterval(timer);
-  }, []);
+  }, [isLoading]);
 
   return (
     <section className="py-20 md:py-28 bg-secondary relative overflow-hidden">
@@ -66,44 +100,51 @@ const TestimonialsSection = () => {
         </div>
 
         <div className={`relative max-w-4xl mx-auto scale-up ${isVisible ? 'in-view' : ''}`}>
-          {/* Testimonial Card */}
-          <div className="bg-background rounded-2xl shadow-2xl p-8 md:p-12 relative overflow-hidden">
-            {/* Quote Icon */}
-            <Quote className="absolute top-8 right-8 w-24 h-24 text-primary/10" />
-            
-            {/* Stars */}
-            <div className="flex gap-1 mb-6">
-              {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
-                <Star key={i} className="w-5 h-5 text-primary fill-primary" />
-              ))}
-            </div>
+          {isLoading ? (
+            <TestimonialSkeleton />
+          ) : (
+            <>
+              {/* Testimonial Card */}
+              <div className="bg-background rounded-2xl shadow-2xl p-8 md:p-12 relative overflow-hidden">
+                {/* Quote Icon */}
+                <Quote className="absolute top-8 right-8 w-24 h-24 text-primary/10" />
+                
+                {/* Stars */}
+                <div className="flex gap-1 mb-6">
+                  {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 text-primary fill-primary" />
+                  ))}
+                </div>
 
-            {/* Quote */}
-            <blockquote className="text-lg md:text-xl text-foreground leading-relaxed mb-8 relative z-10">
-              "{testimonials[currentIndex].text}"
-            </blockquote>
+                {/* Quote */}
+                <blockquote className="text-lg md:text-xl text-foreground leading-relaxed mb-8 relative z-10">
+                  "{testimonials[currentIndex].text}"
+                </blockquote>
 
-            {/* Author */}
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-amber-500 flex items-center justify-center text-primary-foreground font-bold text-2xl font-serif">
-                {testimonials[currentIndex].name.charAt(0)}
+                {/* Author */}
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-amber-500 flex items-center justify-center text-primary-foreground font-bold text-2xl font-serif">
+                    {testimonials[currentIndex].name.charAt(0)}
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-lg text-foreground">
+                      {testimonials[currentIndex].name}
+                    </h4>
+                    <p className="text-muted-foreground">
+                      {testimonials[currentIndex].role}
+                    </p>
+                  </div>
+                </div>
               </div>
-              <div>
-                <h4 className="font-semibold text-lg text-foreground">
-                  {testimonials[currentIndex].name}
-                </h4>
-                <p className="text-muted-foreground">
-                  {testimonials[currentIndex].role}
-                </p>
-              </div>
-            </div>
-          </div>
+            </>
+          )}
 
           {/* Navigation */}
           <div className="flex items-center justify-center gap-4 mt-8">
             <button
               onClick={prevTestimonial}
-              className="w-12 h-12 rounded-full bg-background border-2 border-border text-foreground flex items-center justify-center hover:border-primary hover:text-primary transition-colors"
+              disabled={isLoading}
+              className="w-12 h-12 rounded-full bg-background border-2 border-border text-foreground flex items-center justify-center hover:border-primary hover:text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -114,7 +155,8 @@ const TestimonialsSection = () => {
                 <button
                   key={index}
                   onClick={() => setCurrentIndex(index)}
-                  className={`h-2.5 rounded-full transition-all duration-300 ${
+                  disabled={isLoading}
+                  className={`h-2.5 rounded-full transition-all duration-300 disabled:opacity-50 ${
                     index === currentIndex
                       ? "bg-primary w-10"
                       : "bg-border w-2.5 hover:bg-primary/50"
@@ -125,7 +167,8 @@ const TestimonialsSection = () => {
 
             <button
               onClick={nextTestimonial}
-              className="w-12 h-12 rounded-full bg-background border-2 border-border text-foreground flex items-center justify-center hover:border-primary hover:text-primary transition-colors"
+              disabled={isLoading}
+              className="w-12 h-12 rounded-full bg-background border-2 border-border text-foreground flex items-center justify-center hover:border-primary hover:text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ChevronRight className="w-5 h-5" />
             </button>

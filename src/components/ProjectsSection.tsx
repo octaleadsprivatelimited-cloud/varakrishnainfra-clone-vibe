@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowRight, MapPin, Bed, Square, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
+import { ProjectCardSkeleton } from "@/components/ui/shimmer-skeleton";
+import { useMultipleImageLoader } from "@/hooks/useImageLoader";
 import servicePlots from "@/assets/service-plots.jpg";
 import serviceConstruction from "@/assets/service-construction.jpg";
 import serviceApartments from "@/assets/service-apartments.jpg";
@@ -71,6 +73,18 @@ const allProjects = [
 const ProjectsSection = () => {
   const [activeTab, setActiveTab] = useState("All");
   const { ref, isVisible } = useScrollAnimation(0.1);
+  const [imagesReady, setImagesReady] = useState(false);
+  
+  const imageUrls = allProjects.map(p => p.image);
+  const { allLoaded } = useMultipleImageLoader(imageUrls);
+
+  useEffect(() => {
+    if (allLoaded) {
+      // Small delay for smooth transition
+      const timer = setTimeout(() => setImagesReady(true), 100);
+      return () => clearTimeout(timer);
+    }
+  }, [allLoaded]);
 
   const filteredProjects = activeTab === "All" 
     ? allProjects 
@@ -113,60 +127,68 @@ const ProjectsSection = () => {
         </div>
 
         {/* Projects Grid */}
-        <div className={`grid md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-children ${isVisible ? 'in-view' : ''}`}>
-          {filteredProjects.map((project, index) => (
-            <div 
-              key={index} 
-              className="group bg-background rounded-xl overflow-hidden border border-border transition-all duration-500 hover:-translate-y-2 hover:border-primary/30"
-              style={{ boxShadow: 'var(--shadow-card)' }}
-            >
-              {/* Image */}
-              <div className="relative h-64 overflow-hidden">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                
-                {/* Status Badge */}
-                <div className="absolute top-4 left-4 px-4 py-1.5 bg-primary text-primary-foreground text-xs font-semibold uppercase tracking-wider rounded-full">
-                  {project.status}
+        {!imagesReady ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[...Array(6)].map((_, index) => (
+              <ProjectCardSkeleton key={index} />
+            ))}
+          </div>
+        ) : (
+          <div className={`grid md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-children ${isVisible ? 'in-view' : ''}`}>
+            {filteredProjects.map((project, index) => (
+              <div 
+                key={index} 
+                className="group bg-background rounded-xl overflow-hidden border border-border transition-all duration-500 hover:-translate-y-2 hover:border-primary/30"
+                style={{ boxShadow: 'var(--shadow-card)' }}
+              >
+                {/* Image */}
+                <div className="relative h-64 overflow-hidden">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  
+                  {/* Status Badge */}
+                  <div className="absolute top-4 left-4 px-4 py-1.5 bg-primary text-primary-foreground text-xs font-semibold uppercase tracking-wider rounded-full">
+                    {project.status}
+                  </div>
+
+                  {/* Quick View */}
+                  <div className="absolute bottom-4 right-4 w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 cursor-pointer">
+                    <ArrowUpRight className="w-5 h-5" />
+                  </div>
                 </div>
 
-                {/* Quick View */}
-                <div className="absolute bottom-4 right-4 w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 cursor-pointer">
-                  <ArrowUpRight className="w-5 h-5" />
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-6">
-                <div className="flex items-center gap-2 text-muted-foreground text-sm mb-2">
-                  <MapPin className="w-4 h-4 text-primary" />
-                  {project.location}
-                </div>
-                <h3 className="text-xl font-serif font-bold text-foreground mb-4 group-hover:text-primary transition-colors">
-                  {project.title}
-                </h3>
-                
-                {/* Details */}
-                <div className="flex items-center gap-4 text-sm text-muted-foreground border-t border-border pt-4">
-                  {project.beds && (
+                {/* Content */}
+                <div className="p-6">
+                  <div className="flex items-center gap-2 text-muted-foreground text-sm mb-2">
+                    <MapPin className="w-4 h-4 text-primary" />
+                    {project.location}
+                  </div>
+                  <h3 className="text-xl font-serif font-bold text-foreground mb-4 group-hover:text-primary transition-colors">
+                    {project.title}
+                  </h3>
+                  
+                  {/* Details */}
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground border-t border-border pt-4">
+                    {project.beds && (
+                      <div className="flex items-center gap-1.5">
+                        <Bed className="w-4 h-4" />
+                        {project.beds}
+                      </div>
+                    )}
                     <div className="flex items-center gap-1.5">
-                      <Bed className="w-4 h-4" />
-                      {project.beds}
+                      <Square className="w-4 h-4" />
+                      {project.area}
                     </div>
-                  )}
-                  <div className="flex items-center gap-1.5">
-                    <Square className="w-4 h-4" />
-                    {project.area}
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         {/* View All Button */}
         <div className="text-center mt-12">
