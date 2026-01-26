@@ -16,6 +16,7 @@ import Contact from "./pages/Contact";
 
 import NotFound from "./pages/NotFound";
 import MobileBottomNav from "./components/MobileBottomNav";
+import ScrollToTopOnNavigate from "./components/ScrollToTopOnNavigate";
 
 // Admin imports
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -81,6 +82,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <ScrollToTopOnNavigate />
           <AnimatedRoutes />
           <MobileBottomNav />
         </BrowserRouter>
