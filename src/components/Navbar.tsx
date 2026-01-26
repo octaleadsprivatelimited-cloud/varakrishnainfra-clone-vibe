@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronRight, Phone } from "lucide-react";
 import { FaFacebookF, FaInstagram, FaWhatsapp } from "react-icons/fa";
+import logo from "@/assets/logo.png";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -55,11 +56,15 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Mobile Navigation Toggle */}
-        <div className="lg:hidden flex items-center justify-between py-3">
-          <span className="font-serif font-bold text-lg text-foreground">
-            Menu
-          </span>
+        {/* Mobile Navigation - Logo + Hamburger */}
+        <div className="lg:hidden flex items-center justify-between py-2">
+          <Link to="/" className="flex items-center">
+            <img 
+              src={logo} 
+              alt="Vara Krishna Infra" 
+              className="h-10 w-auto object-contain"
+            />
+          </Link>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2 text-foreground hover:text-primary transition-colors rounded-lg hover:bg-primary/10"
