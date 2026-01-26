@@ -18,7 +18,7 @@ const TopBar = () => {
             <FaFacebookF className="w-2.5 h-2.5 lg:w-3 lg:h-3" />
           </a>
           <a 
-            href="https://twitter.com" 
+            href="https://x.com/varakrishninfra" 
             target="_blank" 
             rel="noopener noreferrer"
             className="p-1 lg:p-1.5 hover:bg-primary-foreground/10 transition-colors rounded"
