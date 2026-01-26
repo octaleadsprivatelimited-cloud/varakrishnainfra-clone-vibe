@@ -31,7 +31,7 @@ const services = [
 
 const socialLinks = [
   { icon: FaFacebookF, href: "#", label: "Facebook" },
-  { icon: FaTwitter, href: "#", label: "Twitter" },
+  { icon: FaTwitter, href: "https://x.com/varakrishninfra", label: "Twitter" },
   { icon: FaInstagram, href: "https://www.instagram.com/varakrishnainfra/", label: "Instagram" },
   { icon: FaLinkedinIn, href: "https://www.linkedin.com/company/varakrishnainfra", label: "LinkedIn" },
   { icon: FaYoutube, href: "https://www.youtube.com/@varakrishnainfra", label: "YouTube" },
