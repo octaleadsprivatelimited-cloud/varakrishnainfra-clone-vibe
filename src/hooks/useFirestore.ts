@@ -14,6 +14,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Project, GalleryItem, SiteSettings, Enquiry } from '@/types/admin';
+import { demoProjects } from '@/data/demoProjects';
 
 // Projects Hook
 export const useProjects = () => {
@@ -29,7 +30,28 @@ export const useProjects = () => {
         createdAt: doc.data().createdAt?.toDate(),
         updatedAt: doc.data().updatedAt?.toDate()
       })) as Project[];
-      setProjects(projectsData);
+      
+      // Use demo projects if Firebase is empty
+      if (projectsData.length === 0) {
+        const demoData = demoProjects.map(p => ({
+          ...p,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        })) as Project[];
+        setProjects(demoData);
+      } else {
+        setProjects(projectsData);
+      }
+      setLoading(false);
+    }, (error) => {
+      console.error("Error fetching projects:", error);
+      // Fallback to demo projects on error
+      const demoData = demoProjects.map(p => ({
+        ...p,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      })) as Project[];
+      setProjects(demoData);
       setLoading(false);
     });
 

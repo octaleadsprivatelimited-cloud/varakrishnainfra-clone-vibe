@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import Layout from "@/components/Layout";
-import PageHeader from "@/components/PageHeader";
 import PageTransition from "@/components/PageTransition";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -40,6 +39,21 @@ const ProjectDetail = () => {
   useEffect(() => {
     const fetchProject = async () => {
       if (!id) return;
+      
+      // Check if it's a demo project
+      if (id.startsWith('demo-')) {
+        const { demoProjects } = await import('@/data/demoProjects');
+        const demoProject = demoProjects.find(p => p.id === id);
+        if (demoProject) {
+          setProject({
+            ...demoProject,
+            createdAt: new Date(),
+            updatedAt: new Date()
+          } as Project);
+        }
+        setLoading(false);
+        return;
+      }
       
       try {
         const docRef = doc(db, 'projects', id);
@@ -146,14 +160,6 @@ const ProjectDetail = () => {
   return (
     <PageTransition>
       <Layout>
-        <PageHeader 
-          title={project.title}
-          subtitle={project.location}
-          breadcrumbs={[
-            { label: "Projects", href: "/projects" },
-            { label: project.title }
-          ]}
-        />
 
         <section className="py-12 md:py-16 bg-background">
           <div className="container mx-auto px-4">
