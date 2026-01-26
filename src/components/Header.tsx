@@ -42,6 +42,15 @@ const Header = () => {
               </a>
             </div>
           </div>
+          <div className="w-px h-10 bg-border" />
+          <a
+            href="/brochure.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded-md transition-colors shadow-md hover:shadow-lg"
+          >
+            Download Brochure
+          </a>
         </div>
       </div>
     </header>
