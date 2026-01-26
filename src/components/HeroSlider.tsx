@@ -105,14 +105,15 @@ const HeroSlider = () => {
                     className="flex flex-col sm:flex-row gap-3 md:gap-4 animate-fade-in"
                     style={{ animationDelay: "0.8s" }}
                   >
-                    <Button className="cta-button rounded-none text-xs md:text-sm px-4 md:px-8 py-3 md:py-4 w-full sm:w-auto">
+                    <Button className="cta-button rounded-none text-xs md:text-sm px-6 md:px-8 py-3 md:py-4 w-full sm:w-auto">
                       Explore Projects <ArrowRight className="w-4 h-4 md:w-5 md:h-5 ml-2" />
                     </Button>
                     <Button 
                       variant="outline" 
-                      className="px-4 md:px-8 py-3 md:py-4 border-2 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-foreground rounded-none text-xs md:text-sm font-semibold uppercase tracking-wider w-full sm:w-auto"
+                      className="px-6 md:px-8 py-3 md:py-4 border-2 border-white text-white bg-white/10 hover:bg-white hover:text-foreground rounded-none text-xs md:text-sm font-semibold uppercase tracking-wider w-full sm:w-auto"
                     >
-                      <Play className="w-3 h-3 md:w-4 md:h-4 mr-2" /> Watch Video
+                      <Play className="w-4 h-4 md:w-4 md:h-4 mr-2 flex-shrink-0" /> 
+                      <span>Watch Video</span>
                     </Button>
                   </div>
                 </div>
@@ -173,9 +174,9 @@ const HeroSlider = () => {
           </p>
           <Button 
             variant="outline" 
-            className="border-2 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary rounded-none px-4 md:px-8 py-2 md:py-3 font-semibold text-xs md:text-sm whitespace-nowrap flex-shrink-0"
+            className="border-2 border-white text-white bg-white/10 hover:bg-white hover:text-primary rounded-none px-6 md:px-8 py-2 md:py-3 font-semibold text-xs md:text-sm whitespace-nowrap flex-shrink-0"
           >
-            Contact Us <ArrowRight className="w-3 h-3 md:w-4 md:h-4 ml-2" />
+            <span>Contact Us</span> <ArrowRight className="w-3 h-3 md:w-4 md:h-4 ml-2 flex-shrink-0" />
           </Button>
         </div>
       </div>
