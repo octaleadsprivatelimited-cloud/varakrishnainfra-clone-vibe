@@ -12,13 +12,15 @@ import {
   Menu, 
   X,
   Home,
-  ChevronRight
+  ChevronRight,
+  MessageSquare
 } from 'lucide-react';
 
 const sidebarLinks = [
   { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/projects', label: 'Projects', icon: FolderOpen },
   { href: '/admin/gallery', label: 'Gallery', icon: Image },
+  { href: '/admin/enquiries', label: 'Enquiries', icon: MessageSquare },
   { href: '/admin/settings', label: 'Settings', icon: Settings }
 ];
 

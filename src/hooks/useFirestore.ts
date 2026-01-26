@@ -13,7 +13,7 @@ import {
   Timestamp
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { Project, GalleryItem, SiteSettings } from '@/types/admin';
+import { Project, GalleryItem, SiteSettings, Enquiry } from '@/types/admin';
 
 // Projects Hook
 export const useProjects = () => {
@@ -130,4 +130,52 @@ export const useSiteSettings = () => {
   };
 
   return { settings, loading, updateSocialLinks };
+};
+
+// Enquiries Hook
+export const useEnquiries = () => {
+  const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const q = query(collection(db, 'enquiries'), orderBy('createdAt', 'desc'));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const data = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+        createdAt: doc.data().createdAt?.toDate()
+      })) as Enquiry[];
+      setEnquiries(data);
+      setLoading(false);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  const addEnquiry = async (enquiry: Omit<Enquiry, 'id' | 'createdAt' | 'status'>) => {
+    await addDoc(collection(db, 'enquiries'), {
+      ...enquiry,
+      status: 'new',
+      createdAt: Timestamp.now()
+    });
+  };
+
+  const updateEnquiryStatus = async (id: string, status: Enquiry['status']) => {
+    await updateDoc(doc(db, 'enquiries', id), { status });
+  };
+
+  const deleteEnquiry = async (id: string) => {
+    await deleteDoc(doc(db, 'enquiries', id));
+  };
+
+  return { enquiries, loading, addEnquiry, updateEnquiryStatus, deleteEnquiry };
+};
+
+// Submit enquiry (for public use - doesn't require auth)
+export const submitEnquiry = async (enquiry: Omit<Enquiry, 'id' | 'createdAt' | 'status'>) => {
+  await addDoc(collection(db, 'enquiries'), {
+    ...enquiry,
+    status: 'new',
+    createdAt: Timestamp.now()
+  });
 };

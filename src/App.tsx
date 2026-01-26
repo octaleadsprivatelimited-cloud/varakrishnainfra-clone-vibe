@@ -21,6 +21,7 @@ import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminProjects from "./pages/admin/AdminProjects";
 import AdminGallery from "./pages/admin/AdminGallery";
+import AdminEnquiries from "./pages/admin/AdminEnquiries";
 import AdminSettings from "./pages/admin/AdminSettings";
 import AdminLayout from "./components/admin/AdminLayout";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
@@ -43,6 +44,7 @@ const AnimatedRoutes = () => {
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="projects" element={<AdminProjects />} />
           <Route path="gallery" element={<AdminGallery />} />
+          <Route path="enquiries" element={<AdminEnquiries />} />
           <Route path="settings" element={<AdminSettings />} />
         </Route>
       </Routes>
