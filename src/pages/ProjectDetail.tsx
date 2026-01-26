@@ -160,8 +160,8 @@ const ProjectDetail = () => {
   return (
     <PageTransition>
       <Layout>
-
-        <section className="py-12 md:py-16 bg-background">
+        {/* Project Detail Content */}
+        <section className="py-12 md:py-16 bg-background pt-6">
           <div className="container mx-auto px-4">
             {/* Back Button */}
             <Button 
