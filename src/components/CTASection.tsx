@@ -1,4 +1,4 @@
-import { ArrowRight, Phone, Mail } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 
@@ -24,7 +24,7 @@ const CTASection = () => {
             Contact us today for a free consultation. Our expert team is ready to help you make the best investment decision.
           </p>
 
-          <div className="flex flex-col sm:flex-row justify-center gap-2 md:gap-4 mb-6 md:mb-12">
+          <div className="flex flex-col sm:flex-row justify-center gap-2 md:gap-4">
             <Button 
               size="lg"
               className="bg-background text-foreground hover:bg-background/90 rounded-none px-5 md:px-8 py-3 md:py-6 text-xs md:text-lg font-semibold"
@@ -38,34 +38,6 @@ const CTASection = () => {
             >
               View Our Projects
             </Button>
-          </div>
-
-          {/* Contact Info */}
-          <div className="flex flex-col sm:flex-row justify-center gap-4 md:gap-8 text-primary-foreground">
-            <a 
-              href="tel:+919515541663" 
-              className="flex items-center gap-2 md:gap-3 hover:opacity-80 transition-opacity justify-center sm:justify-start"
-            >
-              <div className="w-9 h-9 md:w-12 md:h-12 rounded-full bg-primary-foreground/20 flex items-center justify-center">
-                <Phone className="w-4 h-4 md:w-5 md:h-5" />
-              </div>
-              <div className="text-left">
-                <p className="text-xs md:text-sm opacity-70">Call Us</p>
-                <p className="font-semibold text-sm md:text-base">+91 95155 41663</p>
-              </div>
-            </a>
-            <a 
-              href="mailto:info@varakrishnainfra.com" 
-              className="flex items-center gap-2 md:gap-3 hover:opacity-80 transition-opacity justify-center sm:justify-start"
-            >
-              <div className="w-9 h-9 md:w-12 md:h-12 rounded-full bg-primary-foreground/20 flex items-center justify-center">
-                <Mail className="w-4 h-4 md:w-5 md:h-5" />
-              </div>
-              <div className="text-left">
-                <p className="text-xs md:text-sm opacity-70">Email Us</p>
-                <p className="font-semibold text-sm md:text-base">info@varakrishnainfra.com</p>
-              </div>
-            </a>
           </div>
         </div>
       </div>
