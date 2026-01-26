@@ -1,6 +1,8 @@
+import { useState, useEffect } from "react";
 import { ArrowRight, Building, Home, Landmark, HardHat, TreePine, Factory } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
+import { ServiceCardSkeleton } from "@/components/ui/shimmer-skeleton";
 
 const services = [
   {
@@ -43,6 +45,13 @@ const services = [
 
 const ServicesSection = () => {
   const { ref, isVisible } = useScrollAnimation(0.1);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate initial load delay for skeleton demonstration
+    const timer = setTimeout(() => setIsLoading(false), 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <section id="services" className="py-20 md:py-28 bg-secondary relative overflow-hidden">
@@ -66,37 +75,45 @@ const ServicesSection = () => {
         </div>
 
         {/* Services Grid */}
-        <div className={`grid md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-children ${isVisible ? 'in-view' : ''}`}>
-          {services.map((service, index) => (
-            <div 
-              key={index} 
-              className="bg-background rounded-xl p-8 transition-all duration-500 hover:-translate-y-2 group cursor-pointer border border-transparent hover:border-primary/20"
-              style={{ boxShadow: 'var(--shadow-card)' }}
-            >
-              {/* Icon */}
-              <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-6 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}>
-                <service.icon className="w-8 h-8 text-white" />
-              </div>
-
-              {/* Content */}
-              <h3 className="text-xl font-serif font-bold text-foreground mb-4 group-hover:text-primary transition-colors">
-                {service.title}
-              </h3>
-              <p className="text-muted-foreground leading-relaxed mb-6">
-                {service.description}
-              </p>
-
-              {/* Link */}
-              <Button 
-                variant="link" 
-                className="p-0 text-primary font-semibold uppercase tracking-wide text-sm group-hover:gap-4 transition-all"
+        {isLoading ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[...Array(6)].map((_, index) => (
+              <ServiceCardSkeleton key={index} />
+            ))}
+          </div>
+        ) : (
+          <div className={`grid md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-children ${isVisible ? 'in-view' : ''}`}>
+            {services.map((service, index) => (
+              <div 
+                key={index} 
+                className="bg-background rounded-xl p-8 transition-all duration-500 hover:-translate-y-2 group cursor-pointer border border-transparent hover:border-primary/20"
+                style={{ boxShadow: 'var(--shadow-card)' }}
               >
-                Learn More 
-                <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-2" />
-              </Button>
-            </div>
-          ))}
-        </div>
+                {/* Icon */}
+                <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-6 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3`}>
+                  <service.icon className="w-8 h-8 text-white" />
+                </div>
+
+                {/* Content */}
+                <h3 className="text-xl font-serif font-bold text-foreground mb-4 group-hover:text-primary transition-colors">
+                  {service.title}
+                </h3>
+                <p className="text-muted-foreground leading-relaxed mb-6">
+                  {service.description}
+                </p>
+
+                {/* Link */}
+                <Button 
+                  variant="link" 
+                  className="p-0 text-primary font-semibold uppercase tracking-wide text-sm group-hover:gap-4 transition-all"
+                >
+                  Learn More 
+                  <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-2" />
+                </Button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

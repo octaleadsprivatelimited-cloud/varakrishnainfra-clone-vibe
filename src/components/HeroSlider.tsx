@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight, ArrowRight, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { HeroSkeleton } from "@/components/ui/shimmer-skeleton";
+import { useMultipleImageLoader } from "@/hooks/useImageLoader";
 import heroSlide1 from "@/assets/hero-slide-1.jpg";
 import heroSlide2 from "@/assets/hero-slide-2.jpg";
 import heroSlide3 from "@/assets/hero-slide-3.jpg";
@@ -29,6 +31,7 @@ const slides = [
 const HeroSlider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const { allLoaded } = useMultipleImageLoader(slides.map(s => s.image));
 
   const nextSlide = useCallback(() => {
     if (isAnimating) return;
@@ -45,9 +48,15 @@ const HeroSlider = () => {
   };
 
   useEffect(() => {
+    if (!allLoaded) return;
     const timer = setInterval(nextSlide, 6000);
     return () => clearInterval(timer);
-  }, [nextSlide]);
+  }, [nextSlide, allLoaded]);
+
+  // Show skeleton while images are loading
+  if (!allLoaded) {
+    return <HeroSkeleton />;
+  }
 
   return (
     <div className="relative h-[85vh] md:h-[90vh] overflow-hidden">
