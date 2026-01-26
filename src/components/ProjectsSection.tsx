@@ -10,6 +10,7 @@ import serviceApartments from "@/assets/service-apartments.jpg";
 import heroSlide1 from "@/assets/hero-slide-1.jpg";
 import heroSlide2 from "@/assets/hero-slide-2.jpg";
 import heroSlide3 from "@/assets/hero-slide-3.jpg";
+import projectsBg from "@/assets/projects-bg.jpg";
 
 const tabs = ["All", "Residential", "Commercial", "Plots"];
 
@@ -91,8 +92,16 @@ const ProjectsSection = () => {
     : allProjects.filter(p => p.type === activeTab);
 
   return (
-    <section id="projects" className="py-12 md:py-28 bg-background">
-      <div className="container mx-auto px-4" ref={ref}>
+    <section id="projects" className="py-12 md:py-28 relative overflow-hidden">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
+        style={{ backgroundImage: `url(${projectsBg})` }}
+      />
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-background/95" />
+      
+      <div className="container mx-auto px-4 relative z-10" ref={ref}>
         {/* Header */}
         <div className={`text-center max-w-3xl mx-auto mb-6 md:mb-12 fade-up ${isVisible ? 'in-view' : ''}`}>
           <div className="inline-flex items-center gap-2 text-primary font-semibold text-xs md:text-sm uppercase tracking-wider mb-2 md:mb-4">
