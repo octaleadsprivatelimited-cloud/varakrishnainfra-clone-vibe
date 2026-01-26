@@ -46,3 +46,15 @@ export interface SiteSettings {
   socialLinks: SocialLinks;
   updatedAt: Date;
 }
+
+export interface Enquiry {
+  id: string;
+  projectId: string;
+  projectTitle: string;
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+  status: 'new' | 'contacted' | 'closed';
+  createdAt: Date;
+}

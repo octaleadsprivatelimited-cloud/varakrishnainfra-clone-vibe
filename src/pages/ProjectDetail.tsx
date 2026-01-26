@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { Project } from "@/types/admin";
 import { Link } from "react-router-dom";
+import ProjectEnquiryForm from "@/components/ProjectEnquiryForm";
 
 const ProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -363,19 +364,24 @@ const ProjectDetail = () => {
                 {/* CTA Buttons */}
                 <div className="flex flex-col sm:flex-row gap-3 pt-4">
                   <Button size="lg" className="flex-1" asChild>
-                    <Link to="/contact">
+                    <a href="#enquiry-form">
                       <Phone className="w-4 h-4 mr-2" />
                       Schedule a Visit
-                    </Link>
+                    </a>
                   </Button>
                   <Button size="lg" variant="outline" className="flex-1" asChild>
                     <Link to="/contact">
                       <Mail className="w-4 h-4 mr-2" />
-                      Enquire Now
+                      General Enquiry
                     </Link>
                   </Button>
                 </div>
               </div>
+            </div>
+
+            {/* Enquiry Form Section */}
+            <div id="enquiry-form" className="mt-16 max-w-2xl mx-auto scroll-mt-24">
+              <ProjectEnquiryForm projectId={project.id} projectTitle={project.title} />
             </div>
           </div>
         </section>
