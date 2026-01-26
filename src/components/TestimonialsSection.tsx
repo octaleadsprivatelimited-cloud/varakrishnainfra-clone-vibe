@@ -31,25 +31,25 @@ const testimonials = [
 ];
 
 const TestimonialSkeleton = () => (
-  <div className="bg-background rounded-2xl shadow-2xl p-8 md:p-12 relative overflow-hidden">
+  <div className="bg-background rounded-xl md:rounded-2xl shadow-2xl p-5 md:p-12 relative overflow-hidden">
     {/* Stars */}
-    <div className="flex gap-1 mb-6">
+    <div className="flex gap-1 mb-3 md:mb-6">
       {[...Array(5)].map((_, i) => (
-        <ShimmerSkeleton key={i} variant="circular" className="w-5 h-5" />
+        <ShimmerSkeleton key={i} variant="circular" className="w-4 h-4 md:w-5 md:h-5" />
       ))}
     </div>
     {/* Quote */}
-    <div className="space-y-3 mb-8">
-      <ShimmerSkeleton variant="text" className="h-5 w-full" />
-      <ShimmerSkeleton variant="text" className="h-5 w-5/6" />
-      <ShimmerSkeleton variant="text" className="h-5 w-4/6" />
+    <div className="space-y-2 md:space-y-3 mb-4 md:mb-8">
+      <ShimmerSkeleton variant="text" className="h-4 md:h-5 w-full" />
+      <ShimmerSkeleton variant="text" className="h-4 md:h-5 w-5/6" />
+      <ShimmerSkeleton variant="text" className="h-4 md:h-5 w-4/6 hidden md:block" />
     </div>
     {/* Author */}
-    <div className="flex items-center gap-4">
-      <ShimmerSkeleton variant="circular" className="w-16 h-16" />
-      <div className="space-y-2">
-        <ShimmerSkeleton variant="text" className="h-5 w-28" />
-        <ShimmerSkeleton variant="text" className="h-4 w-36" />
+    <div className="flex items-center gap-3 md:gap-4">
+      <ShimmerSkeleton variant="circular" className="w-10 h-10 md:w-16 md:h-16" />
+      <div className="space-y-1 md:space-y-2">
+        <ShimmerSkeleton variant="text" className="h-4 md:h-5 w-24 md:w-28" />
+        <ShimmerSkeleton variant="text" className="h-3 md:h-4 w-28 md:w-36" />
       </div>
     </div>
   </div>
@@ -81,20 +81,20 @@ const TestimonialsSection = () => {
   }, [isLoading]);
 
   return (
-    <section className="py-20 md:py-28 bg-secondary relative overflow-hidden">
+    <section className="py-12 md:py-28 bg-secondary relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 left-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
       
       <div className="container mx-auto px-4 relative" ref={ref}>
         {/* Header */}
-        <div className={`text-center max-w-3xl mx-auto mb-16 fade-up ${isVisible ? 'in-view' : ''}`}>
-          <div className="inline-flex items-center gap-2 text-primary font-semibold text-sm uppercase tracking-wider mb-4">
-            <span className="w-8 h-0.5 bg-primary" />
+        <div className={`text-center max-w-3xl mx-auto mb-6 md:mb-16 fade-up ${isVisible ? 'in-view' : ''}`}>
+          <div className="inline-flex items-center gap-2 text-primary font-semibold text-xs md:text-sm uppercase tracking-wider mb-2 md:mb-4">
+            <span className="w-6 md:w-8 h-0.5 bg-primary" />
             Testimonials
-            <span className="w-8 h-0.5 bg-primary" />
+            <span className="w-6 md:w-8 h-0.5 bg-primary" />
           </div>
-          <h2 className="section-title">
+          <h2 className="text-xl md:text-3xl lg:text-4xl font-serif font-bold">
             What Our <span className="text-gradient">Clients Say</span>
           </h2>
         </div>
@@ -105,32 +105,32 @@ const TestimonialsSection = () => {
           ) : (
             <>
               {/* Testimonial Card */}
-              <div className="bg-background rounded-2xl shadow-2xl p-8 md:p-12 relative overflow-hidden">
+              <div className="bg-background rounded-xl md:rounded-2xl shadow-2xl p-5 md:p-12 relative overflow-hidden">
                 {/* Quote Icon */}
-                <Quote className="absolute top-8 right-8 w-24 h-24 text-primary/10" />
+                <Quote className="absolute top-4 right-4 md:top-8 md:right-8 w-12 h-12 md:w-24 md:h-24 text-primary/10" />
                 
                 {/* Stars */}
-                <div className="flex gap-1 mb-6">
+                <div className="flex gap-1 mb-3 md:mb-6">
                   {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-primary fill-primary" />
+                    <Star key={i} className="w-4 h-4 md:w-5 md:h-5 text-primary fill-primary" />
                   ))}
                 </div>
 
                 {/* Quote */}
-                <blockquote className="text-lg md:text-xl text-foreground leading-relaxed mb-8 relative z-10">
+                <blockquote className="text-sm md:text-xl text-foreground leading-relaxed mb-4 md:mb-8 relative z-10 line-clamp-3 md:line-clamp-none">
                   "{testimonials[currentIndex].text}"
                 </blockquote>
 
                 {/* Author */}
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-amber-500 flex items-center justify-center text-primary-foreground font-bold text-2xl font-serif">
+                <div className="flex items-center gap-3 md:gap-4">
+                  <div className="w-10 h-10 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-primary to-amber-500 flex items-center justify-center text-primary-foreground font-bold text-lg md:text-2xl font-serif flex-shrink-0">
                     {testimonials[currentIndex].name.charAt(0)}
                   </div>
                   <div>
-                    <h4 className="font-semibold text-lg text-foreground">
+                    <h4 className="font-semibold text-sm md:text-lg text-foreground">
                       {testimonials[currentIndex].name}
                     </h4>
-                    <p className="text-muted-foreground">
+                    <p className="text-xs md:text-base text-muted-foreground">
                       {testimonials[currentIndex].role}
                     </p>
                   </div>
@@ -140,26 +140,26 @@ const TestimonialsSection = () => {
           )}
 
           {/* Navigation */}
-          <div className="flex items-center justify-center gap-4 mt-8">
+          <div className="flex items-center justify-center gap-3 md:gap-4 mt-5 md:mt-8">
             <button
               onClick={prevTestimonial}
               disabled={isLoading}
-              className="w-12 h-12 rounded-full bg-background border-2 border-border text-foreground flex items-center justify-center hover:border-primary hover:text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-9 h-9 md:w-12 md:h-12 rounded-full bg-background border-2 border-border text-foreground flex items-center justify-center hover:border-primary hover:text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
             </button>
             
             {/* Dots */}
-            <div className="flex gap-2">
+            <div className="flex gap-1.5 md:gap-2">
               {testimonials.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentIndex(index)}
                   disabled={isLoading}
-                  className={`h-2.5 rounded-full transition-all duration-300 disabled:opacity-50 ${
+                  className={`h-2 md:h-2.5 rounded-full transition-all duration-300 disabled:opacity-50 ${
                     index === currentIndex
-                      ? "bg-primary w-10"
-                      : "bg-border w-2.5 hover:bg-primary/50"
+                      ? "bg-primary w-6 md:w-10"
+                      : "bg-border w-2 md:w-2.5 hover:bg-primary/50"
                   }`}
                 />
               ))}
@@ -168,9 +168,9 @@ const TestimonialsSection = () => {
             <button
               onClick={nextTestimonial}
               disabled={isLoading}
-              className="w-12 h-12 rounded-full bg-background border-2 border-border text-foreground flex items-center justify-center hover:border-primary hover:text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-9 h-9 md:w-12 md:h-12 rounded-full bg-background border-2 border-border text-foreground flex items-center justify-center hover:border-primary hover:text-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
             </button>
           </div>
         </div>
