@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import PageTransition from "@/components/PageTransition";
@@ -196,9 +197,11 @@ const Projects = () => {
                         </div>
                       )}
                       
-                      <Button className="w-full group/btn">
-                        View Details
-                        <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover/btn:translate-x-1" />
+                      <Button className="w-full group/btn" asChild>
+                        <Link to={`/projects/${project.id}`}>
+                          View Details
+                          <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover/btn:translate-x-1" />
+                        </Link>
                       </Button>
                     </div>
                   </div>
@@ -259,9 +262,11 @@ const Projects = () => {
                         </div>
                       )}
                       
-                      <Button className="self-start group/btn">
-                        View Details
-                        <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover/btn:translate-x-1" />
+                      <Button className="self-start group/btn" asChild>
+                        <Link to={`/projects/${project.id}`}>
+                          View Details
+                          <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover/btn:translate-x-1" />
+                        </Link>
                       </Button>
                     </div>
                   </div>
