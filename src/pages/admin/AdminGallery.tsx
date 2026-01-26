@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { useGallery } from '@/hooks/useFirestore';
-import { useFirebaseStorage } from '@/hooks/useFirebaseStorage';
+import { useFirestoreStorage } from '@/hooks/useFirestoreStorage';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -15,7 +15,7 @@ const galleryCategories = ['Residential', 'Commercial', 'Plots', 'Construction',
 
 const AdminGallery = () => {
   const { galleryItems, loading, addGalleryItem, deleteGalleryItem } = useGallery();
-  const { uploadFile, uploading, progress } = useFirebaseStorage();
+  const { uploadFile, uploading, progress } = useFirestoreStorage();
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('image');
