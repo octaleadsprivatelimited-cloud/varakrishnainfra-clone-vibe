@@ -4,13 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { Plus, Pencil, Trash2, Building2, MapPin, IndianRupee } from 'lucide-react';
 import { Project } from '@/types/admin';
+import ImageUploader from '@/components/admin/ImageUploader';
 
 const categories = [
   { value: 'residential', label: 'Residential' },
@@ -46,10 +47,10 @@ const AdminProjects = () => {
     bathrooms: '',
     parking: '',
     floors: '',
-    images: '',
-    floorPlanImages: '',
     featured: false
   });
+  const [projectImages, setProjectImages] = useState<string[]>([]);
+  const [floorPlanImages, setFloorPlanImages] = useState<string[]>([]);
 
   const resetForm = () => {
     setFormData({
@@ -66,10 +67,10 @@ const AdminProjects = () => {
       bathrooms: '',
       parking: '',
       floors: '',
-      images: '',
-      floorPlanImages: '',
       featured: false
     });
+    setProjectImages([]);
+    setFloorPlanImages([]);
     setEditingProject(null);
   };
 
@@ -89,10 +90,10 @@ const AdminProjects = () => {
       bathrooms: project.specifications.bathrooms || '',
       parking: project.specifications.parking || '',
       floors: project.specifications.floors || '',
-      images: project.images.join('\n'),
-      floorPlanImages: project.floorPlanImages.join('\n'),
       featured: project.featured
     });
+    setProjectImages(project.images || []);
+    setFloorPlanImages(project.floorPlanImages || []);
     setIsOpen(true);
   };
 
@@ -115,8 +116,8 @@ const AdminProjects = () => {
         parking: formData.parking,
         floors: formData.floors
       },
-      images: formData.images.split('\n').map(i => i.trim()).filter(Boolean),
-      floorPlanImages: formData.floorPlanImages.split('\n').map(i => i.trim()).filter(Boolean),
+      images: projectImages,
+      floorPlanImages: floorPlanImages,
       featured: formData.featured
     };
 
@@ -294,24 +295,24 @@ const AdminProjects = () => {
                   />
                 </div>
                 
+                {/* Image Upload Section */}
                 <div className="col-span-2">
-                  <Label htmlFor="images">Image URLs (one per line)</Label>
-                  <Textarea
-                    id="images"
-                    value={formData.images}
-                    onChange={(e) => setFormData({ ...formData, images: e.target.value })}
-                    rows={3}
-                    placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"
+                  <ImageUploader
+                    images={projectImages}
+                    onImagesChange={setProjectImages}
+                    folder="projects"
+                    label="Project Images"
+                    maxImages={10}
                   />
                 </div>
                 
                 <div className="col-span-2">
-                  <Label htmlFor="floorPlanImages">Floor Plan URLs (one per line)</Label>
-                  <Textarea
-                    id="floorPlanImages"
-                    value={formData.floorPlanImages}
-                    onChange={(e) => setFormData({ ...formData, floorPlanImages: e.target.value })}
-                    rows={2}
+                  <ImageUploader
+                    images={floorPlanImages}
+                    onImagesChange={setFloorPlanImages}
+                    folder="floor-plans"
+                    label="Floor Plan Images"
+                    maxImages={5}
                   />
                 </div>
                 
@@ -376,10 +377,10 @@ const AdminProjects = () => {
                     Featured
                   </span>
                 )}
-                <span className={`absolute top-2 right-2 text-xs px-2 py-1 rounded ${
-                  project.status === 'completed' ? 'bg-green-500 text-white' :
-                  project.status === 'ongoing' ? 'bg-blue-500 text-white' :
-                  'bg-yellow-500 text-white'
+                <span className={`absolute top-2 right-2 text-xs px-2 py-1 rounded text-white ${
+                  project.status === 'completed' ? 'bg-emerald-500' :
+                  project.status === 'ongoing' ? 'bg-amber-500' :
+                  'bg-blue-500'
                 }`}>
                   {project.status}
                 </span>
