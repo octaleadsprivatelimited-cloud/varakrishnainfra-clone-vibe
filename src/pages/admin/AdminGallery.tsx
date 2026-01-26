@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useGallery } from '@/hooks/useFirestore';
+import { useFirebaseStorage } from '@/hooks/useFirebaseStorage';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -8,19 +9,22 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, Trash2, Image, Video, Play } from 'lucide-react';
+import { Plus, Trash2, Image, Video, Play, Upload, Loader2 } from 'lucide-react';
 
 const galleryCategories = ['Residential', 'Commercial', 'Plots', 'Construction', 'Interiors', 'Infrastructure'];
 
 const AdminGallery = () => {
   const { galleryItems, loading, addGalleryItem, deleteGalleryItem } = useGallery();
+  const { uploadFile, uploading, progress } = useFirebaseStorage();
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('image');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     title: '',
     category: 'Residential',
-    imageUrl: '',
     youtubeUrl: ''
   });
 
@@ -30,14 +34,42 @@ const AdminGallery = () => {
     return match && match[2].length === 11 ? match[2] : null;
   };
 
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (!file.type.startsWith('image/')) {
+        toast({ title: "Invalid file", description: "Please select an image file", variant: "destructive" });
+        return;
+      }
+      setSelectedFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
+  };
+
+  const resetForm = () => {
+    setFormData({ title: '', category: 'Residential', youtubeUrl: '' });
+    setSelectedFile(null);
+    setPreviewUrl(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     try {
       if (activeTab === 'image') {
+        if (!selectedFile) {
+          toast({ title: "Error", description: "Please select an image", variant: "destructive" });
+          return;
+        }
+        
+        const { url } = await uploadFile(selectedFile, 'gallery');
+        
         await addGalleryItem({
           type: 'image',
-          url: formData.imageUrl,
+          url,
           title: formData.title,
           category: formData.category
         });
@@ -58,7 +90,7 @@ const AdminGallery = () => {
       
       toast({ title: "Success", description: `${activeTab === 'image' ? 'Image' : 'Video'} added successfully` });
       setIsOpen(false);
-      setFormData({ title: '', category: 'Residential', imageUrl: '', youtubeUrl: '' });
+      resetForm();
     } catch (error) {
       toast({ title: "Error", description: "Failed to add item", variant: "destructive" });
     }
@@ -85,7 +117,7 @@ const AdminGallery = () => {
           <h1 className="text-3xl font-bold">Gallery</h1>
           <p className="text-muted-foreground">Manage images and videos</p>
         </div>
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <Dialog open={isOpen} onOpenChange={(open) => { setIsOpen(open); if (!open) resetForm(); }}>
           <DialogTrigger asChild>
             <Button>
               <Plus className="w-4 h-4 mr-2" />
@@ -96,7 +128,7 @@ const AdminGallery = () => {
             <DialogHeader>
               <DialogTitle>Add Gallery Item</DialogTitle>
             </DialogHeader>
-            <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <Tabs value={activeTab} onValueChange={(v) => { setActiveTab(v); resetForm(); }}>
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="image">
                   <Image className="w-4 h-4 mr-2" />
@@ -133,16 +165,45 @@ const AdminGallery = () => {
                   </Select>
                 </div>
                 
-                <TabsContent value="image" className="mt-0">
+                <TabsContent value="image" className="mt-0 space-y-4">
                   <div>
-                    <Label htmlFor="imageUrl">Image URL</Label>
-                    <Input
-                      id="imageUrl"
-                      value={formData.imageUrl}
-                      onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                      placeholder="https://example.com/image.jpg"
-                      required={activeTab === 'image'}
+                    <Label>Upload Image</Label>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleFileSelect}
                     />
+                    
+                    {previewUrl ? (
+                      <div className="relative mt-2">
+                        <img 
+                          src={previewUrl} 
+                          alt="Preview" 
+                          className="w-full h-48 object-cover rounded-lg"
+                        />
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          size="sm"
+                          className="absolute bottom-2 right-2"
+                          onClick={() => fileInputRef.current?.click()}
+                        >
+                          Change
+                        </Button>
+                      </div>
+                    ) : (
+                      <div
+                        className="border-2 border-dashed border-border rounded-lg p-8 text-center cursor-pointer hover:border-primary/50 transition-colors mt-2"
+                        onClick={() => fileInputRef.current?.click()}
+                      >
+                        <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
+                        <p className="text-sm text-muted-foreground">
+                          Click to upload an image
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </TabsContent>
                 
@@ -163,10 +224,19 @@ const AdminGallery = () => {
                 </TabsContent>
                 
                 <div className="flex justify-end gap-2">
-                  <Button type="button" variant="outline" onClick={() => setIsOpen(false)}>
+                  <Button type="button" variant="outline" onClick={() => { setIsOpen(false); resetForm(); }}>
                     Cancel
                   </Button>
-                  <Button type="submit">Add {activeTab === 'image' ? 'Image' : 'Video'}</Button>
+                  <Button type="submit" disabled={uploading}>
+                    {uploading ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Uploading {progress}%
+                      </>
+                    ) : (
+                      `Add ${activeTab === 'image' ? 'Image' : 'Video'}`
+                    )}
+                  </Button>
                 </div>
               </form>
             </Tabs>
@@ -251,8 +321,8 @@ const AdminGallery = () => {
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                      <div className="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center">
-                        <Play className="w-8 h-8 text-white fill-white" />
+                      <div className="w-16 h-16 rounded-full bg-destructive flex items-center justify-center">
+                        <Play className="w-8 h-8 text-destructive-foreground fill-current" />
                       </div>
                     </div>
                   </div>
