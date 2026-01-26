@@ -12,7 +12,7 @@ import ProjectDetail from "./pages/ProjectDetail";
 import Services from "./pages/Services";
 import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
-import Team from "./pages/Team";
+
 import NotFound from "./pages/NotFound";
 import MobileBottomNav from "./components/MobileBottomNav";
 
@@ -61,7 +61,7 @@ const AnimatedRoutes = () => {
         <Route path="/services" element={<Services />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/team" element={<Team />} />
+        
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>
