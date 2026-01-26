@@ -27,7 +27,7 @@ const TopBar = () => {
             <FaTwitter className="w-2.5 h-2.5 lg:w-3 lg:h-3" />
           </a>
           <a 
-            href="https://youtube.com" 
+            href="https://www.youtube.com/@varakrishnainfra" 
             target="_blank" 
             rel="noopener noreferrer"
             className="p-1 lg:p-1.5 hover:bg-primary-foreground/10 transition-colors rounded"

@@ -34,7 +34,7 @@ const socialLinks = [
   { icon: FaTwitter, href: "#", label: "Twitter" },
   { icon: FaInstagram, href: "#", label: "Instagram" },
   { icon: FaLinkedinIn, href: "#", label: "LinkedIn" },
-  { icon: FaYoutube, href: "#", label: "YouTube" },
+  { icon: FaYoutube, href: "https://www.youtube.com/@varakrishnainfra", label: "YouTube" },
 ];
 
 interface CollapsibleSectionProps {
