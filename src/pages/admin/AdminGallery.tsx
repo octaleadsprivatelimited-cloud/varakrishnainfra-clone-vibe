@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
@@ -127,6 +127,9 @@ const AdminGallery = () => {
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Add Gallery Item</DialogTitle>
+              <DialogDescription>
+                Add a new image or video to the gallery. Choose the type and fill in the details.
+              </DialogDescription>
             </DialogHeader>
             <Tabs value={activeTab} onValueChange={(v) => { setActiveTab(v); resetForm(); }}>
               <TabsList className="grid w-full grid-cols-2">

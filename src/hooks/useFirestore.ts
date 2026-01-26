@@ -52,18 +52,52 @@ export const useProjects = () => {
   }, []);
 
   const addProject = async (project: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>) => {
-    await addDoc(collection(db, 'projects'), {
-      ...project,
-      createdAt: Timestamp.now(),
-      updatedAt: Timestamp.now()
-    });
+    try {
+      // Remove undefined values before sending to Firebase (Firebase doesn't accept undefined)
+      const cleanProject = Object.fromEntries(
+        Object.entries(project).filter(([_, v]) => v !== undefined)
+      ) as any;
+      
+      // Clean nested objects
+      if (cleanProject.specifications) {
+        cleanProject.specifications = Object.fromEntries(
+          Object.entries(cleanProject.specifications).filter(([_, v]) => v !== undefined)
+        );
+      }
+      
+      await addDoc(collection(db, 'projects'), {
+        ...cleanProject,
+        createdAt: Timestamp.now(),
+        updatedAt: Timestamp.now()
+      });
+    } catch (error: any) {
+      console.error('Error adding project to Firebase:', error);
+      throw new Error(error?.message || 'Failed to add project. Please check Firebase permissions and connection.');
+    }
   };
 
   const updateProject = async (id: string, project: Partial<Project>) => {
-    await updateDoc(doc(db, 'projects', id), {
-      ...project,
-      updatedAt: Timestamp.now()
-    });
+    try {
+      // Remove undefined values before sending to Firebase (Firebase doesn't accept undefined)
+      const cleanProject = Object.fromEntries(
+        Object.entries(project).filter(([_, v]) => v !== undefined)
+      ) as any;
+      
+      // Clean nested objects
+      if (cleanProject.specifications) {
+        cleanProject.specifications = Object.fromEntries(
+          Object.entries(cleanProject.specifications).filter(([_, v]) => v !== undefined)
+        );
+      }
+      
+      await updateDoc(doc(db, 'projects', id), {
+        ...cleanProject,
+        updatedAt: Timestamp.now()
+      });
+    } catch (error: any) {
+      console.error('Error updating project in Firebase:', error);
+      throw new Error(error?.message || 'Failed to update project. Please check Firebase permissions and connection.');
+    }
   };
 
   const deleteProject = async (id: string) => {

@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
@@ -106,41 +106,98 @@ const AdminProjects = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    const projectData = {
-      title: formData.title,
-      description: formData.description,
+    // Validate required fields
+    if (!formData.title.trim()) {
+      toast({ 
+        title: "Validation Error", 
+        description: "Project title is required", 
+        variant: "destructive" 
+      });
+      return;
+    }
+    
+    if (!formData.location.trim()) {
+      toast({ 
+        title: "Validation Error", 
+        description: "Location is required", 
+        variant: "destructive" 
+      });
+      return;
+    }
+    
+    // Helper function to remove undefined values from object
+    const removeUndefined = (obj: any): any => {
+      if (Array.isArray(obj)) {
+        return obj;
+      }
+      if (obj === null || typeof obj !== 'object') {
+        return obj;
+      }
+      const cleaned: any = {};
+      for (const key in obj) {
+        if (obj[key] !== undefined) {
+          cleaned[key] = typeof obj[key] === 'object' && !Array.isArray(obj[key]) 
+            ? removeUndefined(obj[key]) 
+            : obj[key];
+        }
+      }
+      return cleaned;
+    };
+
+    const specifications: any = {
+      area: formData.area.trim() || ''
+    };
+    
+    // Only add optional fields if they have values
+    if (formData.bedrooms.trim()) specifications.bedrooms = formData.bedrooms.trim();
+    if (formData.bathrooms.trim()) specifications.bathrooms = formData.bathrooms.trim();
+    if (formData.parking.trim()) specifications.parking = formData.parking.trim();
+    if (formData.floors.trim()) specifications.floors = formData.floors.trim();
+
+    const projectData: any = {
+      title: formData.title.trim(),
+      description: formData.description.trim() || '',
       category: formData.category,
       status: formData.status,
-      location: formData.location,
-      price: formData.price,
+      location: formData.location.trim(),
+      price: formData.price.trim() || '',
       priceUnit: formData.priceUnit,
       amenities: formData.amenities.split(',').map(a => a.trim()).filter(Boolean),
-      specifications: {
-        area: formData.area,
-        bedrooms: formData.bedrooms,
-        bathrooms: formData.bathrooms,
-        parking: formData.parking,
-        floors: formData.floors
-      },
-      images: projectImages,
-      floorPlanImages: floorPlanImages,
-      featured: formData.featured,
-      youtubeVideoId: formData.youtubeVideoId || undefined,
-      brochureUrl: formData.brochureUrl || undefined
+      specifications: specifications,
+      images: projectImages || [],
+      floorPlanImages: floorPlanImages || [],
+      featured: formData.featured
     };
+
+    // Only add optional fields if they have values
+    if (formData.youtubeVideoId?.trim()) {
+      projectData.youtubeVideoId = formData.youtubeVideoId.trim();
+    }
+    if (formData.brochureUrl?.trim()) {
+      projectData.brochureUrl = formData.brochureUrl.trim();
+    }
+
+    // Remove any undefined values before sending to Firebase
+    const cleanedProjectData = removeUndefined(projectData);
 
     try {
       if (editingProject) {
-        await updateProject(editingProject.id, projectData);
+        await updateProject(editingProject.id, cleanedProjectData);
         toast({ title: "Success", description: "Project updated successfully" });
       } else {
-        await addProject(projectData);
+        await addProject(cleanedProjectData);
         toast({ title: "Success", description: "Project added successfully" });
       }
       setIsOpen(false);
       resetForm();
-    } catch (error) {
-      toast({ title: "Error", description: "Failed to save project", variant: "destructive" });
+    } catch (error: any) {
+      console.error("Error saving project:", error);
+      const errorMessage = error?.message || "Failed to save project. Please check console for details.";
+      toast({ 
+        title: "Error", 
+        description: errorMessage, 
+        variant: "destructive" 
+      });
     }
   };
 
@@ -172,6 +229,9 @@ const AdminProjects = () => {
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>{editingProject ? 'Edit Project' : 'Add New Project'}</DialogTitle>
+              <DialogDescription>
+                {editingProject ? 'Update the project details below.' : 'Fill in the details to add a new project to the website.'}
+              </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
