@@ -67,7 +67,7 @@ const ServicesSection = () => {
   }, []);
 
   return (
-    <section id="services" className="py-12 md:py-28 relative overflow-hidden">
+    <section id="services" className="py-12 md:py-16 lg:py-20 relative overflow-hidden">
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -78,16 +78,16 @@ const ServicesSection = () => {
       
       <div className="container mx-auto px-4 relative z-10" ref={ref}>
         {/* Header */}
-        <div className={`text-center max-w-3xl mx-auto mb-8 md:mb-16 fade-up ${isVisible ? 'in-view' : ''}`}>
-          <div className="inline-flex items-center gap-2 text-primary font-semibold text-xs md:text-sm uppercase tracking-wider mb-2 md:mb-4">
+        <div className={`text-center max-w-3xl mx-auto mb-8 md:mb-10 gravity-drop ${isVisible ? 'in-view' : ''}`}>
+          <div className="inline-flex items-center gap-2 text-primary font-semibold text-xs md:text-sm uppercase tracking-wider mb-2 md:mb-3">
             <span className="w-6 md:w-8 h-0.5 bg-primary" />
             Our Services
             <span className="w-6 md:w-8 h-0.5 bg-primary" />
           </div>
-          <h2 className="text-xl md:text-3xl lg:text-4xl font-serif font-bold">
+          <h2 className="text-xl md:text-2xl lg:text-3xl font-serif font-bold">
             What We <span className="text-gradient">Offer</span>
           </h2>
-          <p className="text-sm md:text-base text-muted-foreground mt-2 md:mt-4">
+          <p className="text-sm md:text-sm text-muted-foreground mt-2 md:mt-3">
             Comprehensive real estate solutions tailored to your needs
           </p>
         </div>
@@ -100,7 +100,7 @@ const ServicesSection = () => {
             ))}
           </div>
         ) : (
-          <div className={`grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-8 stagger-children ${isVisible ? 'in-view' : ''}`}>
+          <div className={`grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-5 stagger-children ${isVisible ? 'in-view' : ''}`}>
             {services.map((service, index) => (
               <div 
                 key={index} 
@@ -116,16 +116,16 @@ const ServicesSection = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent group-hover:from-black/85 group-hover:via-black/50 transition-all duration-300" />
                 
                 {/* Content */}
-                <div className="relative z-10 p-3 md:p-8 min-h-[140px] md:min-h-[280px] flex flex-col justify-end">
+                <div className="relative z-10 p-3 md:p-6 min-h-[140px] md:min-h-[220px] flex flex-col justify-end">
                   {/* Icon */}
-                  <div className={`w-8 h-8 md:w-14 md:h-14 rounded-md md:rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-2 md:mb-4 transition-transform duration-500 group-hover:scale-110`}>
-                    <service.icon className="w-4 h-4 md:w-7 md:h-7 text-white" />
+                  <div className={`w-8 h-8 md:w-11 md:h-11 rounded-md md:rounded-lg bg-gradient-to-br ${service.color} flex items-center justify-center mb-2 md:mb-3 transition-transform duration-500 group-hover:scale-110`}>
+                    <service.icon className="w-4 h-4 md:w-5 md:h-5 text-white" />
                   </div>
 
-                  <h3 className="text-xs md:text-xl font-serif font-bold text-white mb-1 md:mb-3 leading-tight">
+                  <h3 className="text-xs md:text-base font-serif font-bold text-white mb-1 md:mb-2 leading-tight">
                     {service.title}
                   </h3>
-                  <p className="text-white/80 text-[10px] md:text-sm leading-snug md:leading-relaxed mb-0 md:mb-4">
+                  <p className="text-white/80 text-[10px] md:text-xs leading-snug md:leading-relaxed mb-0 md:mb-3">
                     {service.description}
                   </p>
 

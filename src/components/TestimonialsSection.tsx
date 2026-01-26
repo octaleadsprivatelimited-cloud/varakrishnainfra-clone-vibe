@@ -81,20 +81,20 @@ const TestimonialsSection = () => {
   }, [isLoading]);
 
   return (
-    <section className="py-12 md:py-28 bg-secondary relative overflow-hidden">
+    <section className="py-12 md:py-16 lg:py-20 bg-secondary relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 left-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
       
       <div className="container mx-auto px-4 relative" ref={ref}>
         {/* Header */}
-        <div className={`text-center max-w-3xl mx-auto mb-6 md:mb-16 fade-up ${isVisible ? 'in-view' : ''}`}>
-          <div className="inline-flex items-center gap-2 text-primary font-semibold text-xs md:text-sm uppercase tracking-wider mb-2 md:mb-4">
+        <div className={`text-center max-w-3xl mx-auto mb-6 md:mb-10 gravity-drop ${isVisible ? 'in-view' : ''}`}>
+          <div className="inline-flex items-center gap-2 text-primary font-semibold text-xs md:text-sm uppercase tracking-wider mb-2 md:mb-3">
             <span className="w-6 md:w-8 h-0.5 bg-primary" />
             Testimonials
             <span className="w-6 md:w-8 h-0.5 bg-primary" />
           </div>
-          <h2 className="text-xl md:text-3xl lg:text-4xl font-serif font-bold">
+          <h2 className="text-xl md:text-2xl lg:text-3xl font-serif font-bold">
             What Our <span className="text-gradient">Clients Say</span>
           </h2>
         </div>
