@@ -74,32 +74,32 @@ const Contact = () => {
         />
 
         {/* Contact Section */}
-        <section className="py-20 md:py-28 bg-background" ref={ref}>
+        <section className="py-10 md:py-20 lg:py-28 bg-background" ref={ref}>
           <div className="container mx-auto px-4">
-            <div className="grid lg:grid-cols-3 gap-12">
+            <div className="grid lg:grid-cols-3 gap-6 lg:gap-12">
               {/* Contact Form */}
               <div className={`lg:col-span-2 fade-left ${isVisible ? 'in-view' : ''}`}>
-                <div className="bg-secondary rounded-2xl p-8 md:p-10">
-                  <div className="flex items-center gap-3 mb-6">
-                    <MessageSquare className="w-6 h-6 text-primary" />
-                    <h2 className="text-2xl font-serif font-bold">Send Us a Message</h2>
+                <div className="bg-secondary rounded-xl md:rounded-2xl p-5 md:p-8 lg:p-10">
+                  <div className="flex items-center gap-2 md:gap-3 mb-4 md:mb-6">
+                    <MessageSquare className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+                    <h2 className="text-lg md:text-2xl font-serif font-bold">Send Us a Message</h2>
                   </div>
                   
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-6">
+                  <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+                    <div className="grid grid-cols-2 gap-3 md:gap-6">
                       <div>
-                        <label className="text-sm font-medium mb-2 block">Full Name *</label>
+                        <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">Full Name *</label>
                         <Input 
                           name="name"
                           value={formData.name}
                           onChange={handleChange}
                           placeholder="John Doe"
                           required
-                          className="bg-background"
+                          className="bg-background text-sm md:text-base h-9 md:h-10"
                         />
                       </div>
                       <div>
-                        <label className="text-sm font-medium mb-2 block">Email Address *</label>
+                        <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">Email *</label>
                         <Input 
                           name="email"
                           type="email"
@@ -107,52 +107,52 @@ const Contact = () => {
                           onChange={handleChange}
                           placeholder="john@example.com"
                           required
-                          className="bg-background"
+                          className="bg-background text-sm md:text-base h-9 md:h-10"
                         />
                       </div>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-2 gap-3 md:gap-6">
                       <div>
-                        <label className="text-sm font-medium mb-2 block">Phone Number *</label>
+                        <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">Phone *</label>
                         <Input 
                           name="phone"
                           value={formData.phone}
                           onChange={handleChange}
                           placeholder="+91 98765 43210"
                           required
-                          className="bg-background"
+                          className="bg-background text-sm md:text-base h-9 md:h-10"
                         />
                       </div>
                       <div>
-                        <label className="text-sm font-medium mb-2 block">Subject</label>
+                        <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">Subject</label>
                         <Input 
                           name="subject"
                           value={formData.subject}
                           onChange={handleChange}
                           placeholder="How can we help?"
-                          className="bg-background"
+                          className="bg-background text-sm md:text-base h-9 md:h-10"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="text-sm font-medium mb-2 block">Message *</label>
+                      <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">Message *</label>
                       <Textarea 
                         name="message"
                         value={formData.message}
                         onChange={handleChange}
                         placeholder="Tell us about your requirements..."
-                        rows={6}
+                        rows={4}
                         required
-                        className="bg-background resize-none"
+                        className="bg-background resize-none text-sm md:text-base"
                       />
                     </div>
 
                     <Button 
                       type="submit" 
-                      size="lg" 
-                      className="w-full md:w-auto cta-button"
+                      size="sm" 
+                      className="w-full md:w-auto cta-button text-sm md:text-base"
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? (
@@ -170,16 +170,16 @@ const Contact = () => {
 
               {/* Contact Info */}
               <div className={`fade-right ${isVisible ? 'in-view' : ''}`}>
-                <div className="space-y-6">
+                <div className="grid grid-cols-2 lg:grid-cols-1 gap-3 md:gap-6">
                   {contactInfo.map((info, index) => (
-                    <div key={index} className="bg-secondary rounded-xl p-6 flex gap-4 hover:bg-primary/5 transition-colors group">
-                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary group-hover:scale-110 transition-all">
-                        <info.icon className="w-6 h-6 text-primary group-hover:text-primary-foreground" />
+                    <div key={index} className="bg-secondary rounded-lg md:rounded-xl p-3 md:p-6 flex flex-col md:flex-row gap-2 md:gap-4 hover:bg-primary/5 transition-colors group">
+                      <div className="w-9 h-9 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary group-hover:scale-110 transition-all">
+                        <info.icon className="w-4 h-4 md:w-6 md:h-6 text-primary group-hover:text-primary-foreground" />
                       </div>
                       <div>
-                        <h3 className="font-bold mb-2">{info.title}</h3>
+                        <h3 className="font-bold text-xs md:text-base mb-1 md:mb-2">{info.title}</h3>
                         {info.lines.map((line, idx) => (
-                          <p key={idx} className="text-muted-foreground text-sm">{line}</p>
+                          <p key={idx} className="text-muted-foreground text-[10px] md:text-sm leading-relaxed">{line}</p>
                         ))}
                       </div>
                     </div>
@@ -187,11 +187,11 @@ const Contact = () => {
                 </div>
 
                 {/* Quick Contact CTA */}
-                <div className="mt-8 bg-primary rounded-xl p-6 text-primary-foreground">
-                  <h3 className="font-bold text-lg mb-2">Need Immediate Assistance?</h3>
-                  <p className="text-sm opacity-90 mb-4">Our team is ready to help you with any queries.</p>
-                  <Button variant="secondary" className="w-full">
-                    <Phone className="w-4 h-4 mr-2" />
+                <div className="mt-4 md:mt-8 bg-primary rounded-lg md:rounded-xl p-4 md:p-6 text-primary-foreground">
+                  <h3 className="font-bold text-sm md:text-lg mb-1 md:mb-2">Need Immediate Assistance?</h3>
+                  <p className="text-xs md:text-sm opacity-90 mb-3 md:mb-4">Our team is ready to help you.</p>
+                  <Button variant="secondary" size="sm" className="w-full text-xs md:text-sm">
+                    <Phone className="w-3 h-3 md:w-4 md:h-4 mr-2" />
                     Call +91 95155 41663
                   </Button>
                 </div>
@@ -201,13 +201,13 @@ const Contact = () => {
         </section>
 
         {/* Map Section */}
-        <section className="py-12 bg-secondary">
+        <section className="py-8 md:py-12 bg-secondary">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-serif font-bold mb-2">Our Location</h2>
-              <p className="text-muted-foreground">Visit our office in Jubilee Hills, Hyderabad</p>
+            <div className="text-center mb-4 md:mb-8">
+              <h2 className="text-lg md:text-2xl font-serif font-bold mb-1 md:mb-2">Our Location</h2>
+              <p className="text-muted-foreground text-xs md:text-base">Visit our office in Jubilee Hills, Hyderabad</p>
             </div>
-            <div className="rounded-2xl overflow-hidden h-[400px] shadow-lg">
+            <div className="rounded-xl md:rounded-2xl overflow-hidden h-[200px] md:h-[400px] shadow-lg">
               <iframe 
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3807.0!2d78.4!3d17.4!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTfCsDI0JzAwLjAiTiA3OMKwMjQnMDAuMCJF!5e0!3m2!1sen!2sin!4v1234567890"
                 width="100%"
@@ -223,24 +223,24 @@ const Contact = () => {
         </section>
 
         {/* Why Contact Us */}
-        <section className="py-16 md:py-20 bg-background pb-24 lg:pb-20">
+        <section className="py-10 md:py-16 lg:py-20 bg-background pb-20 md:pb-24 lg:pb-20">
           <div className="container mx-auto px-4">
-            <div className="text-center max-w-3xl mx-auto mb-12">
-              <h2 className="section-title">
+            <div className="text-center max-w-3xl mx-auto mb-6 md:mb-12">
+              <h2 className="text-xl md:text-2xl lg:text-3xl font-serif font-bold">
                 Why <span className="text-gradient">Contact Us</span>
               </h2>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-3 gap-3 md:gap-8">
               {[
                 { title: "Free Consultation", description: "Get expert advice on your property requirements at no cost" },
                 { title: "Site Visits", description: "Schedule complimentary site visits to our ongoing projects" },
                 { title: "24/7 Support", description: "Our dedicated team is available to assist you anytime" },
               ].map((item, index) => (
-                <div key={index} className="text-center p-6 rounded-xl bg-secondary hover:bg-primary/5 transition-colors">
-                  <CheckCircle className="w-12 h-12 text-primary mx-auto mb-4" />
-                  <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                  <p className="text-muted-foreground">{item.description}</p>
+                <div key={index} className="text-center p-3 md:p-6 rounded-lg md:rounded-xl bg-secondary hover:bg-primary/5 transition-colors">
+                  <CheckCircle className="w-8 h-8 md:w-12 md:h-12 text-primary mx-auto mb-2 md:mb-4" />
+                  <h3 className="text-xs md:text-xl font-bold mb-1 md:mb-2">{item.title}</h3>
+                  <p className="text-muted-foreground text-[10px] md:text-base leading-relaxed line-clamp-3 md:line-clamp-none">{item.description}</p>
                 </div>
               ))}
             </div>
