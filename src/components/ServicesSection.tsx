@@ -3,6 +3,7 @@ import { ArrowRight, Building, Home, Landmark, HardHat, TreePine, Factory } from
 import { Button } from "@/components/ui/button";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 import { ServiceCardSkeleton } from "@/components/ui/shimmer-skeleton";
+import servicesBg from "@/assets/services-bg.jpg";
 
 const services = [
   {
@@ -54,11 +55,16 @@ const ServicesSection = () => {
   }, []);
 
   return (
-    <section id="services" className="py-12 md:py-28 bg-secondary relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-primary/5 to-transparent" />
+    <section id="services" className="py-12 md:py-28 relative overflow-hidden">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${servicesBg})` }}
+      />
+      {/* Dark overlay for readability */}
+      <div className="absolute inset-0 bg-background/90" />
       
-      <div className="container mx-auto px-4 relative" ref={ref}>
+      <div className="container mx-auto px-4 relative z-10" ref={ref}>
         {/* Header */}
         <div className={`text-center max-w-3xl mx-auto mb-8 md:mb-16 fade-up ${isVisible ? 'in-view' : ''}`}>
           <div className="inline-flex items-center gap-2 text-primary font-semibold text-xs md:text-sm uppercase tracking-wider mb-2 md:mb-4">
