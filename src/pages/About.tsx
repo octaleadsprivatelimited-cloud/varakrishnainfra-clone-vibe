@@ -139,27 +139,27 @@ const About = () => {
         </section>
 
         {/* Core Values */}
-        <section className="py-20 md:py-28 bg-background" ref={valuesRef}>
+        <section className="py-12 md:py-20 lg:py-28 bg-background" ref={valuesRef}>
           <div className="container mx-auto px-4">
-            <div className={`text-center max-w-3xl mx-auto mb-16 fade-up ${valuesVisible ? 'in-view' : ''}`}>
-              <div className="inline-flex items-center gap-2 text-primary font-semibold text-sm uppercase tracking-wider mb-4">
-                <span className="w-8 h-0.5 bg-primary" />
+            <div className={`text-center max-w-3xl mx-auto mb-8 md:mb-16 fade-up ${valuesVisible ? 'in-view' : ''}`}>
+              <div className="inline-flex items-center gap-2 text-primary font-semibold text-xs md:text-sm uppercase tracking-wider mb-2 md:mb-4">
+                <span className="w-6 md:w-8 h-0.5 bg-primary" />
                 Our Values
-                <span className="w-8 h-0.5 bg-primary" />
+                <span className="w-6 md:w-8 h-0.5 bg-primary" />
               </div>
-              <h2 className="section-title">
+              <h2 className="text-xl md:text-2xl lg:text-3xl font-serif font-bold">
                 Principles That <span className="text-gradient">Guide Us</span>
               </h2>
             </div>
 
-            <div className={`grid md:grid-cols-2 lg:grid-cols-4 gap-8 stagger-children ${valuesVisible ? 'in-view' : ''}`}>
+            <div className={`grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-8 stagger-children ${valuesVisible ? 'in-view' : ''}`}>
               {values.map((value, index) => (
-                <div key={index} className="text-center p-8 rounded-2xl bg-secondary hover:bg-primary/5 transition-all duration-300 group">
-                  <div className="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
-                    <value.icon className="w-10 h-10 text-primary group-hover:text-primary-foreground transition-colors" />
+                <div key={index} className="text-center p-4 md:p-8 rounded-xl md:rounded-2xl bg-secondary hover:bg-primary/5 transition-all duration-300 group">
+                  <div className="w-12 h-12 md:w-20 md:h-20 rounded-xl md:rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-3 md:mb-6 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
+                    <value.icon className="w-6 h-6 md:w-10 md:h-10 text-primary group-hover:text-primary-foreground transition-colors" />
                   </div>
-                  <h3 className="text-xl font-serif font-bold mb-3">{value.title}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">{value.description}</p>
+                  <h3 className="text-sm md:text-xl font-serif font-bold mb-1 md:mb-3">{value.title}</h3>
+                  <p className="text-muted-foreground text-xs md:text-sm leading-relaxed line-clamp-3 md:line-clamp-none">{value.description}</p>
                 </div>
               ))}
             </div>
