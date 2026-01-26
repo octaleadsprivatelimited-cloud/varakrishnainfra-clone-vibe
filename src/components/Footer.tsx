@@ -115,7 +115,7 @@ const Footer = () => {
 
           {/* Quick Links - Collapsible on Mobile */}
           <CollapsibleSection title="Quick Links">
-            <ul className="space-y-1.5 md:space-y-3">
+            <ul className="space-y-0.5 md:space-y-3">
               {quickLinks.map((link, index) => (
                 <li key={index}>
                   <Link 
@@ -132,7 +132,7 @@ const Footer = () => {
 
           {/* Services - Collapsible on Mobile */}
           <CollapsibleSection title="Our Services">
-            <ul className="space-y-1.5 md:space-y-3">
+            <ul className="space-y-0.5 md:space-y-3">
               {services.map((service, index) => (
                 <li key={index}>
                   <Link 
