@@ -1,129 +1,51 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import PageTransition from "@/components/PageTransition";
 import { MapPin, Home, Maximize, ArrowRight, Filter, Grid, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { ShimmerSkeleton } from "@/components/ui/shimmer-skeleton";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
+import { useProjects } from "@/hooks/useFirestore";
 
-const categories = ["All", "Residential", "Commercial", "Plots", "Villas", "Farm Houses"];
-
-const allProjects = [
-  {
-    id: 1,
-    title: "Royal Gardens",
-    location: "Shamshabad, Hyderabad",
-    type: "Residential",
-    status: "Completed",
-    price: "₹45L - 1.2Cr",
-    area: "1200 - 3500 sqft",
-    units: "250 Units",
-    image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=600&fit=crop",
-    amenities: ["Swimming Pool", "Gym", "Clubhouse", "Park"],
-  },
-  {
-    id: 2,
-    title: "Emerald Heights",
-    location: "Gachibowli, Hyderabad",
-    type: "Residential",
-    status: "Ongoing",
-    price: "₹65L - 1.8Cr",
-    area: "1500 - 4200 sqft",
-    units: "180 Units",
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop",
-    amenities: ["Rooftop Garden", "Smart Home", "EV Charging"],
-  },
-  {
-    id: 3,
-    title: "Green Valley Plots",
-    location: "Mokila, Hyderabad",
-    type: "Plots",
-    status: "Available",
-    price: "₹25L - 80L",
-    area: "200 - 500 sqyds",
-    units: "120 Plots",
-    image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&h=600&fit=crop",
-    amenities: ["DTCP Approved", "Wide Roads", "Park"],
-  },
-  {
-    id: 4,
-    title: "Skyline Towers",
-    location: "Madhapur, Hyderabad",
-    type: "Commercial",
-    status: "Completed",
-    price: "₹1.5Cr - 5Cr",
-    area: "500 - 5000 sqft",
-    units: "50 Units",
-    image: "https://images.unsplash.com/photo-1464938050520-ef2571e95e44?w=800&h=600&fit=crop",
-    amenities: ["24/7 Security", "Parking", "Cafeteria"],
-  },
-  {
-    id: 5,
-    title: "Palm Villas",
-    location: "Shankarpally, Hyderabad",
-    type: "Villas",
-    status: "Ongoing",
-    price: "₹1.2Cr - 2.5Cr",
-    area: "2500 - 4500 sqft",
-    units: "45 Villas",
-    image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop",
-    amenities: ["Private Garden", "Clubhouse", "Tennis Court"],
-  },
-  {
-    id: 6,
-    title: "Sunrise Farm Houses",
-    location: "Chevella, Hyderabad",
-    type: "Farm Houses",
-    status: "Available",
-    price: "₹35L - 1.2Cr",
-    area: "500 - 2000 sqyds",
-    units: "30 Units",
-    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
-    amenities: ["Organic Farm", "Lake View", "Eco-friendly"],
-  },
-  {
-    id: 7,
-    title: "Metro Business Park",
-    location: "Hitech City, Hyderabad",
-    type: "Commercial",
-    status: "Completed",
-    price: "₹2Cr - 10Cr",
-    area: "1000 - 10000 sqft",
-    units: "100 Units",
-    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop",
-    amenities: ["Metro Access", "Food Court", "Conference Rooms"],
-  },
-  {
-    id: 8,
-    title: "Lake View Residency",
-    location: "Kondapur, Hyderabad",
-    type: "Residential",
-    status: "Ongoing",
-    price: "₹55L - 1.5Cr",
-    area: "1300 - 3800 sqft",
-    units: "200 Units",
-    image: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop",
-    amenities: ["Lake View", "Jogging Track", "Kids Play Area"],
-  },
-];
+const categories = ["All", "Residential", "Commercial", "Plots", "Villas", "Farm Houses", "Construction", "Infrastructure"];
 
 const Projects = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const { ref, isVisible } = useScrollAnimation(0.1);
+  const { projects, loading } = useProjects();
 
-  const filteredProjects = activeCategory === "All" 
-    ? allProjects 
-    : allProjects.filter(p => p.type === activeCategory);
+  // Map Firebase categories to display categories
+  const categoryMap: Record<string, string> = {
+    residential: "Residential",
+    commercial: "Commercial",
+    plots: "Plots",
+    construction: "Construction",
+    farmhouse: "Farm Houses",
+    infrastructure: "Infrastructure",
+  };
+
+  const filteredProjects = useMemo(() => {
+    if (activeCategory === "All") return projects;
+    return projects.filter(p => {
+      const displayCategory = categoryMap[p.category] || p.category;
+      return displayCategory === activeCategory;
+    });
+  }, [projects, activeCategory]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "Completed": return "bg-emerald-500";
-      case "Ongoing": return "bg-amber-500";
-      case "Available": return "bg-blue-500";
+      case "completed": return "bg-emerald-500";
+      case "ongoing": return "bg-amber-500";
+      case "upcoming": return "bg-blue-500";
       default: return "bg-muted";
     }
+  };
+
+  const getStatusLabel = (status: string) => {
+    return status.charAt(0).toUpperCase() + status.slice(1);
   };
 
   return (
@@ -184,14 +106,35 @@ const Projects = () => {
               </p>
             </div>
 
-            {viewMode === "grid" ? (
+            {loading ? (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div key={i} className="bg-background rounded-2xl overflow-hidden border border-border">
+                    <ShimmerSkeleton className="h-64 w-full" />
+                    <div className="p-6 space-y-4">
+                      <ShimmerSkeleton className="h-6 w-3/4" />
+                      <ShimmerSkeleton className="h-4 w-1/2" />
+                      <div className="grid grid-cols-2 gap-4">
+                        <ShimmerSkeleton className="h-4" />
+                        <ShimmerSkeleton className="h-4" />
+                      </div>
+                      <ShimmerSkeleton className="h-10 w-full" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : filteredProjects.length === 0 ? (
+              <div className="text-center py-16">
+                <p className="text-muted-foreground text-lg">No projects found in this category.</p>
+              </div>
+            ) : viewMode === "grid" ? (
               <div className={`grid md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-children ${isVisible ? 'in-view' : ''}`}>
                 {filteredProjects.map((project) => (
                   <div key={project.id} className="group bg-background rounded-2xl overflow-hidden border border-border hover:border-primary/50 transition-all duration-500 hover:-translate-y-2" style={{ boxShadow: 'var(--shadow-card)' }}>
                     {/* Image */}
                     <div className="relative h-64 overflow-hidden">
                       <img 
-                        src={project.image} 
+                        src={project.images?.[0] || "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=600&fit=crop"} 
                         alt={project.title}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
@@ -199,17 +142,17 @@ const Projects = () => {
                       
                       {/* Status Badge */}
                       <Badge className={`absolute top-4 left-4 ${getStatusColor(project.status)} text-white border-0`}>
-                        {project.status}
+                        {getStatusLabel(project.status)}
                       </Badge>
                       
                       {/* Type Badge */}
                       <Badge variant="secondary" className="absolute top-4 right-4">
-                        {project.type}
+                        {categoryMap[project.category] || project.category}
                       </Badge>
                       
                       {/* Price */}
                       <div className="absolute bottom-4 left-4 right-4">
-                        <p className="text-white font-bold text-xl">{project.price}</p>
+                        <p className="text-white font-bold text-xl">{project.price} {project.priceUnit}</p>
                       </div>
                     </div>
                     
@@ -227,27 +170,31 @@ const Projects = () => {
                       <div className="grid grid-cols-2 gap-4 mb-4">
                         <div className="flex items-center gap-2 text-sm">
                           <Maximize className="w-4 h-4 text-primary" />
-                          <span>{project.area}</span>
+                          <span>{project.specifications?.area || "N/A"}</span>
                         </div>
-                        <div className="flex items-center gap-2 text-sm">
-                          <Home className="w-4 h-4 text-primary" />
-                          <span>{project.units}</span>
-                        </div>
+                        {project.specifications?.bedrooms && (
+                          <div className="flex items-center gap-2 text-sm">
+                            <Home className="w-4 h-4 text-primary" />
+                            <span>{project.specifications.bedrooms} BHK</span>
+                          </div>
+                        )}
                       </div>
                       
                       {/* Amenities */}
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {project.amenities.slice(0, 3).map((amenity, idx) => (
-                          <span key={idx} className="text-xs bg-secondary px-2 py-1 rounded-full">
-                            {amenity}
-                          </span>
-                        ))}
-                        {project.amenities.length > 3 && (
-                          <span className="text-xs bg-secondary px-2 py-1 rounded-full">
-                            +{project.amenities.length - 3} more
-                          </span>
-                        )}
-                      </div>
+                      {project.amenities && project.amenities.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {project.amenities.slice(0, 3).map((amenity, idx) => (
+                            <span key={idx} className="text-xs bg-secondary px-2 py-1 rounded-full">
+                              {amenity}
+                            </span>
+                          ))}
+                          {project.amenities.length > 3 && (
+                            <span className="text-xs bg-secondary px-2 py-1 rounded-full">
+                              +{project.amenities.length - 3} more
+                            </span>
+                          )}
+                        </div>
+                      )}
                       
                       <Button className="w-full group/btn">
                         View Details
@@ -264,12 +211,12 @@ const Projects = () => {
                     {/* Image */}
                     <div className="relative w-full md:w-80 h-64 md:h-auto overflow-hidden flex-shrink-0">
                       <img 
-                        src={project.image} 
+                        src={project.images?.[0] || "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=600&fit=crop"} 
                         alt={project.title}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
                       <Badge className={`absolute top-4 left-4 ${getStatusColor(project.status)} text-white border-0`}>
-                        {project.status}
+                        {getStatusLabel(project.status)}
                       </Badge>
                     </div>
                     
@@ -277,7 +224,7 @@ const Projects = () => {
                     <div className="p-6 flex-1 flex flex-col">
                       <div className="flex items-start justify-between mb-4">
                         <div>
-                          <Badge variant="outline" className="mb-2">{project.type}</Badge>
+                          <Badge variant="outline" className="mb-2">{categoryMap[project.category] || project.category}</Badge>
                           <h3 className="text-2xl font-serif font-bold group-hover:text-primary transition-colors">
                             {project.title}
                           </h3>
@@ -286,27 +233,31 @@ const Projects = () => {
                             <span>{project.location}</span>
                           </div>
                         </div>
-                        <p className="text-primary font-bold text-xl">{project.price}</p>
+                        <p className="text-primary font-bold text-xl">{project.price} {project.priceUnit}</p>
                       </div>
                       
                       <div className="flex flex-wrap gap-6 mb-4">
                         <div className="flex items-center gap-2">
                           <Maximize className="w-5 h-5 text-primary" />
-                          <span className="font-medium">{project.area}</span>
+                          <span className="font-medium">{project.specifications?.area || "N/A"}</span>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Home className="w-5 h-5 text-primary" />
-                          <span className="font-medium">{project.units}</span>
-                        </div>
+                        {project.specifications?.bedrooms && (
+                          <div className="flex items-center gap-2">
+                            <Home className="w-5 h-5 text-primary" />
+                            <span className="font-medium">{project.specifications.bedrooms} BHK</span>
+                          </div>
+                        )}
                       </div>
                       
-                      <div className="flex flex-wrap gap-2 mb-4 flex-1">
-                        {project.amenities.map((amenity, idx) => (
-                          <span key={idx} className="text-xs bg-secondary px-3 py-1 rounded-full">
-                            {amenity}
-                          </span>
-                        ))}
-                      </div>
+                      {project.amenities && project.amenities.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mb-4 flex-1">
+                          {project.amenities.map((amenity, idx) => (
+                            <span key={idx} className="text-xs bg-secondary px-3 py-1 rounded-full">
+                              {amenity}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                       
                       <Button className="self-start group/btn">
                         View Details
