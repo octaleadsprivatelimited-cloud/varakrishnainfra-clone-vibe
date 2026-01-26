@@ -17,28 +17,28 @@ const AboutSection = () => {
   const { ref, isVisible } = useScrollAnimation(0.15);
 
   return (
-    <section id="about" className="py-12 md:py-28 bg-background overflow-hidden">
+    <section id="about" className="py-12 md:py-16 lg:py-20 bg-background overflow-hidden">
       <div className="container mx-auto px-4" ref={ref}>
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-20 items-center">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           {/* Image Grid - Hidden on mobile, shown on larger screens */}
-          <div className={`relative fade-left hidden md:block ${isVisible ? 'in-view' : ''}`}>
+          <div className={`relative gravity-drop hidden md:block ${isVisible ? 'in-view' : ''}`}>
             <div className="grid grid-cols-12 gap-4">
               <div className="col-span-7">
                 <div className="relative overflow-hidden rounded-lg">
                   <img 
                     src={heroSlide1} 
                     alt="Modern Villa Project" 
-                    className="w-full h-80 object-cover transition-transform duration-700 hover:scale-110"
+                    className="w-full h-64 object-cover transition-transform duration-700 hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-primary/40 to-transparent" />
                 </div>
               </div>
-              <div className="col-span-5 pt-12">
+              <div className="col-span-5 pt-10">
                 <div className="relative overflow-hidden rounded-lg">
                   <img 
                     src={heroSlide3} 
                     alt="Luxury Villa" 
-                    className="w-full h-64 object-cover transition-transform duration-700 hover:scale-110"
+                    className="w-full h-52 object-cover transition-transform duration-700 hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-primary/40 to-transparent" />
                 </div>
@@ -46,10 +46,10 @@ const AboutSection = () => {
             </div>
 
             {/* Experience Badge */}
-            <div className="absolute -bottom-6 right-8 bg-primary text-primary-foreground p-6 rounded-lg shadow-xl z-10 animate-float">
+            <div className="absolute -bottom-4 right-8 bg-primary text-primary-foreground p-5 rounded-lg shadow-xl z-10 animate-float">
               <div className="text-center">
-                <span className="text-5xl font-serif font-bold">15+</span>
-                <p className="text-sm font-medium mt-1">Years of<br />Excellence</p>
+                <span className="text-4xl font-serif font-bold">15+</span>
+                <p className="text-xs font-medium mt-1">Years of<br />Excellence</p>
               </div>
             </div>
           </div>
@@ -72,16 +72,16 @@ const AboutSection = () => {
               </div>
             </div>
 
-            <div className="inline-flex items-center gap-2 text-primary font-semibold text-xs md:text-sm uppercase tracking-wider mb-2 md:mb-4">
+            <div className="inline-flex items-center gap-2 text-primary font-semibold text-xs md:text-sm uppercase tracking-wider mb-2 md:mb-3">
               <span className="w-6 md:w-8 h-0.5 bg-primary" />
               About Us
             </div>
 
-            <h2 className="text-xl md:text-3xl lg:text-4xl font-serif font-bold mb-3 md:mb-6">
+            <h2 className="text-xl md:text-2xl lg:text-3xl font-serif font-bold mb-3 md:mb-4">
               Building Dreams Into <span className="text-gradient">Reality</span>
             </h2>
 
-            <p className="text-muted-foreground text-sm md:text-lg leading-relaxed mb-4 md:mb-6">
+            <p className="text-muted-foreground text-sm md:text-base leading-relaxed mb-4 md:mb-5">
               Vara Krishna Infra is a leading real estate company in Hyderabad with 15+ years of experience and 150+ successful projects.
             </p>
 
