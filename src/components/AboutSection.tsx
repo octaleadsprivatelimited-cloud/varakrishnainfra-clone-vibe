@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Check, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
@@ -97,8 +98,10 @@ const AboutSection = () => {
               ))}
             </div>
 
-            <Button className="cta-button rounded-none text-sm md:text-base py-2 md:py-3 px-4 md:px-6">
-              Learn More <ArrowRight className="w-4 h-4 md:w-5 md:h-5 ml-1 md:ml-2" />
+            <Button className="cta-button rounded-none text-sm md:text-base py-2 md:py-3 px-4 md:px-6" asChild>
+              <Link to="/about">
+                Learn More <ArrowRight className="w-4 h-4 md:w-5 md:h-5 ml-1 md:ml-2" />
+              </Link>
             </Button>
           </div>
         </div>

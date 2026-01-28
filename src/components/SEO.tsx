@@ -102,7 +102,7 @@ const SEO = ({
       "description": "Leading Real Estate & Infrastructure Company in Hyderabad",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "Pillor no, P-55, 3rd Floor Dwaraka Heights, Plot no 132, Raghavendra Colony",
+        "streetAddress": "3rd Floor Dwaraka Heights, Plot no 132, Raghavendra Colony",
         "addressLocality": "Hyderabad",
         "addressRegion": "Telangana",
         "postalCode": "500039",

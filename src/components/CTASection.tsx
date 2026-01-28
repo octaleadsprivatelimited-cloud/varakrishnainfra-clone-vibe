@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
@@ -28,15 +29,21 @@ const CTASection = () => {
             <Button 
               size="lg"
               className="bg-background text-foreground hover:bg-background/90 rounded-none px-5 md:px-8 py-3 md:py-6 text-xs md:text-lg font-semibold"
+              asChild
             >
-              Get Free Consultation <ArrowRight className="w-4 h-4 md:w-5 md:h-5 ml-2" />
+              <Link to="/contact">
+                Get Free Consultation <ArrowRight className="w-4 h-4 md:w-5 md:h-5 ml-2" />
+              </Link>
             </Button>
             <Button 
               size="lg"
               variant="outline"
               className="border-2 border-white text-white bg-white/10 hover:bg-white hover:text-primary rounded-none px-5 md:px-8 py-3 md:py-6 text-xs md:text-lg font-semibold"
+              asChild
             >
-              View Our Projects
+              <Link to="/projects">
+                View Our Projects
+              </Link>
             </Button>
           </div>
         </div>

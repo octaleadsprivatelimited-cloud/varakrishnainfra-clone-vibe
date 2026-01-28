@@ -165,8 +165,8 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex gap-3">
                 <MapPin className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                <a href="https://www.google.com/maps/place/Vara+krishna+Infra+Pvt.+Ltd/@17.403479,78.5836973,21z/data=!4m22!1m15!4m14!1m6!1m2!1s0x3bcb93e37831f177:0x32d4499d34baaa78!2sT-Hub+Phase+2,+20,+Inorbit+Mall+Rd,+Vittal+Rao+Nagar,+Madhapur,+Hyderabad,+Telangana+500032!2m2!1d78.3792185!2d17.4345506!1m6!1m2!1s0x3bcb9fb72b88ab53:0xbca330d52616d42e!2sVara+krishna+Infra+Pvt.+Ltd,+Pillor+no,+P-55,+3rd+Floor+Dwaraka+Heights,+Plot+no+132,+Raghavendra+Colony,+Hyderabad,+Telangana+500039!2m2!1d78.583995!2d17.403479!3m5!1s0x3bcb9fb72b88ab53:0xbca330d52616d42e!8m2!3d17.403479!4d78.583995!16s%2Fg%2F11yvpwrcq0?entry=ttu&g_ep=EgoyMDI2MDEyNi4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" className="text-sm hover:text-primary transition-colors">
-                  Pillor no, P-55, 3rd Floor Dwaraka Heights, Plot no 132, Raghavendra Colony, Hyderabad, Telangana 500039
+                <a href="https://www.google.com/maps/place/Vara+krishna+Infra+Pvt.+Ltd/@17.403479,78.5836973,21z/data=!4m22!1m15!4m14!1m6!1m2!1s0x3bcb93e37831f177:0x32d4499d34baaa78!2sT-Hub+Phase+2,+20,+Inorbit+Mall+Rd,+Vittal+Rao+Nagar,+Madhapur,+Hyderabad,+Telangana+500032!2m2!1d78.3792185!2d17.4345506!1m6!1m2!1s0x3bcb9fb72b88ab53:0xbca330d52616d42e!2sVara+krishna+Infra+Pvt.+Ltd,+3rd+Floor+Dwaraka+Heights,+Plot+no+132,+Raghavendra+Colony,+Hyderabad,+Telangana+500039!2m2!1d78.583995!2d17.403479!3m5!1s0x3bcb9fb72b88ab53:0xbca330d52616d42e!8m2!3d17.403479!4d78.583995!16s%2Fg%2F11yvpwrcq0?entry=ttu&g_ep=EgoyMDI2MDEyNi4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" className="text-sm hover:text-primary transition-colors">
+                  3rd Floor Dwaraka Heights, Plot no 132, Raghavendra Colony, Hyderabad, Telangana 500039
                 </a>
               </li>
               <li className="flex gap-3">

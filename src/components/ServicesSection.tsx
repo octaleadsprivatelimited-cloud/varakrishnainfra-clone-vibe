@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { ArrowRight, Building, Home, Landmark, HardHat, TreePine, Factory } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
@@ -133,9 +134,12 @@ const ServicesSection = () => {
                   <Button 
                     variant="link" 
                     className="p-0 text-primary-foreground font-semibold uppercase tracking-wide text-xs md:text-sm group-hover:gap-4 transition-all hidden md:inline-flex"
+                    asChild
                   >
-                    Learn More 
-                    <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-2" />
+                    <Link to="/services">
+                      Learn More 
+                      <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-2" />
+                    </Link>
                   </Button>
                 </div>
               </div>

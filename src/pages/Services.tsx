@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import SEO from "@/components/SEO";
@@ -182,13 +183,17 @@ const Services = () => {
                     </div>
 
                     <div className="flex flex-wrap gap-2 md:gap-4">
-                      <Button className="cta-button text-xs md:text-sm py-2 px-3 md:py-3 md:px-4">
-                        Learn More
-                        <ArrowRight className="w-3 h-3 md:w-4 md:h-4 ml-1 md:ml-2" />
+                      <Button className="cta-button text-xs md:text-sm py-2 px-3 md:py-3 md:px-4" asChild>
+                        <Link to="/projects">
+                          Learn More
+                          <ArrowRight className="w-3 h-3 md:w-4 md:h-4 ml-1 md:ml-2" />
+                        </Link>
                       </Button>
-                      <Button variant="outline" className="cta-button-outline text-xs md:text-sm py-2 px-3 md:py-3 md:px-4">
-                        <Phone className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
-                        Get Quote
+                      <Button variant="outline" className="cta-button-outline text-xs md:text-sm py-2 px-3 md:py-3 md:px-4" asChild>
+                        <a href="tel:+918143341663">
+                          <Phone className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
+                          Get Quote
+                        </a>
                       </Button>
                     </div>
                   </div>
@@ -252,12 +257,16 @@ const Services = () => {
               Get in touch with our experts today for a free consultation
             </p>
             <div className="flex flex-wrap justify-center gap-2 md:gap-4">
-              <Button size="sm" variant="secondary" className="text-sm md:text-lg px-4 md:px-8">
-                <Phone className="w-4 h-4 md:w-5 md:h-5 mr-1 md:mr-2" />
-                Call Now
+              <Button size="sm" variant="secondary" className="text-sm md:text-lg px-4 md:px-8" asChild>
+                <a href="tel:+918143341663">
+                  <Phone className="w-4 h-4 md:w-5 md:h-5 mr-1 md:mr-2" />
+                  Call Now
+                </a>
               </Button>
-              <Button size="sm" variant="outline" className="text-sm md:text-lg px-4 md:px-8 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary">
-                Schedule Visit
+              <Button size="sm" variant="outline" className="text-sm md:text-lg px-4 md:px-8 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
+                <Link to="/contact">
+                  Schedule Visit
+                </Link>
               </Button>
             </div>
           </div>

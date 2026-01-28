@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { ArrowRight, MapPin, Bed, Square, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
@@ -201,8 +202,10 @@ const ProjectsSection = () => {
 
         {/* View All Button */}
         <div className="text-center mt-6 md:mt-8">
-          <Button className="cta-button-outline rounded-none text-sm md:text-sm py-2 md:py-2.5 px-4 md:px-5">
-            View All Projects <ArrowRight className="w-4 h-4 md:w-4 md:h-4 ml-1 md:ml-2" />
+          <Button className="cta-button-outline rounded-none text-sm md:text-sm py-2 md:py-2.5 px-4 md:px-5" asChild>
+            <Link to="/projects">
+              View All Projects <ArrowRight className="w-4 h-4 md:w-4 md:h-4 ml-1 md:ml-2" />
+            </Link>
           </Button>
         </div>
       </div>

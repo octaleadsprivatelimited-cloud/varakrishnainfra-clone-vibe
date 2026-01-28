@@ -4,7 +4,7 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
-import { MapPin, Home, Maximize, ArrowRight, Filter, Grid, List } from "lucide-react";
+import { MapPin, Home, Maximize, ArrowRight, Filter, Grid, List, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ShimmerSkeleton } from "@/components/ui/shimmer-skeleton";
@@ -16,6 +16,7 @@ const categories = ["All", "Residential", "Commercial", "Plots", "Villas", "Farm
 const Projects = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
   const { ref, isVisible } = useScrollAnimation(0.1);
   const { projects, loading } = useProjects();
 
@@ -66,56 +67,175 @@ const Projects = () => {
         />
 
         {/* Filters Section */}
-        <section className="py-8 bg-secondary border-b border-border sticky top-[52px] z-40">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
-              {/* Category Filters */}
-              <div className="flex flex-wrap items-center gap-3">
-                <Filter className="w-5 h-5 text-muted-foreground" />
-                {categories.map((cat) => (
-                  <Button
-                    key={cat}
-                    variant={activeCategory === cat ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setActiveCategory(cat)}
-                    className={activeCategory === cat ? "" : "border-border"}
-                  >
-                    {cat}
-                  </Button>
-                ))}
-              </div>
+        <section className="bg-secondary border-b border-border sticky top-[52px] z-40">
+          {/* Desktop Filters */}
+          <div className="hidden md:block py-4 lg:py-6">
+            <div className="container mx-auto px-4">
+              <div className="flex flex-col lg:flex-row items-center justify-between gap-4 lg:gap-6">
+                {/* Category Filters */}
+                <div className="flex flex-wrap items-center gap-2 lg:gap-3">
+                  <Filter className="w-4 h-4 lg:w-5 lg:h-5 text-muted-foreground flex-shrink-0" />
+                  <div className="flex flex-wrap gap-2 lg:gap-3">
+                    {categories.map((cat) => (
+                      <Button
+                        key={cat}
+                        variant={activeCategory === cat ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setActiveCategory(cat)}
+                        className={`text-xs lg:text-sm whitespace-nowrap ${
+                          activeCategory === cat 
+                            ? "" 
+                            : "border-border hover:border-primary/50"
+                        }`}
+                      >
+                        {cat}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
 
+                {/* View Toggle */}
+                <div className="flex items-center gap-1 bg-background rounded-lg p-1 border border-border">
+                  <button
+                    onClick={() => setViewMode("grid")}
+                    className={`p-2 rounded transition-colors ${
+                      viewMode === "grid" 
+                        ? "bg-primary text-primary-foreground" 
+                        : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                    }`}
+                    aria-label="Grid view"
+                  >
+                    <Grid className="w-4 h-4 lg:w-5 lg:h-5" />
+                  </button>
+                  <button
+                    onClick={() => setViewMode("list")}
+                    className={`p-2 rounded transition-colors ${
+                      viewMode === "list" 
+                        ? "bg-primary text-primary-foreground" 
+                        : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                    }`}
+                    aria-label="List view"
+                  >
+                    <List className="w-4 h-4 lg:w-5 lg:h-5" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile Filters */}
+          <div className="md:hidden">
+            {/* Mobile Filter Bar */}
+            <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+              <div className="flex items-center gap-2 flex-1 overflow-x-auto scrollbar-hide">
+                <Filter className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                <div className="flex items-center gap-2 flex-1 overflow-x-auto scrollbar-hide">
+                  {categories.slice(0, 4).map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => setActiveCategory(cat)}
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap flex-shrink-0 transition-all ${
+                        activeCategory === cat
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-background text-foreground border border-border"
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                  {categories.length > 4 && (
+                    <button
+                      onClick={() => setShowMobileFilters(!showMobileFilters)}
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap flex-shrink-0 border border-border transition-all ${
+                        showMobileFilters
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-background text-foreground"
+                      }`}
+                    >
+                      More
+                    </button>
+                  )}
+                </div>
+              </div>
+              
               {/* View Toggle */}
-              <div className="flex items-center gap-2 bg-background rounded-lg p-1">
+              <div className="flex items-center gap-1 bg-background rounded-lg p-1 border border-border ml-2 flex-shrink-0">
                 <button
                   onClick={() => setViewMode("grid")}
-                  className={`p-2 rounded ${viewMode === "grid" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
+                  className={`p-1.5 rounded transition-colors ${
+                    viewMode === "grid" 
+                      ? "bg-primary text-primary-foreground" 
+                      : "text-muted-foreground"
+                  }`}
+                  aria-label="Grid view"
                 >
-                  <Grid className="w-5 h-5" />
+                  <Grid className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => setViewMode("list")}
-                  className={`p-2 rounded ${viewMode === "list" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
+                  className={`p-1.5 rounded transition-colors ${
+                    viewMode === "list" 
+                      ? "bg-primary text-primary-foreground" 
+                      : "text-muted-foreground"
+                  }`}
+                  aria-label="List view"
                 >
-                  <List className="w-5 h-5" />
+                  <List className="w-4 h-4" />
                 </button>
               </div>
             </div>
+
+            {/* Expanded Mobile Filters */}
+            {showMobileFilters && (
+              <div className="px-4 py-3 bg-background border-b border-border animate-in slide-in-from-top-2">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-sm font-semibold">All Categories</span>
+                  <button
+                    onClick={() => setShowMobileFilters(false)}
+                    className="p-1 rounded-full hover:bg-secondary transition-colors"
+                    aria-label="Close filters"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  {categories.map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => {
+                        setActiveCategory(cat);
+                        setShowMobileFilters(false);
+                      }}
+                      className={`px-3 py-2 rounded-lg text-xs font-medium text-left transition-all ${
+                        activeCategory === cat
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-secondary text-foreground hover:bg-secondary/80"
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </section>
 
         {/* Projects Grid */}
-        <section className="py-16 md:py-24 bg-background pb-24 lg:pb-24" ref={ref}>
+        <section className="py-8 md:py-16 lg:py-24 bg-background pb-24 lg:pb-24" ref={ref}>
           <div className="container mx-auto px-4">
             {/* Results Count */}
-            <div className="mb-8">
-              <p className="text-muted-foreground">
-                Showing <span className="text-foreground font-semibold">{filteredProjects.length}</span> projects
+            <div className="mb-4 md:mb-8">
+              <p className="text-sm md:text-base text-muted-foreground">
+                Showing <span className="text-foreground font-semibold">{filteredProjects.length}</span> {filteredProjects.length === 1 ? 'project' : 'projects'}
+                {activeCategory !== "All" && (
+                  <span className="ml-1">in <span className="text-foreground font-semibold">{activeCategory}</span></span>
+                )}
               </p>
             </div>
 
             {loading ? (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
                 {[1, 2, 3, 4, 5, 6].map((i) => (
                   <div key={i} className="bg-background rounded-2xl overflow-hidden border border-border">
                     <ShimmerSkeleton className="h-64 w-full" />
@@ -136,11 +256,11 @@ const Projects = () => {
                 <p className="text-muted-foreground text-lg">No projects found in this category.</p>
               </div>
             ) : viewMode === "grid" ? (
-              <div className={`grid md:grid-cols-2 lg:grid-cols-3 gap-8 stagger-children ${isVisible ? 'in-view' : ''}`}>
+              <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 stagger-children ${isVisible ? 'in-view' : ''}`}>
                 {filteredProjects.map((project) => (
-                  <div key={project.id} className="group bg-background rounded-2xl overflow-hidden border border-border hover:border-primary/50 transition-all duration-500 hover:-translate-y-2" style={{ boxShadow: 'var(--shadow-card)' }}>
+                  <div key={project.id} className="group bg-background rounded-xl md:rounded-2xl overflow-hidden border border-border hover:border-primary/50 transition-all duration-500 hover:-translate-y-2" style={{ boxShadow: 'var(--shadow-card)' }}>
                     {/* Image */}
-                    <div className="relative h-64 overflow-hidden">
+                    <div className="relative h-48 md:h-64 overflow-hidden">
                       <img 
                         src={project.images?.[0] || "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=600&fit=crop"} 
                         alt={project.title}
@@ -165,24 +285,24 @@ const Projects = () => {
                     </div>
                     
                     {/* Content */}
-                    <div className="p-6">
-                      <h3 className="text-xl font-serif font-bold mb-2 group-hover:text-primary transition-colors">
+                    <div className="p-4 md:p-6">
+                      <h3 className="text-lg md:text-xl font-serif font-bold mb-2 group-hover:text-primary transition-colors line-clamp-2">
                         {project.title}
                       </h3>
                       
-                      <div className="flex items-center gap-2 text-muted-foreground text-sm mb-4">
-                        <MapPin className="w-4 h-4" />
-                        <span>{project.location}</span>
+                      <div className="flex items-center gap-2 text-muted-foreground text-xs md:text-sm mb-3 md:mb-4">
+                        <MapPin className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0" />
+                        <span className="line-clamp-1">{project.location}</span>
                       </div>
                       
-                      <div className="grid grid-cols-2 gap-4 mb-4">
-                        <div className="flex items-center gap-2 text-sm">
-                          <Maximize className="w-4 h-4 text-primary" />
-                          <span>{project.specifications?.area || "N/A"}</span>
+                      <div className="grid grid-cols-2 gap-2 md:gap-4 mb-3 md:mb-4">
+                        <div className="flex items-center gap-1.5 md:gap-2 text-xs md:text-sm">
+                          <Maximize className="w-3 h-3 md:w-4 md:h-4 text-primary flex-shrink-0" />
+                          <span className="truncate">{project.specifications?.area || "N/A"}</span>
                         </div>
                         {project.specifications?.bedrooms && (
-                          <div className="flex items-center gap-2 text-sm">
-                            <Home className="w-4 h-4 text-primary" />
+                          <div className="flex items-center gap-1.5 md:gap-2 text-xs md:text-sm">
+                            <Home className="w-3 h-3 md:w-4 md:h-4 text-primary flex-shrink-0" />
                             <span>{project.specifications.bedrooms} BHK</span>
                           </div>
                         )}
@@ -190,24 +310,24 @@ const Projects = () => {
                       
                       {/* Amenities */}
                       {project.amenities && project.amenities.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mb-4">
+                        <div className="flex flex-wrap gap-1.5 md:gap-2 mb-3 md:mb-4">
                           {project.amenities.slice(0, 3).map((amenity, idx) => (
-                            <span key={idx} className="text-xs bg-secondary px-2 py-1 rounded-full">
+                            <span key={idx} className="text-[10px] md:text-xs bg-secondary px-2 py-0.5 md:py-1 rounded-full">
                               {amenity}
                             </span>
                           ))}
                           {project.amenities.length > 3 && (
-                            <span className="text-xs bg-secondary px-2 py-1 rounded-full">
+                            <span className="text-[10px] md:text-xs bg-secondary px-2 py-0.5 md:py-1 rounded-full">
                               +{project.amenities.length - 3} more
                             </span>
                           )}
                         </div>
                       )}
                       
-                      <Button className="w-full group/btn" asChild>
+                      <Button className="w-full group/btn text-xs md:text-sm" size="sm" asChild>
                         <Link to={`/projects/${project.id}`}>
                           View Details
-                          <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover/btn:translate-x-1" />
+                          <ArrowRight className="w-3 h-3 md:w-4 md:h-4 ml-2 transition-transform group-hover/btn:translate-x-1" />
                         </Link>
                       </Button>
                     </div>
@@ -215,11 +335,11 @@ const Projects = () => {
                 ))}
               </div>
             ) : (
-              <div className={`space-y-6 stagger-children ${isVisible ? 'in-view' : ''}`}>
+              <div className={`space-y-4 md:space-y-6 stagger-children ${isVisible ? 'in-view' : ''}`}>
                 {filteredProjects.map((project) => (
-                  <div key={project.id} className="group bg-background rounded-2xl overflow-hidden border border-border hover:border-primary/50 transition-all duration-300 flex flex-col md:flex-row" style={{ boxShadow: 'var(--shadow-card)' }}>
+                  <div key={project.id} className="group bg-background rounded-xl md:rounded-2xl overflow-hidden border border-border hover:border-primary/50 transition-all duration-300 flex flex-col md:flex-row" style={{ boxShadow: 'var(--shadow-card)' }}>
                     {/* Image */}
-                    <div className="relative w-full md:w-80 h-64 md:h-auto overflow-hidden flex-shrink-0">
+                    <div className="relative w-full md:w-80 h-48 md:h-64 lg:h-auto overflow-hidden flex-shrink-0">
                       <img 
                         src={project.images?.[0] || "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=600&fit=crop"} 
                         alt={project.title}
@@ -231,48 +351,53 @@ const Projects = () => {
                     </div>
                     
                     {/* Content */}
-                    <div className="p-6 flex-1 flex flex-col">
-                      <div className="flex items-start justify-between mb-4">
-                        <div>
-                          <Badge variant="outline" className="mb-2">{categoryMap[project.category] || project.category}</Badge>
-                          <h3 className="text-2xl font-serif font-bold group-hover:text-primary transition-colors">
+                    <div className="p-4 md:p-6 flex-1 flex flex-col">
+                      <div className="flex items-start justify-between mb-3 md:mb-4 gap-2">
+                        <div className="flex-1 min-w-0">
+                          <Badge variant="outline" className="mb-2 text-xs">{categoryMap[project.category] || project.category}</Badge>
+                          <h3 className="text-lg md:text-2xl font-serif font-bold group-hover:text-primary transition-colors line-clamp-2">
                             {project.title}
                           </h3>
-                          <div className="flex items-center gap-2 text-muted-foreground mt-1">
-                            <MapPin className="w-4 h-4" />
-                            <span>{project.location}</span>
+                          <div className="flex items-center gap-2 text-muted-foreground mt-1 text-xs md:text-sm">
+                            <MapPin className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0" />
+                            <span className="line-clamp-1">{project.location}</span>
                           </div>
                         </div>
-                        <p className="text-primary font-bold text-xl">{project.price} {project.priceUnit}</p>
+                        <p className="text-primary font-bold text-base md:text-xl flex-shrink-0">{project.price} {project.priceUnit}</p>
                       </div>
                       
-                      <div className="flex flex-wrap gap-6 mb-4">
+                      <div className="flex flex-wrap gap-3 md:gap-6 mb-3 md:mb-4">
                         <div className="flex items-center gap-2">
-                          <Maximize className="w-5 h-5 text-primary" />
-                          <span className="font-medium">{project.specifications?.area || "N/A"}</span>
+                          <Maximize className="w-4 h-4 md:w-5 md:h-5 text-primary flex-shrink-0" />
+                          <span className="font-medium text-xs md:text-sm">{project.specifications?.area || "N/A"}</span>
                         </div>
                         {project.specifications?.bedrooms && (
                           <div className="flex items-center gap-2">
-                            <Home className="w-5 h-5 text-primary" />
-                            <span className="font-medium">{project.specifications.bedrooms} BHK</span>
+                            <Home className="w-4 h-4 md:w-5 md:h-5 text-primary flex-shrink-0" />
+                            <span className="font-medium text-xs md:text-sm">{project.specifications.bedrooms} BHK</span>
                           </div>
                         )}
                       </div>
                       
                       {project.amenities && project.amenities.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mb-4 flex-1">
-                          {project.amenities.map((amenity, idx) => (
-                            <span key={idx} className="text-xs bg-secondary px-3 py-1 rounded-full">
+                        <div className="flex flex-wrap gap-1.5 md:gap-2 mb-3 md:mb-4 flex-1">
+                          {project.amenities.slice(0, 5).map((amenity, idx) => (
+                            <span key={idx} className="text-[10px] md:text-xs bg-secondary px-2 md:px-3 py-0.5 md:py-1 rounded-full">
                               {amenity}
                             </span>
                           ))}
+                          {project.amenities.length > 5 && (
+                            <span className="text-[10px] md:text-xs bg-secondary px-2 md:px-3 py-0.5 md:py-1 rounded-full">
+                              +{project.amenities.length - 5} more
+                            </span>
+                          )}
                         </div>
                       )}
                       
-                      <Button className="self-start group/btn" asChild>
+                      <Button className="self-start group/btn text-xs md:text-sm" size="sm" asChild>
                         <Link to={`/projects/${project.id}`}>
                           View Details
-                          <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover/btn:translate-x-1" />
+                          <ArrowRight className="w-3 h-3 md:w-4 md:h-4 ml-2 transition-transform group-hover/btn:translate-x-1" />
                         </Link>
                       </Button>
                     </div>

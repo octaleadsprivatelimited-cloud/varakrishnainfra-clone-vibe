@@ -14,7 +14,7 @@ const contactInfo = [
   {
     icon: MapPin,
     title: "Visit Us",
-    lines: ["Pillor no, P-55, 3rd Floor Dwaraka Heights", "Plot no 132, Raghavendra Colony", "Hyderabad, Telangana 500039"],
+    lines: ["3rd Floor Dwaraka Heights", "Plot no 132, Raghavendra Colony", "Hyderabad, Telangana 500039"],
   },
   {
     icon: Phone,
@@ -197,9 +197,11 @@ const Contact = () => {
                 <div className="mt-4 md:mt-8 bg-primary rounded-lg md:rounded-xl p-4 md:p-6 text-primary-foreground">
                   <h3 className="font-bold text-sm md:text-lg mb-1 md:mb-2">Need Immediate Assistance?</h3>
                   <p className="text-xs md:text-sm opacity-90 mb-3 md:mb-4">Our team is ready to help you.</p>
-                  <Button variant="secondary" size="sm" className="w-full text-xs md:text-sm">
-                    <Phone className="w-3 h-3 md:w-4 md:h-4 mr-2" />
-                    Call +91 8143341663
+                  <Button variant="secondary" size="sm" className="w-full text-xs md:text-sm" asChild>
+                    <a href="tel:+918143341663">
+                      <Phone className="w-3 h-3 md:w-4 md:h-4 mr-2" />
+                      Call +91 8143341663
+                    </a>
                   </Button>
                 </div>
               </div>
@@ -216,7 +218,7 @@ const Contact = () => {
             </div>
             <div className="rounded-xl md:rounded-2xl overflow-hidden h-[200px] md:h-[400px] shadow-lg">
               <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3807.123456789!2d78.583995!3d17.403479!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb9fb72b88ab53%3A0xbca330d52616d42e!2sVara%20krishna%20Infra%20Pvt.%20Ltd!5e0!3m2!1sen!2sin!4v1706284800000!5m2!1sen!2sin&q=Pillor+no,+P-55,+3rd+Floor+Dwaraka+Heights,+Plot+no+132,+Raghavendra+Colony,+Hyderabad,+Telangana+500039"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3807.123456789!2d78.583995!3d17.403479!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb9fb72b88ab53%3A0xbca330d52616d42e!2sVara%20krishna%20Infra%20Pvt.%20Ltd!5e0!3m2!1sen!2sin!4v1706284800000!5m2!1sen!2sin&q=3rd+Floor+Dwaraka+Heights,+Plot+no+132,+Raghavendra+Colony,+Hyderabad,+Telangana+500039"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

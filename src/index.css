@@ -217,6 +217,15 @@
   .backdrop-blur-glass {
     @apply backdrop-blur-md bg-background/80;
   }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 /* Custom animations */
