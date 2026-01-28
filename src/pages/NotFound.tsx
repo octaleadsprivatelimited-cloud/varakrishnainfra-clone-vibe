@@ -12,12 +12,26 @@ const NotFound = () => {
     console.error("404 Error: User attempted to access non-existent route:", location.pathname);
   }, [location.pathname]);
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "404 - Page Not Found",
+    "description": "The page you are looking for does not exist on Vara Krishna Infra website.",
+    "url": `https://varakrishnainfra.com${location.pathname}`,
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "Vara Krishna Infra"
+    }
+  };
+
   return (
     <>
       <SEO 
         title="404 - Page Not Found | Vara Krishna Infra"
         description="The page you are looking for does not exist. Return to Vara Krishna Infra homepage or explore our projects, services, and contact information."
         url={`https://varakrishnainfra.com${location.pathname}`}
+        noindex={true}
+        structuredData={structuredData}
       />
       <Layout>
         <div className="flex min-h-[60vh] items-center justify-center bg-background py-16">

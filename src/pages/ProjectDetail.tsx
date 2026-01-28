@@ -162,6 +162,29 @@ const ProjectDetail = () => {
     );
   }
 
+  // Generate structured data for the project
+  const projectStructuredData = project ? {
+    "@context": "https://schema.org",
+    "@type": "RealEstateAgent",
+    "name": project.title,
+    "description": project.description,
+    "image": project.images && project.images.length > 0 ? project.images[0] : "https://varakrishnainfra.com/logo.png",
+    "url": `https://varakrishnainfra.com/projects/${id}`,
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": project.location,
+      "addressRegion": "Telangana",
+      "addressCountry": "IN"
+    },
+    "offers": project.price ? {
+      "@type": "Offer",
+      "price": project.price,
+      "priceCurrency": "INR"
+    } : undefined,
+    "numberOfRooms": project.specifications?.bedrooms,
+    "floorSize": project.specifications?.area
+  } : undefined;
+
   return (
     <PageTransition>
       <SEO 
@@ -170,6 +193,7 @@ const ProjectDetail = () => {
         keywords={project ? `${project.title}, ${project.location}, ${project.category}, real estate project hyderabad, vara krishna infra` : "project details, real estate project, hyderabad property"}
         image={project && project.images && project.images.length > 0 ? project.images[0] : "https://varakrishnainfra.com/logo.png"}
         url={`https://varakrishnainfra.com/projects/${id}`}
+        structuredData={projectStructuredData}
       />
       <Layout>
         {/* Project Detail Content */}
@@ -418,7 +442,7 @@ const ProjectDetail = () => {
                       asChild
                     >
                       <a
-                        href={`https://wa.me/?text=${encodeURIComponent(`Check out ${project.title} at ${project.location} - ${window.location.href}`)}`}
+                        href={`https://wa.me/918143341663?text=${encodeURIComponent(`Check out ${project.title} at ${project.location} - ${window.location.href}`)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >

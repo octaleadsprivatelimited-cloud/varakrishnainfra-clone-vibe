@@ -19,7 +19,7 @@ const Index = () => {
     <PageTransition>
       <SEO 
         title="Vara Krishna Infra | Real Estate & Infrastructure in Hyderabad"
-        description="Vara Krishna Infra - Leading Real Estate & Infrastructure Company in Hyderabad. Premium plots, villas, apartments & construction services. Call +91 95155 41663"
+        description="Vara Krishna Infra - Leading Real Estate & Infrastructure Company in Hyderabad. Premium plots, villas, apartments & construction services. Call +91 8143341663"
         keywords="real estate hyderabad, plots in hyderabad, infrastructure company, construction company, villas hyderabad, vara krishna infra, DTCP approved plots, HMDA approved plots, residential projects hyderabad"
         url="https://varakrishnainfra.com"
       />

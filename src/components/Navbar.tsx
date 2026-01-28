@@ -115,9 +115,9 @@ const Navbar = () => {
           {/* Contact Info */}
           <div className="pt-4 border-t border-border">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <a href="tel:+919515541663" className="flex items-center gap-2 text-sm hover:text-primary transition-colors">
+              <a href="tel:+918143341663" className="flex items-center gap-2 text-sm hover:text-primary transition-colors">
                 <Phone className="w-4 h-4 text-primary" />
-                +91 95155 41663
+                +91 8143341663
               </a>
               <div className="flex items-center gap-3">
                 <a href="#" className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
@@ -126,7 +126,7 @@ const Navbar = () => {
                 <a href="#" className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
                   <FaInstagram className="w-3 h-3" />
                 </a>
-                <a href="https://wa.me/919515541663" className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
+                <a href="https://wa.me/918143341663" className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
                   <FaWhatsapp className="w-3 h-3" />
                 </a>
               </div>

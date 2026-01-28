@@ -37,8 +37,8 @@ const Header = () => {
             </div>
             <div>
               <span className="text-xs text-white/60 block uppercase tracking-wider">Call Support</span>
-              <a href="tel:+919515541663" className="font-medium text-white hover:text-primary transition-colors">
-                +91 95155 41663
+              <a href="tel:+918143341663" className="font-medium text-white hover:text-primary transition-colors">
+                +91 8143341663
               </a>
             </div>
           </div>

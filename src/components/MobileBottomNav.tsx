@@ -38,7 +38,7 @@ const MobileBottomNav = () => {
         
         {/* Call Button */}
         <a
-          href="tel:+919515541663"
+          href="tel:+918143341663"
           className="flex flex-col items-center justify-center flex-1 h-full"
         >
           <div className="w-12 h-12 -mt-6 bg-primary rounded-full flex items-center justify-center shadow-lg shadow-primary/30">
