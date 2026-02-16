@@ -5,7 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useToast } from '@/hooks/use-toast';
+import { getAuthErrorMessage } from '@/lib/authErrors';
 import { Eye, EyeOff, Lock, Loader2 } from 'lucide-react';
 
 const AdminLogin = () => {
@@ -35,10 +37,10 @@ const AdminLogin = () => {
         description: "Welcome back, Admin!",
       });
       navigate('/admin/dashboard');
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: "Login Failed",
-        description: error.message || "Invalid email or password",
+        description: getAuthErrorMessage(error),
         variant: "destructive",
       });
     } finally {
@@ -72,7 +74,19 @@ const AdminLogin = () => {
             Enter your credentials to access the admin panel
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
+          <Alert className="text-left border-amber-500/50 bg-amber-500/5">
+            <AlertTitle className="text-sm">Getting 400 error?</AlertTitle>
+            <AlertDescription asChild>
+              <ol className="list-decimal list-inside text-xs mt-1 space-y-1 text-muted-foreground">
+                <li>Open Firebase Console → your project</li>
+                <li>Build → Authentication → Sign-in method</li>
+                <li>Enable &quot;Email/Password&quot; and Save</li>
+                <li>Go to Users tab → Add user (email + password)</li>
+                <li>Use that email and password to sign in here</li>
+              </ol>
+            </AlertDescription>
+          </Alert>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>

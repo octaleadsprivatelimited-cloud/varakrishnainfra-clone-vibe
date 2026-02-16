@@ -79,7 +79,7 @@ const Gallery = () => {
         </section>
 
         {/* Gallery Grid */}
-        <section className="py-16 md:py-24 bg-background pb-24 lg:pb-24" ref={ref}>
+        <section className="pt-12 pb-24 md:pt-16 md:pb-24 bg-background" ref={ref}>
           <div className="container mx-auto px-4">
             {loading ? (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -95,12 +95,12 @@ const Gallery = () => {
                 <p className="text-muted-foreground text-lg">No gallery items found in this category.</p>
               </div>
             ) : (
-              <div className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 stagger-children ${isVisible ? 'in-view' : ''}`}>
+              <div className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 stagger-children ${isVisible ? 'in-view' : ''}`}>
                 {filteredItems.map((item, index) => (
                   <div 
                     key={item.id} 
-                    className={`relative group cursor-pointer overflow-hidden rounded-xl ${
-                      index % 7 === 0 ? 'md:col-span-2 md:row-span-2' : ''
+                    className={`relative group cursor-pointer overflow-hidden rounded-xl aspect-[4/3] ${
+                      index % 7 === 0 ? 'md:col-span-2 md:row-span-2 md:aspect-[4/3]' : ''
                     }`}
                     onClick={() => openLightbox(index)}
                   >
@@ -108,13 +108,13 @@ const Gallery = () => {
                       <img 
                         src={`https://img.youtube.com/vi/${item.youtubeId}/maxresdefault.jpg`}
                         alt={item.title}
-                        className={`w-full ${index % 7 === 0 ? 'h-[400px] md:h-full' : 'h-48 md:h-64'} object-cover transition-transform duration-700 group-hover:scale-110`}
+                        className="img-uploaded transition-transform duration-700 group-hover:scale-110"
                       />
                     ) : (
                       <img 
                         src={item.url} 
                         alt={item.title}
-                        className={`w-full ${index % 7 === 0 ? 'h-[400px] md:h-full' : 'h-48 md:h-64'} object-cover transition-transform duration-700 group-hover:scale-110`}
+                        className="img-uploaded transition-transform duration-700 group-hover:scale-110"
                       />
                     )}
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors duration-300 flex items-center justify-center">

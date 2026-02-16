@@ -1,9 +1,12 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { 
-  User, 
-  signInWithEmailAndPassword, 
-  signOut, 
-  onAuthStateChanged 
+/// <reference path="../firebase.d.ts" />
+/// <reference path="../react-shim.d.ts" />
+import { createContext, useContext, useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
+import {
+  type User,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
 } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 
@@ -24,7 +27,7 @@ export const useAuth = () => {
   return context;
 };
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -54,7 +57,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 };

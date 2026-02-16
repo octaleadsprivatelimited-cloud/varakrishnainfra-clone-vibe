@@ -222,7 +222,7 @@ const ProjectDetail = () => {
                       <img
                         src={currentImages[activeImageIndex]}
                         alt={`${project.title} - Image ${activeImageIndex + 1}`}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="img-uploaded transition-transform duration-500 group-hover:scale-105"
                       />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
                       
@@ -294,7 +294,7 @@ const ProjectDetail = () => {
                         <img
                           src={img}
                           alt={`Thumbnail ${index + 1}`}
-                          className="w-full h-full object-cover"
+                          className="img-uploaded"
                         />
                         {index === 4 && currentImages.length > 5 && (
                           <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white font-medium">

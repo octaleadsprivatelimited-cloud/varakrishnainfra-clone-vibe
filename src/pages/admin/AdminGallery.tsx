@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { useGallery } from '@/hooks/useFirestore';
-import { useFirestoreStorage } from '@/hooks/useFirestoreStorage';
+import { useFirestoreImages } from '@/hooks/useFirestoreImages';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -15,7 +15,7 @@ const galleryCategories = ['Residential', 'Commercial', 'Plots', 'Construction',
 
 const AdminGallery = () => {
   const { galleryItems, loading, addGalleryItem, deleteGalleryItem } = useGallery();
-  const { uploadFile, uploading, progress } = useFirestoreStorage();
+  const { uploadFile, uploading, progress } = useFirestoreImages();
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('image');
@@ -184,7 +184,7 @@ const AdminGallery = () => {
                         <img 
                           src={previewUrl} 
                           alt="Preview" 
-                          className="w-full h-48 object-cover rounded-lg"
+                          className="img-uploaded w-full h-48 rounded-lg"
                         />
                         <Button
                           type="button"
@@ -281,7 +281,7 @@ const AdminGallery = () => {
               {images.map((item) => (
                 <Card key={item.id} className="overflow-hidden group relative">
                   <div className="aspect-square">
-                    <img src={item.url} alt={item.title} className="w-full h-full object-cover" />
+                    <img src={item.url} alt={item.title} className="img-uploaded" />
                   </div>
                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-4">
                     <h4 className="text-white font-medium text-center mb-1">{item.title}</h4>
@@ -321,7 +321,7 @@ const AdminGallery = () => {
                     <img 
                       src={`https://img.youtube.com/vi/${item.youtubeId}/maxresdefault.jpg`} 
                       alt={item.title}
-                      className="w-full h-full object-cover"
+                      className="img-uploaded"
                     />
                     <div className="absolute inset-0 flex items-center justify-center bg-black/30">
                       <div className="w-16 h-16 rounded-full bg-destructive flex items-center justify-center">

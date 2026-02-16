@@ -7,8 +7,8 @@ import sitemapPlugin from "./vite-plugin-sitemap.js";
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {
-    host: "::",
-    port: 3001,
+    host: true,
+    port: 3000,
   },
   plugins: [
     react(), 

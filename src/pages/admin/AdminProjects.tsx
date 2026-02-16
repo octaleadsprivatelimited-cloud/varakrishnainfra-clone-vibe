@@ -458,7 +458,7 @@ const AdminProjects = () => {
             <Card key={project.id} className="overflow-hidden">
               <div className="h-48 bg-muted relative">
                 {project.images[0] ? (
-                  <img src={project.images[0]} alt={project.title} className="w-full h-full object-cover" />
+                  <img src={project.images[0]} alt={project.title} className="img-uploaded" />
                 ) : (
                   <div className="flex items-center justify-center h-full">
                     <Building2 className="w-12 h-12 text-muted-foreground" />

@@ -199,6 +199,12 @@
   .image-reveal.revealed::after {
     @apply -translate-x-full;
   }
+
+  /* Uploaded images: keep within bounds and display in good order */
+  .img-uploaded {
+    @apply max-w-full max-h-full w-full h-full object-cover object-center;
+    display: block;
+  }
 }
 
 @layer utilities {

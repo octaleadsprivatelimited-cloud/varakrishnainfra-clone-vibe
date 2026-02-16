@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { 
   collection, 
   doc, 
-  getDocs, 
   getDoc,
   addDoc, 
+  setDoc,
   updateDoc, 
   deleteDoc, 
   query, 
@@ -31,11 +31,11 @@ export const useProjects = () => {
 
     const q = query(collection(db, 'projects'), orderBy('createdAt', 'desc'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const projectsData = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-        createdAt: doc.data().createdAt?.toDate(),
-        updatedAt: doc.data().updatedAt?.toDate()
+      const projectsData = snapshot.docs.map(d => ({
+        id: d.id,
+        ...d.data(),
+        createdAt: d.data().createdAt?.toDate(),
+        updatedAt: d.data().updatedAt?.toDate()
       })) as Project[];
       
       // Combine Firebase projects with demo projects
@@ -115,12 +115,16 @@ export const useGallery = () => {
   useEffect(() => {
     const q = query(collection(db, 'gallery'), orderBy('createdAt', 'desc'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const items = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-        createdAt: doc.data().createdAt?.toDate()
+      const items = snapshot.docs.map(d => ({
+        id: d.id,
+        ...d.data(),
+        createdAt: d.data().createdAt?.toDate()
       })) as GalleryItem[];
       setGalleryItems(items);
+      setLoading(false);
+    }, (error) => {
+      console.error('Error fetching gallery:', error);
+      setGalleryItems([]);
       setLoading(false);
     });
 
@@ -147,14 +151,18 @@ export const useSiteSettings = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(doc(db, 'settings', 'site'), (doc) => {
-      if (doc.exists()) {
+    const docRef = doc(db, 'settings', 'site');
+    const unsubscribe = onSnapshot(docRef, (snapshot) => {
+      if (snapshot.exists()) {
         setSettings({
-          id: doc.id,
-          ...doc.data(),
-          updatedAt: doc.data().updatedAt?.toDate()
+          id: snapshot.id,
+          ...snapshot.data(),
+          updatedAt: snapshot.data().updatedAt?.toDate()
         } as SiteSettings);
       }
+      setLoading(false);
+    }, (error) => {
+      console.error('Error fetching site settings:', error);
       setLoading(false);
     });
 
@@ -171,7 +179,7 @@ export const useSiteSettings = () => {
         updatedAt: Timestamp.now()
       });
     } else {
-      await addDoc(collection(db, 'settings'), {
+      await setDoc(doc(db, 'settings', 'site'), {
         socialLinks,
         updatedAt: Timestamp.now()
       });
@@ -189,12 +197,16 @@ export const useEnquiries = () => {
   useEffect(() => {
     const q = query(collection(db, 'enquiries'), orderBy('createdAt', 'desc'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const data = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-        createdAt: doc.data().createdAt?.toDate()
+      const data = snapshot.docs.map(d => ({
+        id: d.id,
+        ...d.data(),
+        createdAt: d.data().createdAt?.toDate()
       })) as Enquiry[];
       setEnquiries(data);
+      setLoading(false);
+    }, (error) => {
+      console.error('Error fetching enquiries:', error);
+      setEnquiries([]);
       setLoading(false);
     });
 

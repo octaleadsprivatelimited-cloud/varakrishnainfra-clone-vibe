@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { useFirestoreStorage } from '@/hooks/useFirestoreStorage';
+import { useFirestoreImages } from '@/hooks/useFirestoreImages';
 import { Upload, X, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -22,7 +22,7 @@ const ImageUploader = ({
   label = 'Upload Images'
 }: ImageUploaderProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { uploadMultipleFiles, uploading, progress } = useFirestoreStorage();
+  const { uploadMultipleFiles, uploading, progress } = useFirestoreImages();
   const { toast } = useToast();
   const [dragActive, setDragActive] = useState(false);
 
@@ -141,7 +141,7 @@ const ImageUploader = ({
               <img
                 src={url}
                 alt={`Upload ${index + 1}`}
-                className="w-full h-full object-cover rounded-lg"
+                className="img-uploaded rounded-lg"
               />
               <button
                 type="button"
