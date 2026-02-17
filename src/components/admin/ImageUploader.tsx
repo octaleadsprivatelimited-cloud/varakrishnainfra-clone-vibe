@@ -127,7 +127,7 @@ const ImageUploader = ({
               Drag & drop images here or click to browse
             </p>
             <p className="text-xs text-muted-foreground">
-              {images.length}/{maxImages} images (compressed for storage)
+              {images.length}/{maxImages} images (saved in Firestore database)
             </p>
           </div>
         )}

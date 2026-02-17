@@ -78,16 +78,13 @@ const Gallery = () => {
           </div>
         </section>
 
-        {/* Gallery Grid */}
+        {/* Gallery Grid - uniform layout so every image fits the same cell */}
         <section className="pt-12 pb-24 md:pt-16 md:pb-24 bg-background" ref={ref}>
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-4 max-w-7xl">
             {loading ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-                  <ShimmerSkeleton 
-                    key={i} 
-                    className={`rounded-xl ${i === 1 ? 'md:col-span-2 md:row-span-2 h-[400px]' : 'h-48 md:h-64'}`} 
-                  />
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
+                  <ShimmerSkeleton key={i} className="rounded-xl aspect-[4/3] w-full" />
                 ))}
               </div>
             ) : filteredItems.length === 0 ? (
@@ -95,41 +92,41 @@ const Gallery = () => {
                 <p className="text-muted-foreground text-lg">No gallery items found in this category.</p>
               </div>
             ) : (
-              <div className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 stagger-children ${isVisible ? 'in-view' : ''}`}>
+              <div className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 stagger-children ${isVisible ? 'in-view' : ''}`}>
                 {filteredItems.map((item, index) => (
-                  <div 
-                    key={item.id} 
-                    className={`relative group cursor-pointer overflow-hidden rounded-xl aspect-[4/3] ${
-                      index % 7 === 0 ? 'md:col-span-2 md:row-span-2 md:aspect-[4/3]' : ''
-                    }`}
+                  <div
+                    key={item.id}
+                    className="relative group cursor-pointer overflow-hidden rounded-xl bg-muted min-h-0 aspect-[4/3] shadow-sm hover:shadow-md transition-shadow duration-300"
                     onClick={() => openLightbox(index)}
                   >
                     {item.type === 'video' && item.youtubeId ? (
-                      <img 
+                      <img
                         src={`https://img.youtube.com/vi/${item.youtubeId}/maxresdefault.jpg`}
                         alt={item.title}
-                        className="img-uploaded transition-transform duration-700 group-hover:scale-110"
+                        className="absolute inset-0 w-full h-full object-contain object-center transition-transform duration-500 group-hover:scale-105"
+                        loading={index < 12 ? 'eager' : 'lazy'}
                       />
                     ) : (
-                      <img 
-                        src={item.url} 
+                      <img
+                        src={item.url}
                         alt={item.title}
-                        className="img-uploaded transition-transform duration-700 group-hover:scale-110"
+                        className="absolute inset-0 w-full h-full object-contain object-center transition-transform duration-500 group-hover:scale-105"
+                        loading={index < 12 ? 'eager' : 'lazy'}
                       />
                     )}
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors duration-300 flex items-center justify-center">
-                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center p-4">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3 sm:p-4">
+                      <div className="flex items-center justify-center gap-2 text-white">
                         {item.type === 'video' ? (
-                          <Play className="w-10 h-10 text-white mx-auto mb-2" />
+                          <Play className="w-8 h-8 sm:w-9 sm:h-9 shrink-0" />
                         ) : (
-                          <ZoomIn className="w-10 h-10 text-white mx-auto mb-2" />
+                          <ZoomIn className="w-8 h-8 sm:w-9 sm:h-9 shrink-0" />
                         )}
-                        <h3 className="text-white font-medium">{item.title}</h3>
-                        <span className="text-white/70 text-sm">{item.category}</span>
+                        <h3 className="text-sm sm:text-base font-medium line-clamp-2 text-center">{item.title}</h3>
                       </div>
+                      <span className="text-white/80 text-xs sm:text-sm text-center">{item.category}</span>
                     </div>
                     {item.type === 'video' && (
-                      <div className="absolute top-4 right-4 bg-red-600 text-white text-xs px-2 py-1 rounded">
+                      <div className="absolute top-2 right-2 bg-red-600 text-white text-[10px] sm:text-xs font-medium px-1.5 py-0.5 rounded">
                         VIDEO
                       </div>
                     )}

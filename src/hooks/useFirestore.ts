@@ -3,15 +3,19 @@ import {
   collection, 
   doc, 
   getDoc,
+  getDocs,
   addDoc, 
   setDoc,
   updateDoc, 
   deleteDoc, 
   query, 
   orderBy,
+  limit,
+  startAfter,
   onSnapshot,
   Timestamp
 } from 'firebase/firestore';
+import type { DocumentSnapshot, QueryDocumentSnapshot } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Project, GalleryItem, SiteSettings, Enquiry } from '@/types/admin';
 import { demoProjects } from '@/data/demoProjects';
@@ -107,35 +111,93 @@ export const useProjects = () => {
   return { projects, loading, addProject, updateProject, deleteProject };
 };
 
-// Gallery Hook
+const GALLERY_PAGE_SIZE = 30;
+
+function mapGalleryDoc(d: QueryDocumentSnapshot): GalleryItem | null {
+  try {
+    const data = d.data();
+    const rawCreated = data.createdAt;
+    let createdAt: Date;
+    if (rawCreated && typeof (rawCreated as { toDate?: () => Date }).toDate === 'function') {
+      createdAt = (rawCreated as { toDate: () => Date }).toDate();
+    } else if (rawCreated instanceof Date) {
+      createdAt = rawCreated;
+    } else {
+      createdAt = new Date();
+    }
+    const url = data.url;
+    const urlStr = typeof url === 'string' ? url : (url != null ? String(url) : '');
+    if (!urlStr || urlStr.length < 10) return null;
+    return {
+      id: d.id,
+      type: (data.type ?? 'image') as GalleryItem['type'],
+      url: urlStr,
+      youtubeId: data.youtubeId != null ? String(data.youtubeId) : undefined,
+      title: String(data.title ?? ''),
+      category: String(data.category ?? ''),
+      createdAt
+    } as GalleryItem;
+  } catch {
+    return null;
+  }
+}
+
+// Gallery Hook – fetches ALL gallery docs in pages so none are missed
 export const useGallery = () => {
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const q = query(collection(db, 'gallery'), orderBy('createdAt', 'desc'));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const items = snapshot.docs.map(d => ({
-        id: d.id,
-        ...d.data(),
-        createdAt: d.data().createdAt?.toDate()
-      })) as GalleryItem[];
-      setGalleryItems(items);
-      setLoading(false);
-    }, (error) => {
-      console.error('Error fetching gallery:', error);
-      setGalleryItems([]);
-      setLoading(false);
-    });
+    const coll = collection(db, 'gallery');
+    const sortByNewest = (items: GalleryItem[]) =>
+      [...items].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 
-    return unsubscribe;
+    let cancelled = false;
+    (async () => {
+      const allItems: GalleryItem[] = [];
+      let lastDoc: DocumentSnapshot | null = null;
+      try {
+        do {
+          const q = lastDoc
+            ? query(coll, limit(GALLERY_PAGE_SIZE), startAfter(lastDoc))
+            : query(coll, limit(GALLERY_PAGE_SIZE));
+          const snapshot = await getDocs(q);
+          snapshot.docs.forEach(d => {
+            const item = mapGalleryDoc(d);
+            if (item) allItems.push(item);
+          });
+          if (snapshot.docs.length < GALLERY_PAGE_SIZE) break;
+          lastDoc = snapshot.docs[snapshot.docs.length - 1];
+        } while (!cancelled);
+        if (!cancelled) setGalleryItems(sortByNewest(allItems));
+      } catch (error) {
+        if (!cancelled) {
+          console.error('Error fetching gallery:', error);
+          setGalleryItems([]);
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
   }, []);
 
   const addGalleryItem = async (item: Omit<GalleryItem, 'id' | 'createdAt'>) => {
-    await addDoc(collection(db, 'gallery'), {
-      ...item,
+    const payload: Record<string, unknown> = {
+      type: item.type,
+      url: item.url,
+      title: item.title,
+      category: item.category,
       createdAt: Timestamp.now()
-    });
+    };
+    if (item.type === 'video' && item.youtubeId != null) payload.youtubeId = item.youtubeId;
+    Object.keys(payload).forEach(k => { if (payload[k] === undefined) delete payload[k]; });
+    try {
+      await addDoc(collection(db, 'gallery'), payload);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      throw new Error(message.includes('permission') ? 'Not allowed. Make sure you are logged in as admin.' : message);
+    }
   };
 
   const deleteGalleryItem = async (id: string) => {

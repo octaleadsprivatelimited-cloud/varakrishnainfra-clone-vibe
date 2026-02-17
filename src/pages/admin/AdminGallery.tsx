@@ -13,11 +13,21 @@ import { Plus, Trash2, Image, Video, Play, Upload, Loader2 } from 'lucide-react'
 
 const galleryCategories = ['Residential', 'Commercial', 'Plots', 'Construction', 'Interiors', 'Infrastructure'];
 
+/** Title from filename (no path, no extension), max 80 chars */
+function titleFromFile(file: File): string {
+  const name = file.name.replace(/\.[^/.]+$/, '').trim() || file.name;
+  return name.length > 80 ? name.slice(0, 77) + '...' : name;
+}
+
 const AdminGallery = () => {
   const { galleryItems, loading, addGalleryItem, deleteGalleryItem } = useGallery();
-  const { uploadFile, uploading, progress } = useFirestoreImages();
+  const { uploadFile, uploadMultipleFiles, uploading, progress } = useFirestoreImages();
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
+  const [bulkOpen, setBulkOpen] = useState(false);
+  const [bulkProgress, setBulkProgress] = useState({ current: 0, total: 0, phase: 'idle' as 'idle' | 'upload' | 'save' });
+  const bulkFileInputRef = useRef<HTMLInputElement>(null);
+  const [bulkCategory, setBulkCategory] = useState('Residential');
   const [activeTab, setActiveTab] = useState('image');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -92,7 +102,8 @@ const AdminGallery = () => {
       setIsOpen(false);
       resetForm();
     } catch (error) {
-      toast({ title: "Error", description: "Failed to add item", variant: "destructive" });
+      const msg = error instanceof Error ? error.message : "Failed to add item";
+      toast({ title: "Error", description: msg, variant: "destructive" });
     }
   };
 
@@ -107,6 +118,46 @@ const AdminGallery = () => {
     }
   };
 
+  const handleBulkAdd = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const files = bulkFileInputRef.current?.files;
+    if (!files?.length) {
+      toast({ title: "No files", description: "Select one or more image files", variant: "destructive" });
+      return;
+    }
+    const imageFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
+    if (imageFiles.length === 0) {
+      toast({ title: "Invalid files", description: "Only image files (e.g. JPEG, PNG) are supported", variant: "destructive" });
+      return;
+    }
+    setBulkProgress({ current: 0, total: imageFiles.length, phase: 'upload' });
+    try {
+      const results = await uploadMultipleFiles(imageFiles, 'gallery');
+      setBulkProgress(prev => ({ ...prev, phase: 'save' }));
+      const delayMs = 250;
+      for (let i = 0; i < results.length; i++) {
+        await addGalleryItem({
+          type: 'image',
+          url: results[i].url,
+          title: titleFromFile(imageFiles[i]),
+          category: bulkCategory
+        });
+        setBulkProgress(prev => ({ ...prev, current: i + 1 }));
+        if (i < results.length - 1) {
+          await new Promise(r => setTimeout(r, delayMs));
+        }
+      }
+      toast({ title: "Success", description: `${results.length} image(s) added to gallery` });
+      setBulkOpen(false);
+      if (bulkFileInputRef.current) bulkFileInputRef.current.value = '';
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Bulk add failed. Try fewer images or check connection.";
+      toast({ title: "Error", description: msg, variant: "destructive" });
+    } finally {
+      setBulkProgress({ current: 0, total: 0, phase: 'idle' });
+    }
+  };
+
   const images = galleryItems.filter(item => item.type === 'image');
   const videos = galleryItems.filter(item => item.type === 'video');
 
@@ -117,46 +168,113 @@ const AdminGallery = () => {
           <h1 className="text-3xl font-bold">Gallery</h1>
           <p className="text-muted-foreground">Manage images and videos</p>
         </div>
-        <Dialog open={isOpen} onOpenChange={(open) => { setIsOpen(open); if (!open) resetForm(); }}>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="w-4 h-4 mr-2" />
-              Add Item
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Add Gallery Item</DialogTitle>
-              <DialogDescription>
-                Add a new image or video to the gallery. Choose the type and fill in the details.
-              </DialogDescription>
-            </DialogHeader>
-            <Tabs value={activeTab} onValueChange={(v) => { setActiveTab(v); resetForm(); }}>
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="image">
-                  <Image className="w-4 h-4 mr-2" />
-                  Image
-                </TabsTrigger>
-                <TabsTrigger value="video">
-                  <Video className="w-4 h-4 mr-2" />
-                  YouTube Video
-                </TabsTrigger>
-              </TabsList>
-              
-              <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+        <div className="flex gap-2">
+          <Dialog open={isOpen} onOpenChange={(open) => { setIsOpen(open); if (!open) resetForm(); }}>
+            <DialogTrigger asChild>
+              <Button>
+                <Plus className="w-4 h-4 mr-2" />
+                Add Item
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Add Gallery Item</DialogTitle>
+                <DialogDescription>
+                  Add a new image or video to the gallery. Choose the type and fill in the details.
+                </DialogDescription>
+              </DialogHeader>
+              <Tabs value={activeTab} onValueChange={(v) => { setActiveTab(v); resetForm(); }}>
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="image">
+                    <Image className="w-4 h-4 mr-2" />
+                    Image
+                  </TabsTrigger>
+                  <TabsTrigger value="video">
+                    <Video className="w-4 h-4 mr-2" />
+                    YouTube Video
+                  </TabsTrigger>
+                </TabsList>
+                <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+                  <div>
+                    <Label htmlFor="title">Title</Label>
+                    <Input
+                      id="title"
+                      value={formData.title}
+                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="category">Category</Label>
+                    <Select value={formData.category} onValueChange={(v) => setFormData({ ...formData, category: v })}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {galleryCategories.map(cat => (
+                          <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <TabsContent value="image" className="mt-0 space-y-4">
+                    <div>
+                      <Label>Upload Image</Label>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleFileSelect}
+                      />
+                      {previewUrl ? (
+                        <div className="relative mt-2">
+                          <img src={previewUrl} alt="Preview" className="img-uploaded w-full h-48 rounded-lg" />
+                          <Button type="button" variant="secondary" size="sm" className="absolute bottom-2 right-2" onClick={() => fileInputRef.current?.click()}>Change</Button>
+                        </div>
+                      ) : (
+                        <div className="border-2 border-dashed border-border rounded-lg p-8 text-center cursor-pointer hover:border-primary/50 transition-colors mt-2" onClick={() => fileInputRef.current?.click()}>
+                          <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
+                          <p className="text-sm text-muted-foreground">Click to upload an image</p>
+                        </div>
+                      )}
+                    </div>
+                  </TabsContent>
+                  <TabsContent value="video" className="mt-0">
+                    <div>
+                      <Label htmlFor="youtubeUrl">YouTube URL</Label>
+                      <Input id="youtubeUrl" value={formData.youtubeUrl} onChange={(e) => setFormData({ ...formData, youtubeUrl: e.target.value })} placeholder="https://www.youtube.com/watch?v=..." required={activeTab === 'video'} />
+                      <p className="text-xs text-muted-foreground mt-1">Paste any YouTube video URL</p>
+                    </div>
+                  </TabsContent>
+                  <div className="flex justify-end gap-2">
+                    <Button type="button" variant="outline" onClick={() => { setIsOpen(false); resetForm(); }}>Cancel</Button>
+                    <Button type="submit" disabled={uploading}>
+                      {uploading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Uploading {progress}%</> : `Add ${activeTab === 'image' ? 'Image' : 'Video'}`}
+                    </Button>
+                  </div>
+                </form>
+              </Tabs>
+            </DialogContent>
+          </Dialog>
+          <Dialog open={bulkOpen} onOpenChange={(open) => { setBulkOpen(open); if (!open) { if (bulkFileInputRef.current) bulkFileInputRef.current.value = ''; setBulkProgress({ current: 0, total: 0, phase: 'idle' }); } }}>
+            <DialogTrigger asChild>
+              <Button variant="outline">
+                <Upload className="w-4 h-4 mr-2" />
+                Bulk add images
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Bulk add images</DialogTitle>
+                <DialogDescription>
+                  Select multiple images (e.g. from your Downloads). They will be compressed, stored in the gallery, and shown on the site. One category applies to all.
+                </DialogDescription>
+              </DialogHeader>
+              <form onSubmit={handleBulkAdd} className="space-y-4 mt-2">
                 <div>
-                  <Label htmlFor="title">Title</Label>
-                  <Input
-                    id="title"
-                    value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    required
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="category">Category</Label>
-                  <Select value={formData.category} onValueChange={(v) => setFormData({ ...formData, category: v })}>
+                  <Label>Category for all</Label>
+                  <Select value={bulkCategory} onValueChange={setBulkCategory}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -167,84 +285,47 @@ const AdminGallery = () => {
                     </SelectContent>
                   </Select>
                 </div>
-                
-                <TabsContent value="image" className="mt-0 space-y-4">
-                  <div>
-                    <Label>Upload Image</Label>
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={handleFileSelect}
-                    />
-                    
-                    {previewUrl ? (
-                      <div className="relative mt-2">
-                        <img 
-                          src={previewUrl} 
-                          alt="Preview" 
-                          className="img-uploaded w-full h-48 rounded-lg"
-                        />
-                        <Button
-                          type="button"
-                          variant="secondary"
-                          size="sm"
-                          className="absolute bottom-2 right-2"
-                          onClick={() => fileInputRef.current?.click()}
-                        >
-                          Change
-                        </Button>
-                      </div>
-                    ) : (
-                      <div
-                        className="border-2 border-dashed border-border rounded-lg p-8 text-center cursor-pointer hover:border-primary/50 transition-colors mt-2"
-                        onClick={() => fileInputRef.current?.click()}
-                      >
-                        <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
-                        <p className="text-sm text-muted-foreground">
-                          Click to upload an image
-                        </p>
-                      </div>
-                    )}
+                <div>
+                  <Label>Images</Label>
+                  <input
+                    ref={bulkFileInputRef}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    className="block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-primary file:text-primary-foreground file:cursor-pointer"
+                    onChange={() => {}}
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Titles will be taken from file names. Only images (JPEG, PNG, etc.) are supported.
+                  </p>
+                </div>
+                {(bulkProgress.phase === 'upload' || bulkProgress.phase === 'save') && (
+                  <div className="flex items-center gap-2 text-sm">
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>
+                      {bulkProgress.phase === 'upload' ? 'Uploading...' : 'Saving to gallery...'} {bulkProgress.current} / {bulkProgress.total}
+                    </span>
                   </div>
-                </TabsContent>
-                
-                <TabsContent value="video" className="mt-0">
-                  <div>
-                    <Label htmlFor="youtubeUrl">YouTube URL</Label>
-                    <Input
-                      id="youtubeUrl"
-                      value={formData.youtubeUrl}
-                      onChange={(e) => setFormData({ ...formData, youtubeUrl: e.target.value })}
-                      placeholder="https://www.youtube.com/watch?v=..."
-                      required={activeTab === 'video'}
-                    />
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Paste any YouTube video URL
-                    </p>
-                  </div>
-                </TabsContent>
-                
+                )}
                 <div className="flex justify-end gap-2">
-                  <Button type="button" variant="outline" onClick={() => { setIsOpen(false); resetForm(); }}>
+                  <Button type="button" variant="outline" onClick={() => setBulkOpen(false)}>
                     Cancel
                   </Button>
-                  <Button type="submit" disabled={uploading}>
-                    {uploading ? (
+                  <Button type="submit" disabled={bulkProgress.phase !== 'idle' && (uploading || bulkProgress.total > 0)}>
+                    {bulkProgress.phase !== 'idle' ? (
                       <>
                         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Uploading {progress}%
+                        {bulkProgress.phase === 'upload' ? `${progress}%` : `${bulkProgress.current}/${bulkProgress.total}`}
                       </>
                     ) : (
-                      `Add ${activeTab === 'image' ? 'Image' : 'Video'}`
+                      'Add all to gallery'
                     )}
                   </Button>
                 </div>
               </form>
-            </Tabs>
-          </DialogContent>
-        </Dialog>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       <Tabs defaultValue="images">
