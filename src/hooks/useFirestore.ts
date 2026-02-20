@@ -18,41 +18,71 @@ import {
 import type { DocumentSnapshot, QueryDocumentSnapshot } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Project, GalleryItem, SiteSettings, Enquiry } from '@/types/admin';
-import { demoProjects } from '@/data/demoProjects';
 
-// Projects Hook
+const PROJECTS_PAGE_SIZE = 50;
+
+function mapProjectDoc(d: QueryDocumentSnapshot): Project {
+  const data = d.data();
+  const toDate = (v: unknown) =>
+    v && typeof (v as { toDate?: () => Date }).toDate === 'function'
+      ? (v as { toDate: () => Date }).toDate()
+      : new Date();
+  return {
+    id: d.id,
+    ...data,
+    createdAt: toDate(data.createdAt),
+    updatedAt: toDate(data.updatedAt)
+  } as Project;
+}
+
+// Projects Hook – only Firebase projects; paginated fetch + listener so new adds show
 export const useProjects = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Always include demo projects
-    const demoData = demoProjects.map(p => ({
-      ...p,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    })) as Project[];
+    const sortByNewest = (list: Project[]) =>
+      [...list].sort((a, b) => (b.updatedAt?.getTime() ?? 0) - (a.updatedAt?.getTime() ?? 0));
 
-    const q = query(collection(db, 'projects'), orderBy('createdAt', 'desc'));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const projectsData = snapshot.docs.map(d => ({
-        id: d.id,
-        ...d.data(),
-        createdAt: d.data().createdAt?.toDate(),
-        updatedAt: d.data().updatedAt?.toDate()
-      })) as Project[];
-      
-      // Combine Firebase projects with demo projects
-      setProjects([...projectsData, ...demoData]);
-      setLoading(false);
-    }, (error) => {
-      console.error("Error fetching projects:", error);
-      // Fallback to demo projects on error
-      setProjects(demoData);
-      setLoading(false);
+    const fetchAll = async () => {
+      const allFirebase: Project[] = [];
+      let lastDoc: DocumentSnapshot | null = null;
+      const coll = collection(db, 'projects');
+      try {
+        do {
+          const q = lastDoc
+            ? query(coll, limit(PROJECTS_PAGE_SIZE), startAfter(lastDoc))
+            : query(coll, limit(PROJECTS_PAGE_SIZE));
+          const snapshot = await getDocs(q);
+          snapshot.docs.forEach(d => allFirebase.push(mapProjectDoc(d)));
+          if (snapshot.docs.length < PROJECTS_PAGE_SIZE) break;
+          lastDoc = snapshot.docs[snapshot.docs.length - 1];
+        } while (true);
+        return sortByNewest(allFirebase);
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+        return [];
+      }
+    };
+
+    let cancelled = false;
+    (async () => {
+      const list = await fetchAll();
+      if (!cancelled) setProjects(list);
+      if (!cancelled) setLoading(false);
+    })();
+
+    const unsub = onSnapshot(collection(db, 'projects'), () => {
+      if (cancelled) return;
+      fetchAll().then(list => { if (!cancelled) setProjects(list); });
+    }, () => {
+      if (!cancelled) setLoading(false);
     });
 
-    return unsubscribe;
+    return () => {
+      cancelled = true;
+      unsub();
+    };
   }, []);
 
   const addProject = async (project: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>) => {
