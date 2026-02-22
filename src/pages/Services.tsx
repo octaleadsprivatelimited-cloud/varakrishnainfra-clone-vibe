@@ -144,7 +144,7 @@ const Services = () => {
                   className={`grid lg:grid-cols-2 gap-4 md:gap-12 lg:gap-20 items-center ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}
                 >
                   {/* Image */}
-                  <div className={`relative ${index % 2 === 1 ? 'lg:order-2' : ''} fade-up`}>
+                  <div className={`relative ${index % 2 === 1 ? 'lg:order-2' : ''}`}>
                     <div className="relative rounded-xl md:rounded-2xl overflow-hidden">
                       <img 
                         src={service.image} 

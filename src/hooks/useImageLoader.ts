@@ -9,8 +9,7 @@ export function useImageLoader(src: string) {
     setError(false);
 
     const img = new Image();
-    img.src = src;
-
+    
     img.onload = () => {
       setIsLoaded(true);
     };
@@ -19,10 +18,7 @@ export function useImageLoader(src: string) {
       setError(true);
     };
 
-    // If image is already cached
-    if (img.complete) {
-      setIsLoaded(true);
-    }
+    img.src = src;
 
     return () => {
       img.onload = null;
@@ -34,41 +30,38 @@ export function useImageLoader(src: string) {
 }
 
 export function useMultipleImageLoader(sources: string[]) {
-  const [loadedCount, setLoadedCount] = useState(0);
   const [allLoaded, setAllLoaded] = useState(false);
 
   useEffect(() => {
-    setLoadedCount(0);
-    setAllLoaded(false);
+    if (!sources || sources.length === 0) {
+      setAllLoaded(true);
+      return;
+    }
 
+    setAllLoaded(false);
     let mounted = true;
     let loaded = 0;
 
     sources.forEach((src) => {
       const img = new Image();
-      img.src = src;
 
       const handleLoad = () => {
         if (!mounted) return;
         loaded++;
-        setLoadedCount(loaded);
-        if (loaded === sources.length) {
+        if (loaded >= sources.length) {
           setAllLoaded(true);
         }
       };
 
       img.onload = handleLoad;
-      img.onerror = handleLoad; // Count errors as "loaded" to not block
-
-      if (img.complete) {
-        handleLoad();
-      }
+      img.onerror = handleLoad;
+      img.src = src;
     });
 
     return () => {
       mounted = false;
     };
-  }, [sources]);
+  }, [sources.join(',')]);
 
-  return { loadedCount, allLoaded, progress: sources.length ? loadedCount / sources.length : 0 };
+  return { allLoaded, loadedCount: 0, progress: 0 };
 }
