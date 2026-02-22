@@ -293,11 +293,20 @@ export const useEnquiries = () => {
   useEffect(() => {
     const q = query(collection(db, 'enquiries'), orderBy('createdAt', 'desc'));
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const data = snapshot.docs.map(d => ({
-        id: d.id,
-        ...d.data(),
-        createdAt: d.data().createdAt?.toDate()
-      })) as Enquiry[];
+      const data = snapshot.docs.map(d => {
+        const raw = d.data();
+        return {
+          id: d.id,
+          projectId: String(raw.projectId ?? ''),
+          projectTitle: String(raw.projectTitle ?? ''),
+          name: String(raw.name ?? ''),
+          email: String(raw.email ?? ''),
+          phone: String(raw.phone ?? ''),
+          message: String(raw.message ?? ''),
+          status: (raw.status ?? 'new') as Enquiry['status'],
+          createdAt: raw.createdAt?.toDate?.() ?? new Date(),
+        } satisfies Enquiry;
+      });
       setEnquiries(data);
       setLoading(false);
     }, (error) => {
