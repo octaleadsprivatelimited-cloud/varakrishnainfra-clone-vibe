@@ -3,12 +3,22 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import SEO from "@/components/SEO";
 import PageTransition from "@/components/PageTransition";
-import { MapPin, Phone, Mail, Clock, Send, MessageSquare, CheckCircle } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Send, MessageSquare, CheckCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
+import { submitEnquiry } from "@/hooks/useFirestore";
+import { z } from "zod";
+
+const contactSchema = z.object({
+  name: z.string().trim().min(2, "Name must be at least 2 characters").max(100),
+  email: z.string().trim().email("Please enter a valid email").max(255),
+  phone: z.string().trim().min(10, "Please enter a valid phone number").max(15),
+  subject: z.string().trim().max(200).optional(),
+  message: z.string().trim().min(10, "Message must be at least 10 characters").max(1000),
+});
 
 const contactInfo = [
   {
@@ -45,20 +55,47 @@ const Contact = () => {
   const { toast } = useToast();
   const { ref, isVisible } = useScrollAnimation(0.1);
 
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrors({});
+
+    const result = contactSchema.safeParse(formData);
+    if (!result.success) {
+      const fieldErrors: Record<string, string> = {};
+      result.error.errors.forEach(err => {
+        if (err.path[0]) fieldErrors[err.path[0] as string] = err.message;
+      });
+      setErrors(fieldErrors);
+      return;
+    }
+
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    toast({
-      title: "Message Sent Successfully!",
-      description: "We'll get back to you within 24 hours.",
-    });
-    
-    setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
-    setIsSubmitting(false);
+    try {
+      const subjectLine = result.data.subject ? ` [${result.data.subject}]` : '';
+      await submitEnquiry({
+        projectId: 'contact-page',
+        projectTitle: `Contact Form${subjectLine}`,
+        name: result.data.name,
+        email: result.data.email,
+        phone: result.data.phone,
+        message: result.data.message,
+      });
+      toast({
+        title: "Message Sent Successfully!",
+        description: "We'll get back to you within 24 hours.",
+      });
+      setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+    } catch (error) {
+      toast({
+        title: "Failed to send message",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -101,9 +138,9 @@ const Contact = () => {
                           value={formData.name}
                           onChange={handleChange}
                           placeholder="John Doe"
-                          required
-                          className="bg-background text-sm md:text-base h-9 md:h-10"
+                          className={`bg-background text-sm md:text-base h-9 md:h-10 ${errors.name ? 'border-destructive' : ''}`}
                         />
+                        {errors.name && <p className="text-xs text-destructive mt-1">{errors.name}</p>}
                       </div>
                       <div>
                         <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">Email *</label>
@@ -113,9 +150,9 @@ const Contact = () => {
                           value={formData.email}
                           onChange={handleChange}
                           placeholder="john@example.com"
-                          required
-                          className="bg-background text-sm md:text-base h-9 md:h-10"
+                          className={`bg-background text-sm md:text-base h-9 md:h-10 ${errors.email ? 'border-destructive' : ''}`}
                         />
+                        {errors.email && <p className="text-xs text-destructive mt-1">{errors.email}</p>}
                       </div>
                     </div>
 
@@ -127,9 +164,9 @@ const Contact = () => {
                           value={formData.phone}
                           onChange={handleChange}
                           placeholder="+91 98765 43210"
-                          required
-                          className="bg-background text-sm md:text-base h-9 md:h-10"
+                          className={`bg-background text-sm md:text-base h-9 md:h-10 ${errors.phone ? 'border-destructive' : ''}`}
                         />
+                        {errors.phone && <p className="text-xs text-destructive mt-1">{errors.phone}</p>}
                       </div>
                       <div>
                         <label className="text-xs md:text-sm font-medium mb-1 md:mb-2 block">Subject</label>
@@ -151,9 +188,9 @@ const Contact = () => {
                         onChange={handleChange}
                         placeholder="Tell us about your requirements..."
                         rows={4}
-                        required
-                        className="bg-background resize-none text-sm md:text-base"
+                        className={`bg-background resize-none text-sm md:text-base ${errors.message ? 'border-destructive' : ''}`}
                       />
+                      {errors.message && <p className="text-xs text-destructive mt-1">{errors.message}</p>}
                     </div>
 
                     <Button 
@@ -163,7 +200,10 @@ const Contact = () => {
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? (
-                        <>Sending...</>
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          Sending...
+                        </>
                       ) : (
                         <>
                           <Send className="w-4 h-4 mr-2" />
