@@ -1,105 +1,35 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, MapPin, Bed, Square, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useScrollAnimation from "@/hooks/useScrollAnimation";
 import { ProjectCardSkeleton } from "@/components/ui/shimmer-skeleton";
-import { useMultipleImageLoader } from "@/hooks/useImageLoader";
-import servicePlots from "@/assets/service-plots.jpg";
-import serviceConstruction from "@/assets/service-construction.jpg";
-import serviceApartments from "@/assets/service-apartments.jpg";
-import heroSlide1 from "@/assets/hero-slide-1.jpg";
-import heroSlide2 from "@/assets/hero-slide-2.jpg";
-import heroSlide3 from "@/assets/hero-slide-3.jpg";
-import projectsBg from "@/assets/projects-bg.jpg";
+import { useProjects } from "@/hooks/useFirestore";
 
 const tabs = ["All", "Residential", "Commercial", "Plots"];
-
-const allProjects = [
-  { 
-    image: heroSlide1, 
-    title: "Green Valley Villas", 
-    location: "Shamshabad, Hyderabad",
-    type: "Residential",
-    beds: "3-5 BHK",
-    area: "2400-4500 sq.ft",
-    status: "Ready to Move"
-  },
-  { 
-    image: heroSlide2, 
-    title: "Krishna Premium Plots", 
-    location: "Outer Ring Road",
-    type: "Plots",
-    beds: null,
-    area: "150-500 sq.yards",
-    status: "New Launch"
-  },
-  { 
-    image: heroSlide3, 
-    title: "Sunrise Apartments", 
-    location: "Gachibowli",
-    type: "Residential",
-    beds: "2-4 BHK",
-    area: "1200-2800 sq.ft",
-    status: "Under Construction"
-  },
-  { 
-    image: serviceConstruction, 
-    title: "Tech Hub Complex", 
-    location: "HITEC City",
-    type: "Commercial",
-    beds: null,
-    area: "5000-20000 sq.ft",
-    status: "Coming Soon"
-  },
-  { 
-    image: servicePlots, 
-    title: "Golden Meadows", 
-    location: "Mokila",
-    type: "Plots",
-    beds: null,
-    area: "200-1000 sq.yards",
-    status: "Available"
-  },
-  { 
-    image: serviceApartments, 
-    title: "Skyline Residency", 
-    location: "Kondapur",
-    type: "Residential",
-    beds: "2-3 BHK",
-    area: "1100-1800 sq.ft",
-    status: "Ready to Move"
-  },
-];
 
 const ProjectsSection = () => {
   const [activeTab, setActiveTab] = useState("All");
   const { ref, isVisible } = useScrollAnimation(0.1);
-  const [imagesReady, setImagesReady] = useState(false);
-  
-  const imageUrls = allProjects.map(p => p.image);
-  const { allLoaded } = useMultipleImageLoader(imageUrls);
+  const { projects, loading } = useProjects();
 
-  useEffect(() => {
-    if (allLoaded) {
-      // Small delay for smooth transition
-      const timer = setTimeout(() => setImagesReady(true), 100);
-      return () => clearTimeout(timer);
-    }
-  }, [allLoaded]);
+  // Map firebase projects to display format
+  const displayProjects = projects.map(p => ({
+    image: p.images?.[0] || "",
+    title: p.title,
+    location: p.location,
+    type: p.category.charAt(0).toUpperCase() + p.category.slice(1),
+    beds: p.specifications?.bedrooms ? `${p.specifications.bedrooms} BHK` : null,
+    area: p.specifications?.area || "",
+    status: p.status.charAt(0).toUpperCase() + p.status.slice(1),
+  }));
 
-  const filteredProjects = activeTab === "All" 
-    ? allProjects 
-    : allProjects.filter(p => p.type === activeTab);
+  const filteredProjects = activeTab === "All"
+    ? displayProjects
+    : displayProjects.filter(p => p.type === activeTab);
 
   return (
     <section id="projects" className="py-12 md:py-16 lg:py-20 relative overflow-hidden">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
-        style={{ backgroundImage: `url(${projectsBg})` }}
-      />
-      {/* Overlay */}
       <div className="absolute inset-0 bg-background/95" />
       
       <div className="container mx-auto px-4 relative z-10" ref={ref}>
@@ -137,15 +67,19 @@ const ProjectsSection = () => {
         </div>
 
         {/* Projects Grid */}
-        {!imagesReady ? (
+        {loading ? (
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5">
             {[...Array(6)].map((_, index) => (
               <ProjectCardSkeleton key={index} />
             ))}
           </div>
+        ) : filteredProjects.length === 0 ? (
+          <div className="text-center py-12 text-muted-foreground">
+            No projects found in this category.
+          </div>
         ) : (
           <div className={`grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5 stagger-children ${isVisible ? 'in-view' : ''}`}>
-            {filteredProjects.map((project, index) => (
+            {filteredProjects.slice(0, 6).map((project, index) => (
               <div 
                 key={index} 
                 className="group bg-background rounded-lg md:rounded-xl overflow-hidden border border-border transition-all duration-500 hover:-translate-y-2 hover:border-primary/30"
@@ -153,11 +87,15 @@ const ProjectsSection = () => {
               >
                 {/* Image */}
                 <div className="relative h-28 md:h-48 overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
+                  {project.image ? (
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground text-xs">No Image</div>
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   
                   {/* Status Badge */}
@@ -165,7 +103,6 @@ const ProjectsSection = () => {
                     {project.status}
                   </div>
 
-                  {/* Quick View - Hidden on mobile */}
                   <div className="absolute bottom-3 right-3 w-10 h-10 bg-primary text-primary-foreground rounded-full items-center justify-center opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 cursor-pointer hidden md:flex">
                     <ArrowUpRight className="w-4 h-4" />
                   </div>
@@ -181,7 +118,6 @@ const ProjectsSection = () => {
                     {project.title}
                   </h3>
                   
-                  {/* Details */}
                   <div className="flex items-center gap-2 md:gap-3 text-[10px] md:text-xs text-muted-foreground border-t border-border pt-2 md:pt-3">
                     {project.beds && (
                       <div className="items-center gap-1 hidden md:flex">
@@ -189,10 +125,12 @@ const ProjectsSection = () => {
                         {project.beds}
                       </div>
                     )}
-                    <div className="flex items-center gap-1">
-                      <Square className="w-3 h-3 md:w-3.5 md:h-3.5 flex-shrink-0" />
-                      <span className="truncate">{project.area}</span>
-                    </div>
+                    {project.area && (
+                      <div className="flex items-center gap-1">
+                        <Square className="w-3 h-3 md:w-3.5 md:h-3.5 flex-shrink-0" />
+                        <span className="truncate">{project.area}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
