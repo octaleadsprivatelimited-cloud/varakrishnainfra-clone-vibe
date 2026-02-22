@@ -1,6 +1,6 @@
 // Firebase configuration – use VITE_* env vars in production for security
 // Firestore only (no Firebase Storage – all files stored as base64 in Firestore)
-/// <reference path="../firebase.d.ts" />
+
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
