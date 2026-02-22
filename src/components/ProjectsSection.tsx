@@ -15,6 +15,7 @@ const ProjectsSection = () => {
 
   // Map firebase projects to display format
   const displayProjects = projects.map(p => ({
+    id: p.id,
     image: p.images?.[0] || "",
     title: p.title,
     location: p.location,
@@ -80,9 +81,10 @@ const ProjectsSection = () => {
         ) : (
           <div className={`grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5 stagger-children ${isVisible ? 'in-view' : ''}`}>
             {filteredProjects.slice(0, 6).map((project, index) => (
-              <div 
+              <Link 
+                to={`/projects/${project.id}`}
                 key={index} 
-                className="group bg-background rounded-lg md:rounded-xl overflow-hidden border border-border transition-all duration-500 hover:-translate-y-2 hover:border-primary/30"
+                className="group bg-background rounded-lg md:rounded-xl overflow-hidden border border-border transition-all duration-500 hover:-translate-y-2 hover:border-primary/30 block"
                 style={{ boxShadow: 'var(--shadow-card)' }}
               >
                 {/* Image */}
@@ -133,7 +135,7 @@ const ProjectsSection = () => {
                     )}
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}
