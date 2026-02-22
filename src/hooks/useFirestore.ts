@@ -172,7 +172,7 @@ function mapGalleryDoc(d: QueryDocumentSnapshot): GalleryItem | null {
   }
 }
 
-// Gallery Hook – fetches ALL gallery docs in pages so none are missed
+// Gallery Hook – fetches gallery docs in pages, rendering progressively
 export const useGallery = () => {
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -196,14 +196,18 @@ export const useGallery = () => {
             const item = mapGalleryDoc(d);
             if (item) allItems.push(item);
           });
+          // Show items progressively after each batch
+          if (!cancelled) setGalleryItems(sortByNewest([...allItems]));
+          if (!cancelled && loading) setLoading(false);
           if (snapshot.docs.length < GALLERY_PAGE_SIZE) break;
           lastDoc = snapshot.docs[snapshot.docs.length - 1];
+          // Yield to UI thread between batches
+          await new Promise(r => setTimeout(r, 10));
         } while (!cancelled);
-        if (!cancelled) setGalleryItems(sortByNewest(allItems));
       } catch (error) {
         if (!cancelled) {
           console.error('Error fetching gallery:', error);
-          setGalleryItems([]);
+          if (allItems.length === 0) setGalleryItems([]);
         }
       } finally {
         if (!cancelled) setLoading(false);
