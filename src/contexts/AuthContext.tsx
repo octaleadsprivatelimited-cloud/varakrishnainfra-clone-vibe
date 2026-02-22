@@ -1,5 +1,3 @@
-/// <reference path="../firebase.d.ts" />
-/// <reference path="../react-shim.d.ts" />
 import { createContext, useContext, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import {

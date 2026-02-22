@@ -77,7 +77,7 @@ const AdminLogin = () => {
         <CardContent className="space-y-4">
           <Alert className="text-left border-amber-500/50 bg-amber-500/5">
             <AlertTitle className="text-sm">Getting 400 error?</AlertTitle>
-            <AlertDescription asChild>
+            <AlertDescription>
               <ol className="list-decimal list-inside text-xs mt-1 space-y-1 text-muted-foreground">
                 <li>Open Firebase Console → your project</li>
                 <li>Build → Authentication → Sign-in method</li>
