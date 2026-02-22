@@ -103,14 +103,14 @@ const Gallery = () => {
                       <img
                         src={`https://img.youtube.com/vi/${item.youtubeId}/maxresdefault.jpg`}
                         alt={item.title}
-                        className="absolute inset-0 w-full h-full object-contain object-center transition-transform duration-500 group-hover:scale-105"
+                        className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                         loading={index < 12 ? 'eager' : 'lazy'}
                       />
                     ) : (
                       <img
                         src={item.url}
                         alt={item.title}
-                        className="absolute inset-0 w-full h-full object-contain object-center transition-transform duration-500 group-hover:scale-105"
+                        className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                         loading={index < 12 ? 'eager' : 'lazy'}
                       />
                     )}
